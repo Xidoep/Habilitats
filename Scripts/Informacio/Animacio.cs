@@ -5,6 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
+
     public static class Animacio
     {
         public static void Iniciar(Transform _transform)
@@ -18,13 +19,41 @@ namespace Moviment3D
         static string accioActual;
         static string tmp;
 
-        public static void SetIKs()
+        public static void Dret()
         {
+            Tigger("Dret");
+        }
+        public static void Saltar()
+        {
+            Tigger("Saltar");
+        }
+        public static void Caure()
+        {
+            Tigger("Caure");
+        }
+        public static void Escalar()
+        {
+            Tigger("Escalar");
+        }
+        public static void Relliscar()
+        {
+            Tigger("Relliscar");
+        }
 
+        public static void NoTerra(Transform transform)
+        {
+            if (!Entorn.Buscar.Terra.Hit(transform).Impactat() &&
+               !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+               Preparacio.Preparat)
+            {
+                Caure();
+                Float(Parametre.VelocitatVertical, Dinamic.VelocitatGravetat.y);
+            }
+            else Dret();
         }
 
         //PUBLIQUES
-        public static void Play(Clip clip)
+        static void Play(Clip clip)
         {
             Debugar.Log($"Play ({clip})");
             if (!animator) return;
@@ -33,7 +62,7 @@ namespace Moviment3D
             animator.Play(tmp);
             accioActual = tmp;
         }
-        public static void Play(Clip clip, float tempsTransicio)
+        static void Play(Clip clip, float tempsTransicio)
         {
             Debugar.Log($"Play ({clip})");
             if (!animator) return;
@@ -42,25 +71,16 @@ namespace Moviment3D
             animator.CrossFade(tmp, tempsTransicio);
             accioActual = tmp;
         }
-        public static void Play(Clip clip, System.Action accioFinalAnimacio)
-        {
-            Play(clip);
-            EsperarFinalAnimacio(accioFinalAnimacio);
-        }
-        public static void Play(Clip clip, float tempsTransicio, System.Action accioFinalAnimacio)
-        {
-            Play(clip, tempsTransicio);
-            EsperarFinalAnimacio(accioFinalAnimacio);
-        }
 
-        public static void Tigger(Parametre parametre)
+
+        static void Tigger(string parametre)
         {
             Debugar.Log($"Trigger ({parametre})");
             if (!animator) return;
-            if (IgualActual(parametre)) return;
+            //if (IgualActual(parametre)) return;
 
-            animator.SetTrigger(tmp);
-            accioActual = tmp;
+            animator.SetTrigger(parametre);
+            //accioActual = tmp;
         }
         public static void Bool(Parametre parametre, bool valor) 
         {

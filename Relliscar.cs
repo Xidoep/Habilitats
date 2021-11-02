@@ -29,6 +29,7 @@ namespace Moviment3D
             CrearHelper(Entorn.Buscar.Terra.Hit(transform));
 
             Preparacio.Preparar = 0.5f;
+            Animacio.Relliscar();
         }
 
         internal override void EnSortir()

@@ -84,22 +84,12 @@ namespace Moviment3D
         }
         public void C_NoTerra(Estat.Condicio condicio) 
         { 
-            
             if (!Entorn.Buscar.Terra.Hit(transform).Impactat() && 
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
                 CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Impactat(), 0.02f) && 
                 Preparacio.Preparat) 
                 
                 Estat.Sortida(condicio);
-
-            if (!Entorn.Buscar.Terra.Hit(transform).Impactat() &&
-                !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                Preparacio.Preparat)
-            {
-                Animacio.Tigger(Parametre.Caure);
-                Animacio.Float(Parametre.VelocitatVertical, Dinamic.VelocitatGravetat.y);
-            }
-            else Animacio.Tigger(Parametre.Dret);
         }
         public void C_Salt(Estat.Condicio condicio) 
         { 

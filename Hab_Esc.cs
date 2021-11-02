@@ -8,6 +8,7 @@ namespace Moviment3D
     public class Hab_Esc : EstatPlayer
     {
         Transform helper;
+        Rigidbody rb;
 
         Vector3 posicioInicial;
         Quaternion rotacioInicial;
@@ -29,6 +30,8 @@ namespace Moviment3D
 
         internal override void EnEntrar()
         {
+            if (rb == null) rb = GetComponent<Rigidbody>();
+
             PrepararRigidBody(true);
             if (!reenganxat) CrearHelper(Entorn.Buscar.Dret.OnComencarAEscalar(transform));
             //else 
@@ -39,7 +42,7 @@ namespace Moviment3D
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
 
-            Animacio.Tigger(Parametre.Escalar);
+            Animacio.Escalar();
             Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
 
             IKs.Capturar(Vector2.zero);

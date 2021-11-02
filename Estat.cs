@@ -74,15 +74,15 @@ public abstract class Estat : MonoBehaviour
 
 public abstract class EstatPlayer : Estat
 {
-    internal Moviment3D.Informacio info;
-    internal Rigidbody rb;
+    //internal Moviment3D.Informacio info;
+    //internal Rigidbody rb;
 
     //internal Transform camara;
 
     private new void OnEnable()
     {
         //if (info == null) info = GetComponent<Moviment3D.Informacio>();
-        if (rb == null) rb = GetComponent<Rigidbody>();
+        //if (rb == null) rb = GetComponent<Rigidbody>();
         //if (camara == null) camara = info.Camara;
 
         base.OnEnable();

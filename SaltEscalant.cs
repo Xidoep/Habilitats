@@ -5,6 +5,7 @@ namespace Moviment3D
 {
     public class SaltEscalant : EstatPlayer
     {
+        Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;
         //Transform camara;
@@ -29,6 +30,7 @@ namespace Moviment3D
             //if (info == null) info = GetComponent<Informacio>();
             //if (rb == null) rb = GetComponent<Rigidbody>();
             //if (camara == null) camara = info.Camara;
+            if (rb == null) rb = GetComponent<Rigidbody>();
 
             Preparacio.Preparar = 0.25f;
 
@@ -42,6 +44,8 @@ namespace Moviment3D
                 SaltAjupit();
             }
             Resistencia.Saltar();
+
+            Animacio.Saltar();
         }
 
         private void SaltSeguintLaParet()

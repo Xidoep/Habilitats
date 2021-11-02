@@ -12,6 +12,7 @@ namespace Moviment3D
         const string VELOCITAT_VERTICAL = "VelocitatVertical";
         public override string ToString() => "Salt";
 
+        Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;
         //Transform camara;
@@ -22,6 +23,7 @@ namespace Moviment3D
 
         internal override void EnEntrar()
         {
+            if (rb == null) rb = GetComponent<Rigidbody>();
             //if (info == null) info = GetComponent<Informacio>();
             //if (rb == null) rb = GetComponent<Rigidbody>();
             //if (camara == null) camara = info.Camara;
@@ -35,7 +37,7 @@ namespace Moviment3D
             //rb.velocity = info.Velocitat;
             rb.AddForce(((Vector3.up + (LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
 
-            Animacio.Tigger(Parametre.Saltar);
+            Animacio.Saltar();
         }
 
         internal override void EnSortir()

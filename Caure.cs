@@ -7,14 +7,17 @@ namespace Moviment3D
 {
     public class Caure : EstatPlayer
     {
+        Rigidbody rb;
         Vector3 moviment;
 
         public override string ToString() => "Caure";
 
         internal override void EnEntrar()
         {
+            if (rb == null) rb = GetComponent<Rigidbody>();
+
             transform.SetParent(null);
-            Animacio.Tigger(Parametre.Caure);
+            Animacio.Caure();
         }
 
         internal override void EnSortir()

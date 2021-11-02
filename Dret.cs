@@ -7,6 +7,8 @@ namespace Moviment3D
 {
     public class Dret : EstatPlayer
     {
+        Rigidbody rb;
+
         [SerializeField] UI ui;
         [SerializeField] int velocitat;
         //public bool esglao;
@@ -24,10 +26,12 @@ namespace Moviment3D
 
         internal override void EnEntrar()
         {
+            if (rb == null) rb = GetComponent<Rigidbody>();
+            rb.useGravity = true;
             Emparentar();
 
             Preparacio.Preparar = 0.15f;
-            Animacio.Tigger(Parametre.Dret);
+            Animacio.Dret();
 
         }
 
@@ -86,6 +90,7 @@ namespace Moviment3D
                 ui.forat.Amagar();
                 ui.paret.Amagar();
             }
+            Animacio.NoTerra(transform);
         }
         internal override void EnFixedUpdate()
         { 

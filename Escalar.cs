@@ -10,6 +10,7 @@ namespace Moviment3D
         //Informacio info;
         //Rigidbody rb;
         Transform helper;
+        Rigidbody rb;
         //Transform camara;
 
         Vector3 posicioInicial;
@@ -31,6 +32,7 @@ namespace Moviment3D
             //if (info == null) info = GetComponent<Informacio>();
             //if (rb == null) rb = GetComponent<Rigidbody>();
             //if (camara == null) camara = info.Camara;
+            if (rb == null) rb = GetComponent<Rigidbody>();
 
             if (Inputs.SaltEscalantPreparat) Resistencia.NoBuidarDelTot();
             Inputs.SaltEscalantPreparat = false;
@@ -41,6 +43,8 @@ namespace Moviment3D
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
+
+            Animacio.Escalar();
         }
 
         internal override void EnSortir()
