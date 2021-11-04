@@ -52,6 +52,7 @@ namespace Moviment3D
         {
             direccioParet = true;
             rb.useGravity = false;
+            rb.isKinematic = false;
 
             Debugar.Log("Salt seguint pret");
             rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
@@ -63,6 +64,7 @@ namespace Moviment3D
         {
             direccioParet = false;
             rb.useGravity = true;
+            rb.isKinematic = false;
 
             Debugar.Log("Salt contra pret");
             transform.SetParent(null);
@@ -74,6 +76,7 @@ namespace Moviment3D
         {
             direccioParet = false;
             rb.useGravity = true;
+            rb.isKinematic = false;
 
             transform.SetParent(null);
             rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
@@ -105,12 +108,12 @@ namespace Moviment3D
         private void SeguirLaParet()
         {
             //Mirar la paret tot el ratu...
-            paretHit = Entorn.Buscar.Dret.Endevant(transform);
-            //paretHit = Fisiques.Raig(transform.position + transform.up * 1, transform.forward, Entorn.CapaEntorn, 1);
-            if (paretHit.Impactat())
+            //paretHit = Entorn.Buscar.Dret.Endevant(transform);
+            //paretHit = Fisiques.Raig(transform.position + transform.up * 1, transform.forward, Entorn.capaEntorn, 1);
+            /*if (paretHit.Impactat())
             {
                 transform.forward = -paretHit.normal;
-            }
+            }*/
         }
     }
 

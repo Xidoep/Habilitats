@@ -132,7 +132,7 @@ namespace Moviment3D
 
         void CrearHelper(RaycastHit hit)
         {
-            helper = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
+            helper = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
             helper.localScale = Vector3.one * 0.3f;
 
             otherRigidbody = hit.collider.GetComponent<Rigidbody>();

@@ -15,7 +15,7 @@ namespace Moviment3D
 
         
 
-        static LayerMask capaEntorn;
+        public static LayerMask capaEntorn;
         static RaycastHit nul;
 
 
