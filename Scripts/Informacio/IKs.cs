@@ -171,7 +171,7 @@ namespace Moviment3D
                     }
                     else
                     {
-                        Debugar.Log("hola?");
+                        //Debugar.Log("hola?");
                         return new RaycastHit();
                     }
                 }

@@ -52,30 +52,12 @@ namespace Moviment3D
             else Dret();
         }
 
-        //PUBLIQUES
-        static void Play(Clip clip)
-        {
-            Debugar.Log($"Play ({clip})");
-            if (!animator) return;
-            if (IgualActual(clip)) return;
 
-            animator.Play(tmp);
-            accioActual = tmp;
-        }
-        static void Play(Clip clip, float tempsTransicio)
-        {
-            Debugar.Log($"Play ({clip})");
-            if (!animator) return;
-            if (IgualActual(clip)) return;
-
-            animator.CrossFade(tmp, tempsTransicio);
-            accioActual = tmp;
-        }
 
 
         static void Tigger(string parametre)
         {
-            Debugar.Log($"Trigger ({parametre})");
+            //Debugar.Log($"Trigger ({parametre})");
             if (!animator) return;
             //if (IgualActual(parametre)) return;
 

@@ -19,6 +19,7 @@ namespace Moviment3D
             rb.isKinematic = false;
 
             transform.SetParent(null);
+            
             Animacio.Caure();
         }
 

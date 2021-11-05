@@ -36,7 +36,7 @@ namespace Moviment3D
 
             if (Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
             {
-                if (Inputs.Moviment.y > 0f) SaltSeguintLaParet();
+                if (Inputs.Moviment.y > 0.1f || Mathf.Abs(Inputs.Moviment.x) > 0.45f) SaltSeguintLaParet();
                 else SaltContraLaParet();
             }
             else

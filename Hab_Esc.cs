@@ -22,8 +22,8 @@ namespace Moviment3D
         Rigidbody otherRigidbody;
         ConfigurableJoint joint;
 
-
-
+        bool inputSaltarFlanc;
+        bool saltar;
 
 
         public override string ToString() => "Escalar!";
@@ -46,6 +46,8 @@ namespace Moviment3D
             Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
 
             IKs.Capturar(Vector2.zero);
+
+            saltar = false;
         }
 
         internal override void EnSortir()
@@ -69,6 +71,9 @@ namespace Moviment3D
 
             if (!enPosicio) Desplacar();
             else Quiet();
+
+            Debug.DrawRay(helper.position, helper.up, Color.green);
+            Debug.DrawRay(helper.position, helper.right, Color.red);
         }
 
         void Desplacar()
@@ -92,13 +97,24 @@ namespace Moviment3D
         }
         void Quiet()
         {
-            if (Inputs.Saltar)
+            if (Inputs.Saltar && !inputSaltarFlanc)
             {
-                if (helper.forward.Pla()) transform.Orientar(10);
+                //saltar = true;
+                inputSaltarFlanc = true;
                 Inputs.SaltEscalantPreparat = true;
-                return;
+                if (helper.forward.Pla()) transform.Orientar(10);
+
+                if (Inputs.Deixar)
+                {
+                    inputSaltarFlanc = false;
+                    Inputs.SaltEscalantPreparat = false;
+                }
             }
-            else
+
+            if (inputSaltarFlanc)
+                return;
+
+            if(!Inputs.Saltar)
             {
                 if (!helper.forward.Pla())
                 {
@@ -128,6 +144,10 @@ namespace Moviment3D
 
             }
 
+            if (!Inputs.Saltar && inputSaltarFlanc)
+            {
+                inputSaltarFlanc = false;
+            }
         }
 
         void CrearHelper(RaycastHit hit)
@@ -187,6 +207,7 @@ namespace Moviment3D
                 Estat.Sortida(condicio);
             }
         }
+
     }
 
 }

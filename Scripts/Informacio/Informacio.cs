@@ -64,7 +64,18 @@ namespace Moviment3D
         public void C_NoEsc(Estat.Condicio condicio) 
         { 
             if (Inputs.Deixar && 
-                Preparacio.Preparat) Estat.Sortida(condicio); 
+                Preparacio.Preparat &&
+                Entorn.Buscar.Terra.Hit(transform).Impactat()) 
+                
+                Estat.Sortida(condicio); 
+        }
+        public void C_NoEscAire(Estat.Condicio condicio)
+        {
+            if (Inputs.Deixar &&
+                Preparacio.Preparat &&
+                !Entorn.Buscar.Terra.Hit(transform).Impactat()) 
+                
+                Estat.Sortida(condicio);
         }
         public void C_Mov(Estat.Condicio condicio) 
         { 
