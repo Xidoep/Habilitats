@@ -27,7 +27,7 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
-            rb.useGravity = true;
+
             Emparentar();
 
             Preparacio.Preparar = 0.15f;

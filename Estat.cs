@@ -28,8 +28,8 @@ public abstract class Estat : MonoBehaviour
     }
     private void OnDisable() 
     {
-        if (Application.isEditor)
-            return;
+    //    if (Application.isEditor)
+    //       return;
 
         EnSortir();
     }

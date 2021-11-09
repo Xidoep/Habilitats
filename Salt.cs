@@ -24,28 +24,21 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
-            rb.useGravity = true;
-            //if (info == null) info = GetComponent<Informacio>();
-            //if (rb == null) rb = GetComponent<Rigidbody>();
-            //if (camara == null) camara = info.Camara;
 
             Preparacio.Preparar = 0.25f;
 
             transform.SetParent(null);
 
-            Resistencia.Saltar();
             rb.velocity = Vector3.zero;
-
-            //rb.velocity = info.Velocitat;
             rb.AddForce(((Vector3.up + (LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
 
+            Resistencia.Saltar();
             Animacio.Saltar();
         }
 
         internal override void EnSortir()
         {
             //info.SetVelocitat = rb.velocity;
-            
         }
 
         internal override void EnUpdate()
@@ -61,7 +54,6 @@ namespace Moviment3D
             transform.Orientar(6);
 
             Animacio.Float(Parametre.VelocitatVertical, Dinamic.VelocitatGravetat.y);
-            //Animator.SetFloat(VELOCITAT_VERTICAL, rb.velocity.y * 4);
         }
     }
 

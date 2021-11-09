@@ -15,8 +15,6 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
-            rb.useGravity = true;
-            rb.isKinematic = false;
 
             transform.SetParent(null);
             

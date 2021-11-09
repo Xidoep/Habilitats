@@ -27,9 +27,6 @@ namespace Moviment3D
 
         internal override void EnEntrar()
         {
-            //if (info == null) info = GetComponent<Informacio>();
-            //if (rb == null) rb = GetComponent<Rigidbody>();
-            //if (camara == null) camara = info.Camara;
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             Preparacio.Preparar = 0.25f;
@@ -43,6 +40,7 @@ namespace Moviment3D
             {
                 SaltAjupit();
             }
+
             Resistencia.Saltar();
 
             Animacio.Saltar();
@@ -52,7 +50,6 @@ namespace Moviment3D
         {
             direccioParet = true;
             rb.useGravity = false;
-            rb.isKinematic = false;
 
             Debugar.Log("Salt seguint pret");
             rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
@@ -63,8 +60,6 @@ namespace Moviment3D
         private void SaltContraLaParet()
         {
             direccioParet = false;
-            rb.useGravity = true;
-            rb.isKinematic = false;
 
             Debugar.Log("Salt contra pret");
             transform.SetParent(null);
@@ -75,8 +70,6 @@ namespace Moviment3D
         private void SaltAjupit()
         {
             direccioParet = false;
-            rb.useGravity = true;
-            rb.isKinematic = false;
 
             transform.SetParent(null);
             rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);

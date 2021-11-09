@@ -86,9 +86,8 @@ namespace Moviment3D
         public static void Actualitzar(float temps)
         {
             if (entrar)
-            {
                 rig.weight = temps;
-            }
+
             maD.Actualitzar(temps, forçat);
             maE.Actualitzar(temps, forçat);
             peuD.Actualitzar(temps, forçat);
@@ -283,6 +282,7 @@ namespace Moviment3D
         */
         public static void Apagar()
         {
+            Debugar.Log("Apagar");
             rig.weight = 0;
         }
     }

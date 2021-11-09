@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -174,8 +175,6 @@ namespace Moviment3D
                 }
                 public static RaycastHit CantonadaSuperior(Transform transform)
                 {
-                    // if (!Fisiques.Raig(transform.position + transform.up * 1.5f, -transform.forward, 1.5f, capaEntorn, 1).Impactat())
-                    // {
                     if (Fisiques.Raig(
                         transform.position + transform.up * 1.5f + transform.forward * 1.5f, 
                         -transform.up, 
@@ -187,8 +186,17 @@ namespace Moviment3D
                             1.5f, capaEntorn, 1);
                     }
                     else return nul;
-                    //  }
-                    // else return nul;
+
+                }
+                static RaycastHit cantonadaSuperior;
+                public static void CantonadaSuperior(Transform transform, Action<RaycastHit> action)
+                {
+                    cantonadaSuperior = Fisiques.Raig(
+                        transform.position + transform.up * 1.5f + transform.forward * 1.5f,
+                        -transform.up,
+                        1.5f, capaEntorn, 1);
+                    
+                    if (cantonadaSuperior.Impactat()) action.Invoke(cantonadaSuperior);
                 }
                 internal static RaycastHit Bloquejat(Transform helper, bool pla, Vector2 moviment) => 
                     Fisiques.Raig(

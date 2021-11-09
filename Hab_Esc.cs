@@ -23,7 +23,6 @@ namespace Moviment3D
         ConfigurableJoint joint;
 
         bool inputSaltarFlanc;
-        bool saltar;
 
 
         public override string ToString() => "Escalar!";
@@ -38,6 +37,7 @@ namespace Moviment3D
             Inputs.SaltEscalantPreparat = false;
             Inputs.SaltEscalantReenganxarse = false;
             temps = 0;
+            inputSaltarFlanc = false;
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
@@ -46,8 +46,6 @@ namespace Moviment3D
             Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
 
             IKs.Capturar(Vector2.zero);
-
-            saltar = false;
         }
 
         internal override void EnSortir()
@@ -89,7 +87,7 @@ namespace Moviment3D
 
                 Animacio.Bool(Parametre.Moviment, true);
                 Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
-
+                IKs.Actualitzar(1);
             }
             else IKs.Actualitzar(temps);
 
@@ -97,11 +95,14 @@ namespace Moviment3D
         }
         void Quiet()
         {
-            if (Inputs.Saltar && !inputSaltarFlanc)
+            if (Inputs.Saltar)
             {
-                //saltar = true;
-                inputSaltarFlanc = true;
-                Inputs.SaltEscalantPreparat = true;
+                if (!inputSaltarFlanc)
+                {
+                    inputSaltarFlanc = true;
+                    Inputs.SaltEscalantPreparat = true;
+                }
+
                 if (helper.forward.Pla()) transform.Orientar(10);
 
                 if (Inputs.Deixar)
@@ -199,15 +200,25 @@ namespace Moviment3D
                  CrearHelper(entorn.BuscarCantonadaSuperior(transform));
                  Estat.Sortida(condicio);
              }*/
-            if (Preparacio.Preparat && Entorn.Escalant.Buscar.CantonadaSuperior(transform).Impactat())
+
+            /*if (Preparacio.Preparat && Entorn.Escalant.Buscar.CantonadaSuperior(transform).Impactat())
             {
                 reenganxat = true;
                 Resistencia.NoBuidarDelTot();
                 CrearHelper(Entorn.Escalant.Buscar.CantonadaSuperior(transform));
                 Estat.Sortida(condicio);
-            }
+            }*/
+
+            if (Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
+            {
+                reenganxat = true;
+                Resistencia.NoBuidarDelTot();
+                CrearHelper(hit);
+                Estat.Sortida(condicio);
+            });
         }
 
+        
     }
 
 }
