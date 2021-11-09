@@ -185,6 +185,8 @@ namespace Moviment3D
                 Estat.Sortida(condicio); 
         }
 
+
+
     }
 }
 

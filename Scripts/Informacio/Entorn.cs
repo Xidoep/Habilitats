@@ -365,12 +365,19 @@ namespace Moviment3D
                     //    && !Fisiques.Raig(transform.position + transform.up * (0.1f + altura), transform.forward, 1.5f, capaEntorn).Impactat();
                 }
 
+                public static bool NoTerra(Transform transform)
+                {
+                    return !Entorn.Buscar.Terra.Hit(transform).Impactat() &&
+                        !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                        Preparacio.Preparat;
+                }
 
                 static RaycastHit Devant(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Derrera(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Dreta(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Esquerra(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Centre(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
+
 
             }
 

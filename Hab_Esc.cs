@@ -18,12 +18,13 @@ namespace Moviment3D
 
         [SerializeField] int velocitat;
         [SerializeField] bool reenganxat = false;
+        [SerializeField] AnimationCurve velocitatMovimentAjupit;
 
         Rigidbody otherRigidbody;
         ConfigurableJoint joint;
 
         bool inputSaltarFlanc;
-
+        
 
         public override string ToString() => "Escalar!";
 
@@ -42,8 +43,10 @@ namespace Moviment3D
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
 
+            Animacio.Pla(helper.forward.Pla());
             Animacio.Escalar();
-            Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
+            Animacio.Moviment(Vector2.zero);
+            Animacio.MovimentY(0);
 
             IKs.Capturar(Vector2.zero);
         }
@@ -59,7 +62,8 @@ namespace Moviment3D
 
             if (joint != null) Destroy(joint);
 
-            Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
+            Animacio.Moviment(Vector2.zero);
+            Animacio.MovimentY(0);
             IKs.Apagar();
         }
 
@@ -72,6 +76,7 @@ namespace Moviment3D
 
             Debug.DrawRay(helper.position, helper.up, Color.green);
             Debug.DrawRay(helper.position, helper.right, Color.red);
+            Animacio.Pla(helper.forward.Pla());
         }
 
         void Desplacar()
@@ -85,11 +90,16 @@ namespace Moviment3D
                 enPosicio = true;
                 Inputs.SetHelperVectors = helper;
 
-                Animacio.Bool(Parametre.Moviment, true);
-                Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Vector2.zero);
+                Animacio.EnMoviment(true);
+                Animacio.Moviment(Vector2.zero);
+                Animacio.MovimentY(0);
                 IKs.Actualitzar(1);
             }
-            else IKs.Actualitzar(temps);
+            else 
+            {
+                Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
+                IKs.Actualitzar(temps);
+            } 
 
             if (!helper.forward.Pla()) Resistencia.Actual -= 1 * Time.deltaTime;
         }
@@ -139,9 +149,15 @@ namespace Moviment3D
                 temps = 0;
                 enPosicio = false;
 
-                Animacio.Bool(Parametre.Moviment, true);
-                Animacio.Vector2(Parametre.MovimentX, Parametre.MovimentY, Inputs.Moviment);
-
+                Animacio.EnMoviment(true);
+                if (helper.forward.Pla())
+                {
+                    Animacio.MovimentY(1);
+                }
+                else
+                {
+                    Animacio.Moviment(Inputs.Moviment);
+                }
 
             }
 
@@ -149,6 +165,9 @@ namespace Moviment3D
             {
                 inputSaltarFlanc = false;
             }
+
+            
+
         }
 
         void CrearHelper(RaycastHit hit)

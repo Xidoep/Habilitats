@@ -44,7 +44,7 @@ namespace Moviment3D
             transform.Orientar(4);
 
 
-            Animacio.Float(Parametre.VelocitatVertical, Dinamic.VelocitatGravetat.y);
+            Animacio.VelocitatVertical();
         }
     }
 

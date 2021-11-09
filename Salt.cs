@@ -13,9 +13,6 @@ namespace Moviment3D
         public override string ToString() => "Salt";
 
         Rigidbody rb;
-        //Informacio info;
-        //Rigidbody rb;
-        //Transform camara;
 
         Vector3 moviment;
 
@@ -36,11 +33,6 @@ namespace Moviment3D
             Animacio.Saltar();
         }
 
-        internal override void EnSortir()
-        {
-            //info.SetVelocitat = rb.velocity;
-        }
-
         internal override void EnUpdate()
         {
             moviment = LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
@@ -53,7 +45,12 @@ namespace Moviment3D
 
             transform.Orientar(6);
 
-            Animacio.Float(Parametre.VelocitatVertical, Dinamic.VelocitatGravetat.y);
+            Animacio.VelocitatVertical();
+        }
+
+        internal override void EnSortir()
+        {
+            //info.SetVelocitat = rb.velocity;
         }
     }
 

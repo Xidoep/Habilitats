@@ -69,13 +69,14 @@ namespace Moviment3D
         {
             rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
 
+
             Resistencia.Recuperar();
             Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
             if (Inputs.MovimentZero)
             {
-                Animacio.Float(Parametre.MovimentY, 0);
+                Animacio.MovimentY(0);
                 if (Entorn.Buscar.Dret.CantonadaForat(transform).Impactat()) 
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
                 if (Entorn.Buscar.Dret.Endevant(transform).Impactat())
@@ -84,12 +85,13 @@ namespace Moviment3D
             }
             else
             {
-                Animacio.Float(Parametre.MovimentY, velocitatActual.magnitude / velocitat);
+                Animacio.MovimentY(velocitatActual.magnitude / velocitat);
                 apretar = Entorn.Buscar.Dret.Endevant(transform).Impactat();
 
                 ui.forat.Amagar();
                 ui.paret.Amagar();
             }
+
             Animacio.NoTerra(transform);
         }
         internal override void EnFixedUpdate()
@@ -129,7 +131,7 @@ namespace Moviment3D
                 Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.EndevantAmbInclinacio(transform)));*/
 
             transform.position += velocitatActual * Time.fixedDeltaTime;
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
         }
 
     }
