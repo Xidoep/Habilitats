@@ -27,7 +27,7 @@ namespace Moviment3D
             transform.SetParent(null);
 
             rb.velocity = Vector3.zero;
-            rb.AddForce(((Vector3.up + (LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
+            rb.AddForce(((Vector3.up + (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
 
             Resistencia.Saltar();
             Animacio.Saltar();
@@ -35,7 +35,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
             rb.AddForce(moviment * 400);
 
             if (!Inputs.Saltar)

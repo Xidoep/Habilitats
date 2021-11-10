@@ -127,7 +127,7 @@ namespace Moviment3D
             }
             static Vector3 Direccio(Transform helper, bool pla, Vector2 moviment) => !pla ? Direccio_Vertical(helper, moviment) : Direccio_Pla(moviment);
             static Vector3 Direccio_Vertical(Transform helper, Vector2 moviment) => helper.up * moviment.normalized.y - helper.right * moviment.normalized.x;
-            static Vector3 Direccio_Pla(Vector2 moviment) => LaMevaCamara.Transform.ACamaraRelatiu(moviment).normalized;
+            static Vector3 Direccio_Pla(Vector2 moviment) => MyCamera.Transform.ACamaraRelatiu(moviment).normalized;
 
             /// <summary>
             /// Accions de buscar propies d'escalar

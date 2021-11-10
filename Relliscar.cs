@@ -18,7 +18,7 @@ namespace Moviment3D
         //float Inersia { get => inersia; set => inersia = Mathf.Clamp01(value); }
         float Inersia { get => 1; set => inersia = Mathf.Clamp01(value); }
 
-        Vector3 Direccio => -helper.right * (Vector3.Dot(LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment.ToVector3_Vertical()), -helper.right) * 1f);
+        Vector3 Direccio => -helper.right * (Vector3.Dot(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment.ToVector3_Vertical()), -helper.right) * 1f);
 
         internal override void EnEntrar()
         {

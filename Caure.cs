@@ -31,7 +31,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
             rb.AddForce(moviment * 200);
 
             Resistencia.RescuperarLentament();

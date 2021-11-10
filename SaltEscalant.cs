@@ -90,7 +90,7 @@ namespace Moviment3D
             }
             else
             {
-                moviment = LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
+                moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
                 rb.AddForce(moviment * 30);
 
                 transform.Orientar(6);

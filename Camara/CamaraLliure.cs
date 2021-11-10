@@ -22,7 +22,7 @@ public class CamaraLliure : MonoBehaviour
 
         private void OnEnable()
         {
-            LaMevaCamara.Camara = camaraPrincipal;
+            MyCamera.CameraMain = camaraPrincipal;
         }
 
         public void Update()

@@ -144,7 +144,7 @@ namespace Moviment3D
                 
 
                 PosicionarHelper(Entorn.Escalant.Moviment(helper, helper.forward.Pla(), Inputs.Moviment));
-                if (helper.forward.Pla()) transform.forward = LaMevaCamara.Transform.ACamaraRelatiu(Inputs.Moviment);
+                if (helper.forward.Pla()) transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
                 else IKs.Capturar(Inputs.Moviment * 0.5f);
                 temps = 0;
                 enPosicio = false;
