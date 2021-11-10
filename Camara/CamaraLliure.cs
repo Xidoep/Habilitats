@@ -32,7 +32,7 @@ public class CamaraLliure : MonoBehaviour
 
         freeLook.XS_AddOrientar(visio.GetVector2());
 
-        if(!altura.EstaProxim(Entorn.Camera.DistanciaDesdeTerra(transform), 0.1f))
+        if(!altura.IsNear(Entorn.Camera.DistanciaDesdeTerra(transform), 0.1f))
         {
             altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
         }

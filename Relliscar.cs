@@ -41,7 +41,7 @@ namespace Moviment3D
         {
             Inersia += Time.deltaTime * 0.5f;
 
-            if (Entorn.Buscar.Terra.Hit(transform).Impactat()) OrientarHelper(Entorn.Buscar.Terra.Hit(transform).normal);
+            if (Entorn.Buscar.Terra.Hit(transform).Hitted()) OrientarHelper(Entorn.Buscar.Terra.Hit(transform).normal);
 
             //rb.MovePosition(rb.transform.position + -helper.up * velocitat * Inersia * Time.deltaTime);
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;

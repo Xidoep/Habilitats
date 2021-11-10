@@ -53,7 +53,7 @@ namespace Moviment3D
         public void C_Esc(Estat.Condicio condicio) 
         {
             if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Impactat() &&
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
                 Preparacio.Preparat)
             {
 
@@ -65,7 +65,7 @@ namespace Moviment3D
         { 
             if (Inputs.Deixar && 
                 Preparacio.Preparat &&
-                Entorn.Buscar.Terra.Hit(transform).Impactat()) 
+                Entorn.Buscar.Terra.Hit(transform).Hitted()) 
                 
                 Estat.Sortida(condicio); 
         }
@@ -73,7 +73,7 @@ namespace Moviment3D
         {
             if (Inputs.Deixar &&
                 Preparacio.Preparat &&
-                !Entorn.Buscar.Terra.Hit(transform).Impactat()) 
+                !Entorn.Buscar.Terra.Hit(transform).Hitted()) 
                 
                 Estat.Sortida(condicio);
         }
@@ -87,7 +87,7 @@ namespace Moviment3D
         }
         public void C_Terra(Estat.Condicio condicio) 
         { 
-            if (Entorn.Buscar.Terra.Hit(transform).Impactat() && 
+            if (Entorn.Buscar.Terra.Hit(transform).Hitted() && 
                 Preparacio.Preparat && 
                 !Entorn.Buscar.Terra.EsRelliscant(transform)) 
                 
@@ -95,9 +95,9 @@ namespace Moviment3D
         }
         public void C_NoTerra(Estat.Condicio condicio) 
         { 
-            if (!Entorn.Buscar.Terra.Hit(transform).Impactat() && 
+            if (!Entorn.Buscar.Terra.Hit(transform).Hitted() && 
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Impactat(), 0.02f) && 
+                CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) && 
                 Preparacio.Preparat) 
                 
                 Estat.Sortida(condicio);
@@ -120,7 +120,7 @@ namespace Moviment3D
         public void C_SaltarEscalantReencangarse(Estat.Condicio condicio) 
         {
             if (Inputs.Escalar && 
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Impactat()) 
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted()) 
                 
                 Estat.Sortida(condicio); 
         }
@@ -134,14 +134,14 @@ namespace Moviment3D
         public void C_TornarAAgafarSiPot(Estat.Condicio condicio) 
         { 
             if (Preparacio.Preparat && 
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Impactat()) 
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted()) 
                 
                 Estat.Sortida(condicio); 
         }
         public void C_TrobarCantonadaSuperior(Estat.Condicio condicio) 
         { 
             if (Preparacio.Preparat && 
-                Entorn.Escalant.Buscar.CantonadaSuperior(transform).Impactat() &&
+                Entorn.Escalant.Buscar.CantonadaSuperior(transform).Hitted() &&
                 Inputs.SaltEscalantReenganxarse)
                 
                 Estat.Sortida(condicio); 

@@ -139,7 +139,7 @@ namespace Moviment3D
                 }
             }
 
-            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, helper.forward.Pla(), Inputs.Moviment).Impactat())
+            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, helper.forward.Pla(), Inputs.Moviment).Hitted())
             {
                 
 

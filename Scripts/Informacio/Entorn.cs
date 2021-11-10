@@ -34,14 +34,14 @@ namespace Moviment3D
             normalCompound = Vector3.zero;
 
             normals.Add(primerHit.normal);
-            if (Fisiques.Raig(helper.position + helper.up * 2 + helper.forward, -helper.forward, 2, capaEntorn, 3).Impactat())
-                normals.Add(Fisiques.Raig(helper.position + helper.up * 2 + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
+            if (XS_Physics.RayDebug(helper.position + helper.up * 2 + helper.forward, -helper.forward, 2, capaEntorn, 3).Hitted())
+                normals.Add(XS_Physics.RayDebug(helper.position + helper.up * 2 + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
 
-            if (Fisiques.Raig(helper.position + helper.up * 1 + helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).Impactat())
-                normals.Add(Fisiques.Raig(helper.position + helper.up * 1 + helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
+            if (XS_Physics.RayDebug(helper.position + helper.up * 1 + helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).Hitted())
+                normals.Add(XS_Physics.RayDebug(helper.position + helper.up * 1 + helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
 
-            if (Fisiques.Raig(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).Impactat())
-                normals.Add(Fisiques.Raig(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
+            if (XS_Physics.RayDebug(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).Hitted())
+                normals.Add(XS_Physics.RayDebug(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
 
             Debug.Log($"{normals.Count} normals");
             for (int i = 0; i < normals.Count; i++)
@@ -63,7 +63,7 @@ namespace Moviment3D
             public static RaycastHit Moviment(Transform helper, bool pla, Vector2 moviment)
             {
                 RaycastHit hit = nul;
-                if (Buscar.Bloquejat(helper, pla, moviment).Impactat()) 
+                if (Buscar.Bloquejat(helper, pla, moviment).Hitted()) 
                 {
                     Debugar.Log("BLoquejat");
                     hit = Buscar.Bloquejat(helper, pla, moviment); //Mur davant d'on vol anar
@@ -71,13 +71,13 @@ namespace Moviment3D
                 } 
                 else
                 {
-                    if (Buscar.Recta(helper, pla, moviment).Impactat()) //Si hi ha paret per continuar
+                    if (Buscar.Recta(helper, pla, moviment).Hitted()) //Si hi ha paret per continuar
                     {
                         if (!pla)
                         {
                             if (moviment.normalized.y > 0) //Si vas cap amunt
                             {
-                                if (Buscar.Sostre(helper, pla, moviment).Impactat()) 
+                                if (Buscar.Sostre(helper, pla, moviment).Hitted()) 
                                 {
                                     Debugar.Log("Sostre");
                                     hit = Buscar.Sostre(helper, pla, moviment); //Si mes amunt hi torves un sostre
@@ -85,7 +85,7 @@ namespace Moviment3D
                                 }
                                 else
                                 {
-                                    if (Buscar.CantonadaPlanaAmunt(helper).Impactat())
+                                    if (Buscar.CantonadaPlanaAmunt(helper).Hitted())
                                     {
                                         Debugar.Log("Cantonada plana mes amunt");
                                         hit = Buscar.CantonadaPlanaAmunt(helper); //Si torves una cantonada plana
@@ -115,7 +115,7 @@ namespace Moviment3D
                     }
                     else
                     {
-                        if (Buscar.Cantonada(helper, pla, moviment).Impactat()) 
+                        if (Buscar.Cantonada(helper, pla, moviment).Hitted()) 
                         {
                             Debugar.Log("Cantonada");
                             hit = Buscar.Cantonada(helper, pla, moviment); //Busca cantonada
@@ -138,21 +138,21 @@ namespace Moviment3D
                 {
                    
 
-                    if (!Fisiques.Raig(
+                    if (!XS_Physics.RayDebug(
                         Separacio(helper), 
                         helper.up, 
-                        distMovEscalar * 2.2f, capaEntorn, 1).Impactat())
+                        distMovEscalar * 2.2f, capaEntorn, 1).Hitted())
                     {
-                        if (!Fisiques.Raig(
+                        if (!XS_Physics.RayDebug(
                             Separacio(helper) + Amunt(helper), 
                             -helper.forward, 
-                            1 + distMovEscalar, capaEntorn, 1).Impactat())
+                            1 + distMovEscalar, capaEntorn, 1).Hitted())
                         {
-                            if (Fisiques.Raig(
+                            if (XS_Physics.RayDebug(
                                 Separacio(helper) + Amunt(helper) - Endevant(helper), 
                                 -helper.up, 
-                                distMovEscalar * 4, capaEntorn, 1).Impactat())
-                                return Fisiques.Raig(
+                                distMovEscalar * 4, capaEntorn, 1).Hitted())
+                                return XS_Physics.RayDebug(
                                     Separacio(helper) + Amunt(helper) - Endevant(helper), 
                                     -helper.up, 
                                     distMovEscalar * 4, capaEntorn, 1);
@@ -175,12 +175,12 @@ namespace Moviment3D
                 }
                 public static RaycastHit CantonadaSuperior(Transform transform)
                 {
-                    if (Fisiques.Raig(
+                    if (XS_Physics.RayDebug(
                         transform.position + transform.up * 1.5f + transform.forward * 1.5f, 
                         -transform.up, 
-                        1.5f, capaEntorn, 1).Impactat())
+                        1.5f, capaEntorn, 1).Hitted())
                     {
-                        return Fisiques.Raig(
+                        return XS_Physics.RayDebug(
                             transform.position + transform.up * 1.5f + transform.forward * 1.5f, 
                             -transform.up, 
                             1.5f, capaEntorn, 1);
@@ -191,40 +191,40 @@ namespace Moviment3D
                 static RaycastHit cantonadaSuperior;
                 public static void CantonadaSuperior(Transform transform, Action<RaycastHit> action)
                 {
-                    cantonadaSuperior = Fisiques.Raig(
+                    cantonadaSuperior = XS_Physics.RayDebug(
                         transform.position + transform.up * 1.5f + transform.forward * 1.5f,
                         -transform.up,
                         1.5f, capaEntorn, 1);
                     
-                    if (cantonadaSuperior.Impactat()) action.Invoke(cantonadaSuperior);
+                    if (cantonadaSuperior.Hitted()) action.Invoke(cantonadaSuperior);
                 }
                 internal static RaycastHit Bloquejat(Transform helper, bool pla, Vector2 moviment) => 
-                    Fisiques.Raig(
+                    XS_Physics.RayDebug(
                         Separacio(helper), 
                         Direccio(helper, pla, moviment), 
                         distMovEscalar * 1.5f, capaEntorn, 1);
                 internal static RaycastHit Recta(Transform helper, bool pla, Vector2 moviment) => 
-                    Fisiques.Raig(
+                    XS_Physics.RayDebug(
                         Separacio(helper) + Direccio(helper, pla, moviment) * distMovEscalar, 
                         -helper.forward, 
                         1, capaEntorn, 1);
                 internal static RaycastHit Cantonada(Transform helper, bool pla, Vector2 moviment)
                 {
-                    if (Fisiques.Raig(
+                    if (XS_Physics.RayDebug(
                         Separacio(helper) + Direccio(helper, pla, moviment) * distMovEscalar - helper.forward * 1, 
                         -Direccio(helper, pla, moviment) - helper.forward, 
-                        1, capaEntorn, 1).Impactat())
-                        return Fisiques.Raig(
+                        1, capaEntorn, 1).Hitted())
+                        return XS_Physics.RayDebug(
                             Separacio(helper) + Direccio(helper, pla, moviment) * distMovEscalar - helper.forward * 1, 
                             -Direccio(helper, pla, moviment) - helper.forward, 
                             1, capaEntorn, 1);
-                    else return Fisiques.Raig(
+                    else return XS_Physics.RayDebug(
                         Separacio(helper) + Direccio(helper, pla, moviment) * distMovEscalar - helper.forward * 1, 
                         -Direccio(helper, pla, moviment), 
                         1, capaEntorn, 1);
                 }
                 internal static RaycastHit Sostre(Transform helper, bool pla, Vector2 moviment) => 
-                    Fisiques.Raig(
+                    XS_Physics.RayDebug(
                         Separacio(helper) + Direccio(helper, pla, moviment) * distMovEscalar, 
                         helper.up, 
                         1, capaEntorn, 1);
@@ -251,34 +251,34 @@ namespace Moviment3D
             {
                 public static RaycastHit OnComencarAEscalar(Transform transform) //no escalant
                 {
-                    if (Endevant(transform).Impactat()) return Endevant(transform);
+                    if (Endevant(transform).Hitted()) return Endevant(transform);
                     else
                     {
-                        if (!DavantDelsPeus(transform).Impactat() && CantonadaForat(transform).Impactat()) return CantonadaForat(transform);
+                        if (!DavantDelsPeus(transform).Hitted() && CantonadaForat(transform).Hitted()) return CantonadaForat(transform);
                         else
                         {
-                            if (AlsPeus(transform).Impactat()) return AlsPeus(transform);
+                            if (AlsPeus(transform).Hitted()) return AlsPeus(transform);
                             else
                             {
-                                if (DiagonalDreta(transform).Impactat()) return DiagonalDreta(transform);
+                                if (DiagonalDreta(transform).Hitted()) return DiagonalDreta(transform);
                                 else
                                 {
-                                    if (DiagonalEsquerra(transform).Impactat()) return DiagonalEsquerra(transform);
+                                    if (DiagonalEsquerra(transform).Hitted()) return DiagonalEsquerra(transform);
                                     else
                                     {
-                                        if (Dreta(transform).Impactat()) return Dreta(transform);
+                                        if (Dreta(transform).Hitted()) return Dreta(transform);
                                         else
                                         {
-                                            if (Esquerra(transform).Impactat()) return Esquerra(transform);
+                                            if (Esquerra(transform).Hitted()) return Esquerra(transform);
                                             else
                                             {
-                                                if (DiagonalAmunt(transform).Impactat()) return DiagonalAmunt(transform);
+                                                if (DiagonalAmunt(transform).Hitted()) return DiagonalAmunt(transform);
                                                 else
                                                 {
-                                                    if (Amunt(transform).Impactat()) return Amunt(transform);
+                                                    if (Amunt(transform).Hitted()) return Amunt(transform);
                                                     else
                                                     {
-                                                        if (DavantDelsPeus(transform).Impactat()) return DavantDelsPeus(transform);
+                                                        if (DavantDelsPeus(transform).Hitted()) return DavantDelsPeus(transform);
                                                         else return nul;
                                                     }
                                                 }
@@ -290,18 +290,18 @@ namespace Moviment3D
                         }
                     }
                 }
-                public static RaycastHit Endevant(Transform transform) => Fisiques.Raig(Alçada(transform), transform.forward, 1, capaEntorn);
+                public static RaycastHit Endevant(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.forward, 1, capaEntorn);
                 //internal static RaycastHit TerraDevant(Transform transform) => Fisiques.Raig(Alçada(transform) + transform.forward, -transform.up, 2f, capaEntorn);
-                public static RaycastHit CantonadaForat(Transform transform) => Fisiques.Raig(Alçada(transform) + transform.forward - transform.up * 1.5f, -transform.forward, 1, capaEntorn);
+                public static RaycastHit CantonadaForat(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.forward - transform.up * 1.5f, -transform.forward, 1, capaEntorn);
                 
-                static RaycastHit AlsPeus(Transform transform) => Fisiques.Raig(Alçada(transform), -transform.up, 1.2f, capaEntorn);
-                static RaycastHit DiagonalDreta(Transform transform) => Fisiques.Raig(Alçada(transform), (transform.forward + transform.right).normalized, 1, capaEntorn);
-                static RaycastHit DiagonalEsquerra(Transform transform) => Fisiques.Raig(Alçada(transform), (transform.forward - transform.right).normalized, 1, capaEntorn);
-                static RaycastHit Dreta(Transform transform) => Fisiques.Raig(Alçada(transform), transform.right, 1, capaEntorn);
-                static RaycastHit Esquerra(Transform transform) => Fisiques.Raig(Alçada(transform), -transform.right, 1, capaEntorn);
-                static RaycastHit DiagonalAmunt(Transform transform) => Fisiques.Raig(Alçada(transform), (transform.forward + transform.up).normalized, 1.45f, capaEntorn);
-                static RaycastHit Amunt(Transform transform) => Fisiques.Raig(Alçada(transform), transform.up, 1.45f, capaEntorn);
-                static RaycastHit DavantDelsPeus(Transform transform) => Fisiques.Raig(Alçada(transform) + transform.forward, -transform.up, 1.5f, capaEntorn);
+                static RaycastHit AlsPeus(Transform transform) => XS_Physics.RayDebug(Alçada(transform), -transform.up, 1.2f, capaEntorn);
+                static RaycastHit DiagonalDreta(Transform transform) => XS_Physics.RayDebug(Alçada(transform), (transform.forward + transform.right).normalized, 1, capaEntorn);
+                static RaycastHit DiagonalEsquerra(Transform transform) => XS_Physics.RayDebug(Alçada(transform), (transform.forward - transform.right).normalized, 1, capaEntorn);
+                static RaycastHit Dreta(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.right, 1, capaEntorn);
+                static RaycastHit Esquerra(Transform transform) => XS_Physics.RayDebug(Alçada(transform), -transform.right, 1, capaEntorn);
+                static RaycastHit DiagonalAmunt(Transform transform) => XS_Physics.RayDebug(Alçada(transform), (transform.forward + transform.up).normalized, 1.45f, capaEntorn);
+                static RaycastHit Amunt(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.up, 1.45f, capaEntorn);
+                static RaycastHit DavantDelsPeus(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.forward, -transform.up, 1.5f, capaEntorn);
                 static Vector3 Alçada(Transform transform) => transform.position + transform.up * 0.75f;
 
             }
@@ -315,10 +315,10 @@ namespace Moviment3D
 
                 public static RaycastHit Hit(Transform transform)
                 {
-                    if (Devant(transform).Impactat()) return Devant(transform);
-                    else if (Derrera(transform).Impactat()) return Derrera(transform);
-                    else if (Dreta(transform).Impactat()) return Dreta(transform);
-                    else if (Esquerra(transform).Impactat()) return Esquerra(transform);
+                    if (Devant(transform).Hitted()) return Devant(transform);
+                    else if (Derrera(transform).Hitted()) return Derrera(transform);
+                    else if (Dreta(transform).Hitted()) return Dreta(transform);
+                    else if (Esquerra(transform).Hitted()) return Esquerra(transform);
                     else return Centre(transform);
                 }
                 /*public static RaycastHit AmbEsfera(Transform transform)
@@ -337,7 +337,7 @@ namespace Moviment3D
                 }*/
                 public static Vector3 InclinacioForward(Transform transform)
                 {
-                    if (Hit(transform).Impactat())
+                    if (Hit(transform).Hitted())
                         return Vector3.Cross(transform.right, Hit(transform).normal).normalized;
                     else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
@@ -345,20 +345,20 @@ namespace Moviment3D
                 {
 
                     relliscar = true;
-                    if (Centre(transform).Impactat() && !Centre(transform).normal.Relliscar()) relliscar = false;
-                    else if (Devant(transform).Impactat() && !Devant(transform).normal.Relliscar()) relliscar = false;
-                    else if (Derrera(transform).Impactat() && !Derrera(transform).normal.Relliscar()) relliscar = false;
-                    else if (Dreta(transform).Impactat() && !Dreta(transform).normal.Relliscar()) relliscar = false;
-                    else if (Esquerra(transform).Impactat() && !Esquerra(transform).normal.Relliscar()) relliscar = false;
-                    else if (!Hit(transform).Impactat()) relliscar = false;
+                    if (Centre(transform).Hitted() && !Centre(transform).normal.Relliscar()) relliscar = false;
+                    else if (Devant(transform).Hitted() && !Devant(transform).normal.Relliscar()) relliscar = false;
+                    else if (Derrera(transform).Hitted() && !Derrera(transform).normal.Relliscar()) relliscar = false;
+                    else if (Dreta(transform).Hitted() && !Dreta(transform).normal.Relliscar()) relliscar = false;
+                    else if (Esquerra(transform).Hitted() && !Esquerra(transform).normal.Relliscar()) relliscar = false;
+                    else if (!Hit(transform).Hitted()) relliscar = false;
                     return relliscar;
                     //return Physics.CheckSphere(transform.position + transform.up * 0.3f, .4f, capaEntorn);
                 }
                 public static bool HiHaEsglao(Transform transform, float altura = 0.5f)
                 {
                     //Amb inclinacio
-                    return Fisiques.Raig(transform.position + transform.up * 0.1f, InclinacioForward(transform), 0.5f, capaEntorn).Impactat()
-                        && !Fisiques.Raig(transform.position + transform.up * (0.1f + altura), InclinacioForward(transform), 1.5f, capaEntorn).Impactat();
+                    return XS_Physics.RayDebug(transform.position + transform.up * 0.1f, InclinacioForward(transform), 0.5f, capaEntorn).Hitted()
+                        && !XS_Physics.RayDebug(transform.position + transform.up * (0.1f + altura), InclinacioForward(transform), 1.5f, capaEntorn).Hitted();
 
                     //Sense inlinacio
                     //return Fisiques.Raig(transform.position + transform.up * 0.1f, transform.forward, 0.5f, capaEntorn).Impactat()
@@ -367,16 +367,16 @@ namespace Moviment3D
 
                 public static bool NoTerra(Transform transform)
                 {
-                    return !Entorn.Buscar.Terra.Hit(transform).Impactat() &&
+                    return !Entorn.Buscar.Terra.Hit(transform).Hitted() &&
                         !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
                         Preparacio.Preparat;
                 }
 
-                static RaycastHit Devant(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
-                static RaycastHit Derrera(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
-                static RaycastHit Dreta(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
-                static RaycastHit Esquerra(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
-                static RaycastHit Centre(Transform transform) => Fisiques.RaigEsfera(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
+                static RaycastHit Devant(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
+                static RaycastHit Derrera(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
+                static RaycastHit Dreta(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
+                static RaycastHit Esquerra(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
+                static RaycastHit Centre(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
 
 
             }
@@ -389,7 +389,7 @@ namespace Moviment3D
         /// </summary>
         public static class Camera
         {
-            public static float DistanciaDesdeTerra(Transform transform) => Fisiques.RaigDistancia(transform.position + Vector3.up, Vector3.down, 7, capaEntorn) - 1;
+            public static float DistanciaDesdeTerra(Transform transform) => XS_Physics.RayDistance(transform.position + Vector3.up, Vector3.down, 7, capaEntorn) - 1;
 
         }
 

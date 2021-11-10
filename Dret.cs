@@ -77,16 +77,16 @@ namespace Moviment3D
             if (Inputs.MovimentZero)
             {
                 Animacio.MovimentY(0);
-                if (Entorn.Buscar.Dret.CantonadaForat(transform).Impactat()) 
+                if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted()) 
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
-                if (Entorn.Buscar.Dret.Endevant(transform).Impactat())
+                if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
                     ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
 
             }
             else
             {
                 Animacio.MovimentY(velocitatActual.magnitude / velocitat);
-                apretar = Entorn.Buscar.Dret.Endevant(transform).Impactat();
+                apretar = Entorn.Buscar.Dret.Endevant(transform).Hitted();
 
                 ui.forat.Amagar();
                 ui.paret.Amagar();

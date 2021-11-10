@@ -88,7 +88,7 @@ namespace Moviment3D
 
         static bool Aire(Transform transform)
         {
-            return !Entorn.Buscar.Terra.Hit(transform).Impactat() &&
+            return !Entorn.Buscar.Terra.Hit(transform).Hitted() &&
              !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
                Preparacio.Preparat;
         }

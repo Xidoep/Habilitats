@@ -26,7 +26,7 @@ namespace Moviment3D
         
         public void Actualitzar(float temps, bool forçat)
         {
-            if (!Vector3.Distance(point, hit.point).EstaProxim(0, 0.1f))
+            if (!Vector3.Distance(point, hit.point).IsNear(0, 0.1f))
             {
                 point = Vector3.Lerp(point, hit.point, !forçat ? temps : 1);
                 normal = Vector3.Lerp(normal, hit.normal, !forçat ? temps : 1);
@@ -96,9 +96,9 @@ namespace Moviment3D
 
         static RaycastHit Raig(Vector2 moviment, Vector3 vertical, Vector3 horitzontal, Vector3 offsetVertical)
         {
-            if(Fisiques.RaigEsfera(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical, horitzontal), 2f, capaEntorn, 0.1f).Impactat())
-                return Fisiques.RaigEsfera(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical, horitzontal), 2.5f, capaEntorn, 0.1f);
-            else return Fisiques.RaigEsfera(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical * 1.5f, horitzontal * 1.5f), 3f, capaEntorn, 0.4f);
+            if(XS_Physics.RaySphereDebug(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical, horitzontal), 2f, capaEntorn, 0.1f).Hitted())
+                return XS_Physics.RaySphereDebug(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical, horitzontal), 2.5f, capaEntorn, 0.1f);
+            else return XS_Physics.RaySphereDebug(RaigOrigen(moviment, vertical, horitzontal, offsetVertical), RaigDireccio(vertical * 1.5f, horitzontal * 1.5f), 3f, capaEntorn, 0.4f);
         }
         static Vector3 oInici(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Origen(origen) + Moviment(moviment * 0.5f) - transform.forward * 0.50f;
         static Vector3 oFinal(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Origen(origen) + Moviment(moviment * 0.5f) + transform.forward * 0.50f;
@@ -112,12 +112,12 @@ namespace Moviment3D
             RaycastHit hit = new RaycastHit();
             while(actual < max && !impactat)
             {
-                hit = Fisiques.Raig(
+                hit = XS_Physics.RayDebug(
                     Vector3.Lerp(oInici(transform, (direccio), origen, moviment), oFinal(transform, (direccio), origen, moviment), actual / (float)max),
                     Vector3.Lerp(dInici(transform, (direccio), origen, moviment), dFinal(transform, (direccio), origen, moviment), actual / (float)max), 
                     0.5f + (actual / (float)max) * 1.5f, 
                     capaEntorn);
-                impactat = hit.Impactat();
+                impactat = hit.Hitted();
                 if (!impactat)
                     actual++;
             }
@@ -134,12 +134,12 @@ namespace Moviment3D
                 while (actual < max && !impactat)
                 {
                     //(transform.right + (transform.up * 0.50f)).normalized
-                    hit = Fisiques.Raig(
+                    hit = XS_Physics.RayDebug(
                         Vector3.Lerp(oInici(transform, transform.up, origen, moviment), oFinal(transform, transform.up, origen, moviment), actual / (float)max),
                         Vector3.Lerp(dInici(transform, transform.up, origen, moviment), dFinal(transform, transform.up, origen, moviment), actual / (float)max),
                         0.5f + (actual / (float)max) * 1.5f,
                         capaEntorn);
-                    impactat = hit.Impactat();
+                    impactat = hit.Hitted();
                     if (!impactat)
                         actual++;
                 }
@@ -155,12 +155,12 @@ namespace Moviment3D
                     hit = new RaycastHit();
                     while (actual < max && !impactat)
                     {
-                        hit = Fisiques.Raig(
+                        hit = XS_Physics.RayDebug(
                             Vector3.Lerp(oInici(transform, direccioRI, origen, moviment), oFinal(transform, direccioRI, origen, moviment), actual / (float)max),
                             Vector3.Lerp(dInici(transform, direccioRI, origen, moviment), dFinal(transform, direccioRI, origen, moviment), actual / (float)max),
                             0.5f + (actual / (float)max) * 1.5f,
                             capaEntorn);
-                        impactat = hit.Impactat();
+                        impactat = hit.Hitted();
                         if (!impactat)
                             actual++;
                     }
