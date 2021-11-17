@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Animations.Rigging;
 using UnityEngine;
 using XS_Utils;
 
@@ -19,12 +20,20 @@ namespace Moviment3D
         [SerializeField] int velocitat;
         [SerializeField] bool reenganxat = false;
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
+        [SerializeField] LayerMask capaEntorn;
+        [SerializeField] Rig rig;
+        [SerializeField] Transform ikMaDreta;
+        [SerializeField] Transform ikMaEsquerra;
+        [SerializeField] Transform ikPeuDreta;
+        [SerializeField] Transform ikMPeuEsquerra;
 
         Rigidbody otherRigidbody;
         ConfigurableJoint joint;
 
         bool inputSaltarFlanc;
-        
+
+        bool Pla => helper.forward.Pla();
+        bool pla;
 
         public override string ToString() => "Escalar!";
 
@@ -43,12 +52,14 @@ namespace Moviment3D
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
 
-            Animacio.Pla(helper.forward.Pla());
+            pla = Pla;
+            Animacio.Pla(Pla);
             Animacio.Escalar();
             Animacio.Moviment(Vector2.zero);
             Animacio.MovimentY(0);
 
-            IKs.Capturar(Vector2.zero);
+            IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
+            if (!Pla) IKs.Capturar(Vector2.zero);
         }
 
         internal override void EnSortir()
@@ -76,14 +87,34 @@ namespace Moviment3D
 
             Debug.DrawRay(helper.position, helper.up, Color.green);
             Debug.DrawRay(helper.position, helper.right, Color.red);
-            Animacio.Pla(helper.forward.Pla());
+            Animacio.Pla(Pla);
+
+            IKs.Debug();
         }
 
         void Desplacar()
         {
-            temps += Time.deltaTime * velocitat * (1 - Mathf.Clamp01(Vector3.Dot(helper.forward, Vector3.down)));
+            temps += Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down),0,.5f));
             transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition, temps);
-            if (!helper.forward.Pla()) transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
+
+            if (Pla)
+            {
+                if (!pla)
+                {
+                    pla = true;
+                    IKs.Apagar();
+                }
+            }
+            else
+            {
+                if (pla)
+                {
+                    pla = false;
+                    IKs.Capturar(Vector2.zero);
+                }
+                transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
+                Resistencia.Actual -= 1 * Time.deltaTime;
+            }
 
             if (temps > 1)
             {
@@ -101,7 +132,6 @@ namespace Moviment3D
                 IKs.Actualitzar(temps);
             } 
 
-            if (!helper.forward.Pla()) Resistencia.Actual -= 1 * Time.deltaTime;
         }
         void Quiet()
         {
@@ -113,7 +143,7 @@ namespace Moviment3D
                     Inputs.SaltEscalantPreparat = true;
                 }
 
-                if (helper.forward.Pla()) transform.Orientar(10);
+                if (Pla) transform.Orientar(2);
 
                 if (Inputs.Deixar)
                 {
@@ -127,7 +157,7 @@ namespace Moviment3D
 
             if(!Inputs.Saltar)
             {
-                if (!helper.forward.Pla())
+                if (!Pla)
                 {
                     helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
                     transform.rotation = Quaternion.LookRotation(-helper.forward);
@@ -139,18 +169,18 @@ namespace Moviment3D
                 }
             }
 
-            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, helper.forward.Pla(), Inputs.Moviment).Hitted())
+            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, Pla, Inputs.Moviment).Hitted())
             {
-                
+                PosicionarHelper(Entorn.Escalant.Moviment(helper, Pla, Inputs.Moviment));
 
-                PosicionarHelper(Entorn.Escalant.Moviment(helper, helper.forward.Pla(), Inputs.Moviment));
-                if (helper.forward.Pla()) transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
-                else IKs.Capturar(Inputs.Moviment * 0.5f);
+                if (Pla) transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
+                else IKs.Capturar(Inputs.Moviment * 0.15f);
+
                 temps = 0;
                 enPosicio = false;
 
                 Animacio.EnMoviment(true);
-                if (helper.forward.Pla())
+                if (Pla)
                 {
                     Animacio.MovimentY(1);
                 }
@@ -193,7 +223,7 @@ namespace Moviment3D
             rotacioInicial = transform.rotation;
 
             helper.forward = hit.normal;
-            helper.position = hit.point + (!helper.forward.Pla() ? hit.normal * 0.4f : Vector3.zero);
+            helper.position = hit.point + (!Pla ? hit.normal * 0.4f : Vector3.zero);
             Entorn.HitNormal(ref hit, helper);
             helper.forward = hit.normal;
         }

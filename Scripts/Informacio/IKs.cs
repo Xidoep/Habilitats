@@ -102,8 +102,9 @@ namespace Moviment3D
         }
         static Vector3 oInici(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Origen(origen) + Moviment(moviment * 0.5f) - transform.forward * 0.50f;
         static Vector3 oFinal(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Origen(origen) + Moviment(moviment * 0.5f) + transform.forward * 0.50f;
-        static Vector3 dInici(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => ( direccio * 0.50f) + transform.forward * 0.25f;
+        static Vector3 dInici(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => ( direccio * 0.50f) - transform.forward * 0.25f;
         static Vector3 dFinal(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => (-direccio * 1.00f) + transform.forward * 0.25f;
+        /*
         static RaycastHit RaigCorva(Transform transform, Vector3 direccio, Vector3 direccioRI, Vector2 origen, Vector2 moviment)
         {
             int max = 10;
@@ -176,64 +177,96 @@ namespace Moviment3D
                 }
                
             }
-            /*for (int i = 0; i < max; i++)
-            {
-                Fisiques.Raig(OrigenLerp(transform, direccio, origen, moviment, i/(float)max), DireccioLerp(transform, direccio, origen, moviment, i / (float)max), 0.5f + (i / (float)max) * 1.5f, capaEntorn);
-            }*/
-            
-            /*static RaycastHit Raig1(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => 
-                Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) - transform.forward * 0.25f - direccio * 0.25f,    (direccio - transform.forward * 0.45f).normalized,                                   0.6f, capaEntorn, 2);
-            static RaycastHit Raig2(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => 
-                Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) - transform.forward * 0.5f + direccio * 0.25f,     (direccio + transform.forward).normalized,                                           0.7f, capaEntorn, 2);
-            static RaycastHit Raig3(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => 
-                Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + direccio * 0.75f,                                (-direccio * 0.75f + transform.forward).normalized,                                  0.7f, capaEntorn, 2);
-            static RaycastHit Raig33(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) =>Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + direccio * 0.75f,                                (-direccio * 0.5f + transform.forward).normalized,                                   0.7f, capaEntorn, 2);
-            static RaycastHit Raig36(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) =>Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + direccio * 0.75f,                                (-direccio * 0.25f + transform.forward).normalized,                                  0.7f, capaEntorn, 2);
-            static RaycastHit Raig38(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) =>Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + direccio * 0.75f,                                (-direccio * 0.0f + transform.forward).normalized,                                  0.7f, capaEntorn, 2);
-            static RaycastHit Raig39(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) =>Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + direccio * 0.75f,                                (direccio * 0.25f + transform.forward).normalized,                                  0.7f, capaEntorn, 2);
-            static RaycastHit Raig4(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Fisiques.Raig(Origen(origen) + Moviment(Inputs.Moviment * 0.5f) + transform.forward * 0.5f + direccio * 0.75f,     (-direccio + transform.forward * 0.1f + (transform.right * -direccio.x * 2)).normalized, 1.5f, capaEntorn, 2);
-            if (Raig1(transform, direccio, origen, moviment).Impactat()) return Raig1(transform, direccio, origen, moviment);
-            else
-            {
-                if (Raig2(transform, direccio, origen, moviment).Impactat()) return Raig2(transform, direccio, origen, moviment);
-                else
-                {
-                    if (Raig3(transform, direccio, origen, moviment).Impactat()) return Raig3(transform, direccio, origen, moviment);
-                    else
-                    {
-                        if (Raig33(transform, direccio, origen, moviment).Impactat()) return Raig33(transform, direccio, origen, moviment);
-                        else 
-                        {
-                            if (Raig36(transform, direccio, origen, moviment).Impactat()) return Raig36(transform, direccio, origen, moviment);
-                            else
-                            {
-                                if (Raig38(transform, direccio, origen, moviment).Impactat()) return Raig38(transform, direccio, origen, moviment);
-                                else
-                                {
-                                    if (Raig39(transform, direccio, origen, moviment).Impactat()) return Raig39(transform, direccio, origen, moviment);
-                                    else
-                                    {
-                                        if (Raig4(transform, direccio, origen, moviment).Impactat()) return Raig4(transform, direccio, origen, moviment);
-                                        else
-                                        {
-                                            Debugar.Log("hola?");
-                                            new RaycastHit();
-                                        }
-                                    }
-                                }
-                            }
-                        } 
-                    }
-                }
-            }*/
+
+
             return new RaycastHit();
         }
-        
-        static Vector3 Origen(Vector2 origen) => transform.position + (transform.right * origen.x) + (transform.up * origen.y);
-        static Vector3 Moviment(Vector2 moviment) => (transform.right * (moviment.x * 1.5f)) + (transform.up * (moviment.y * 1.7f));
+        */
+        static RaycastHit RaigCorva(Transform transform, Vector3 direccio, Vector3 direccioRI, Vector2 origen, Vector2 moviment)
+        {
+            int max = 10;
+            int actual = 0;
+            bool impactat = false;
+            RaycastHit hit = new RaycastHit();
+            while (actual < max && !impactat)
+            {
+                hit = XS_Physics.RayDebug(
+                    Vector3.Lerp(oInici(transform, (direccio), origen, moviment), oFinal(transform, (direccio), origen, moviment), actual / (float)max),
+                    Vector3.Lerp(dInici(transform, (direccio), origen, moviment), dFinal(transform, (direccio), origen, moviment), actual / (float)max),
+                    0.5f + (actual / (float)max) * 1.5f,
+                    capaEntorn);
+                impactat = hit.Hitted();
+                if (!impactat)
+                    actual++;
+            }
+            if (impactat)
+            {
+                return hit;
+            }
+            else
+            {
+                max = 10;
+                actual = 0;
+                impactat = false;
+                hit = new RaycastHit();
+                while (actual < max && !impactat)
+                {
+                    //(transform.right + (transform.up * 0.50f)).normalized
+                    hit = XS_Physics.RayDebug(
+                        Vector3.Lerp(oInici(transform, transform.up, origen, moviment), oFinal(transform, transform.up, origen, moviment), actual / (float)max),
+                        Vector3.Lerp(dInici(transform, transform.up, origen, moviment), dFinal(transform, transform.up, origen, moviment), actual / (float)max),
+                        0.5f + (actual / (float)max) * 1.5f,
+                        capaEntorn);
+                    impactat = hit.Hitted();
+                    if (!impactat)
+                        actual++;
+                }
+                if (impactat)
+                {
+                    return hit;
+                }
+                else
+                {
+                    max = 10;
+                    actual = 0;
+                    impactat = false;
+                    hit = new RaycastHit();
+                    while (actual < max && !impactat)
+                    {
+                        hit = XS_Physics.RayDebug(
+                            Vector3.Lerp(oInici(transform, direccioRI, origen, moviment), oFinal(transform, direccioRI, origen, moviment), actual / (float)max),
+                            Vector3.Lerp(dInici(transform, direccioRI, origen, moviment), dFinal(transform, direccioRI, origen, moviment), actual / (float)max),
+                            0.5f + (actual / (float)max) * 1.5f,
+                            capaEntorn);
+                        impactat = hit.Hitted();
+                        if (!impactat)
+                            actual++;
+                    }
+                    if (impactat)
+                    {
+                        return hit;
+                    }
+                    else
+                    {
+                        //Debugar.Log("hola?");
+                        return new RaycastHit();
+                    }
+                }
 
-        static Vector3 RaigOrigen(Vector2 moviment, Vector3 vertical, Vector3 horitzontal, Vector3 offsetVertical) => transform.position + (transform.up * (moviment.y * 1.9f) + transform.right * (moviment.x * 1.9f)) - transform.forward * 0.5f + vertical + offsetVertical + horitzontal;
-        static Vector3 RaigDireccio(Vector3 vertical, Vector3 horitzontal) => (transform.forward * 2 - vertical - horitzontal).normalized * 2;
+            }
+
+
+            return new RaycastHit();
+        }
+        //static Vector3 Origen(Vector2 origen) => transform.position + (transform.right * origen.x) + (transform.up * origen.y);
+        static Vector3 Origen(Vector2 origen) => transform.position - (transform.right * origen.x) + (transform.up * origen.y);
+        //static Vector3 Moviment(Vector2 moviment) => (transform.right * (moviment.x * 1.5f)) + (transform.up * (moviment.y * 1.7f));
+        static Vector3 Moviment(Vector2 moviment) => -(transform.right * (moviment.x * 1.5f)) + (transform.up * (moviment.y * 1.7f));
+
+        //static Vector3 RaigOrigen(Vector2 moviment, Vector3 vertical, Vector3 horitzontal, Vector3 offsetVertical) => transform.position + (transform.up * (moviment.y * 1.9f) + transform.right * (moviment.x * 1.9f)) - transform.forward * 0.5f + vertical + offsetVertical + horitzontal;
+        static Vector3 RaigOrigen(Vector2 moviment, Vector3 vertical, Vector3 horitzontal, Vector3 offsetVertical) => transform.position + (transform.up * (moviment.y * 1.9f) - transform.right * (moviment.x * 1.9f)) + transform.forward * 0.5f + vertical + offsetVertical + horitzontal;
+        //static Vector3 RaigDireccio(Vector3 vertical, Vector3 horitzontal) => (transform.forward * 2 - vertical - horitzontal).normalized * 2;
+        static Vector3 RaigDireccio(Vector3 vertical, Vector3 horitzontal) => (-transform.forward * 2 - vertical - horitzontal).normalized * 2;
 
         public static void Capturar(Vector2 offset)
         {
@@ -256,10 +289,10 @@ namespace Moviment3D
             }
             else
             {
-                maD.hit = RaigMaDreta(Vector2.up);
-                maE.hit = RaigMaEsquerra(Vector2.up);
-                peuE.hit = RaigPeuEsquerra(Vector2.up);
-                peuD.hit = RaigPeuDret(Vector2.up);
+                maD.hit = RaigMaDreta(Vector2.zero);
+                maE.hit = RaigMaEsquerra(Vector2.zero);
+                peuE.hit = RaigPeuEsquerra(Vector2.zero);
+                peuD.hit = RaigPeuDret(Vector2.zero);
                 forçat = true;
                 entrar = true;
             }
@@ -268,12 +301,18 @@ namespace Moviment3D
 
 
 
-
+        /*
         static RaycastHit RaigMaDreta(Vector2 offset) => RaigCorva(transform, (transform.right + (transform.up * 0.50f)).normalized, (-transform.right + (transform.up * 0.50f)).normalized, new Vector2(0.2f, 1.25f), offset);
         static RaycastHit RaigMaEsquerra(Vector2 offset) => RaigCorva(transform, (-transform.right + (transform.up * 0.50f)).normalized, (transform.right + (transform.up * 0.50f)).normalized, new Vector2(-0.2f, 1.25f), offset);
         static RaycastHit RaigPeuDret(Vector2 offset) => RaigCorva(transform, (transform.right - transform.up).normalized, (-transform.right - transform.up).normalized, new Vector2(0.1f, 0.55f), offset);
         static RaycastHit RaigPeuEsquerra(Vector2 offset) => RaigCorva(transform, (-transform.right - transform.up).normalized, (transform.right - transform.up).normalized, new Vector2(-0.1f, 0.55f), offset);
-
+       */
+        
+        static RaycastHit RaigMaDreta(Vector2 offset) => RaigCorva(transform, (-transform.right + (transform.up * 0.50f)).normalized, (transform.right + (transform.up * 0.50f)).normalized, new Vector2(0.2f, 1.25f), offset);
+        static RaycastHit RaigMaEsquerra(Vector2 offset) => RaigCorva(transform, (transform.right + (transform.up * 0.50f)).normalized, (-transform.right + (transform.up * 0.50f)).normalized, new Vector2(-0.2f, 1.25f), offset);
+        static RaycastHit RaigPeuDret(Vector2 offset) => RaigCorva(transform, (-transform.right - transform.up).normalized, (transform.right - transform.up).normalized, new Vector2(0.1f, 0.55f), offset);
+        static RaycastHit RaigPeuEsquerra(Vector2 offset) => RaigCorva(transform, (transform.right - transform.up).normalized, (-transform.right - transform.up).normalized, new Vector2(-0.1f, 0.55f), offset);
+       
 
         /*static RaycastHit RaigMaDreta(Vector2 offset) => Raig(offset, transform.up * 1.25f, transform.right * 0.5f, transform.up * 0.5f);
         static RaycastHit RaigMaEsquerra(Vector2 offset) => Raig(offset, transform.up * 1.25f, -transform.right * 0.5f, transform.up * 0.5f);

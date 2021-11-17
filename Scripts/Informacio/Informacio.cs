@@ -34,12 +34,12 @@ namespace Moviment3D
             Entorn.Iniciar(capaEntorn);
             Animacio.Iniciar(transform);
             Resistencia.testing = testing;
-            IKs.Iniciar(transform, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
+            //IKs.Iniciar(transform, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
         }
 
         private void Update()
         {
-            IKs.Debug();
+            //IKs.Debug();
         }
 
 

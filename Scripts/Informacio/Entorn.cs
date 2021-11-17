@@ -21,7 +21,7 @@ namespace Moviment3D
 
 
 
-        static float distMovEscalar => 0.5f;
+        static float distMovEscalar => 0.4f;
         static float distBuscarTerra => 0.9f;
 
         static List<Vector3> normals = new List<Vector3>();
