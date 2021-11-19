@@ -43,7 +43,10 @@ namespace Moviment3D
 
             Resistencia.Saltar();
 
-            Animacio.Saltar();
+            Animacio.SaltAjupid();
+            //Animacio.SaltPreparat(false);
+
+            //sAnimacio.Saltar();
         }
 
         private void SaltSeguintLaParet()

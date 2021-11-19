@@ -7,7 +7,7 @@ namespace Moviment3D
     {
         const string dret = "Dret";
         const string pla = "Pla";
-        const string saltar = "Saltar";
+        const string saltar = "Salt";
         const string caure = "Caure";
         const string escalar = "Escalar";
         const string relliscar = "Relliscar";
@@ -15,6 +15,8 @@ namespace Moviment3D
         const string moviment = "Moviment";
         const string movimentX = "MovimentX";
         const string movimentY = "MovimentY";
+        const string saltPreparat = "SaltPreparat";
+        const string saltSjupit = "SaltAjupit";
 
         static bool aireFlanc;
 
@@ -84,6 +86,16 @@ namespace Moviment3D
         {
             Bool(pla, _pla);
         }
+        public static void SaltPreparat(bool _saltPreparat)
+        {
+            Bool(saltPreparat, _saltPreparat);
+        }
+        public static void SaltAjupid()
+        {
+            Tigger(saltSjupit);
+        }
+
+
 
 
         static bool Aire(Transform transform)

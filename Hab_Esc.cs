@@ -57,6 +57,7 @@ namespace Moviment3D
             Animacio.Escalar();
             Animacio.Moviment(Vector2.zero);
             Animacio.MovimentY(0);
+            Animacio.SaltPreparat(false);
 
             IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             if (!Pla) IKs.Capturar(Vector2.zero);
@@ -141,14 +142,16 @@ namespace Moviment3D
                 {
                     inputSaltarFlanc = true;
                     Inputs.SaltEscalantPreparat = true;
+                    Animacio.SaltPreparat(true);
                 }
 
-                if (Pla) transform.Orientar(2);
+                if (Pla) transform.Orientar(10);
 
                 if (Inputs.Deixar)
                 {
                     inputSaltarFlanc = false;
                     Inputs.SaltEscalantPreparat = false;
+                    Animacio.SaltPreparat(false);
                 }
             }
 
@@ -166,6 +169,7 @@ namespace Moviment3D
                 else
                 {
                     transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+                    IKs.Apagar();
                 }
             }
 
@@ -173,27 +177,30 @@ namespace Moviment3D
             {
                 PosicionarHelper(Entorn.Escalant.Moviment(helper, Pla, Inputs.Moviment));
 
-                if (Pla) transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
-                else IKs.Capturar(Inputs.Moviment * 0.15f);
-
-                temps = 0;
-                enPosicio = false;
-
                 Animacio.EnMoviment(true);
                 if (Pla)
                 {
+                    transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
                     Animacio.MovimentY(1);
                 }
                 else
                 {
                     Animacio.Moviment(Inputs.Moviment);
+                    IKs.Capturar(Inputs.Moviment * 0.15f);
                 }
+
+
+                temps = 0;
+                enPosicio = false;
+
 
             }
 
             if (!Inputs.Saltar && inputSaltarFlanc)
             {
+                Debug.Log("Saltar!");
                 inputSaltarFlanc = false;
+
             }
 
             

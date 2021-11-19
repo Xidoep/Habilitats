@@ -92,7 +92,8 @@ namespace Moviment3D
                 ui.paret.Amagar();
             }
 
-            Animacio.NoTerra(transform);
+            if(!Inputs.Saltar)
+                Animacio.NoTerra(transform);
         }
         internal override void EnFixedUpdate()
         { 

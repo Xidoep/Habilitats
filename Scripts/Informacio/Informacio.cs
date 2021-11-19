@@ -105,10 +105,13 @@ namespace Moviment3D
         public void C_Salt(Estat.Condicio condicio) 
         { 
             if (Inputs.Saltar && 
-                Resistencia.Actual > 0.1f && 
-                Preparacio.Preparat) 
-                
+                Resistencia.Actual > 0.1f &&
+                Preparacio.Preparat)
+            {
+                //Animacio.Saltar();
                 Estat.Sortida(condicio); 
+            }
+                
         }
         public void C_SaltarEscalant(Estat.Condicio condicio) 
         { 
