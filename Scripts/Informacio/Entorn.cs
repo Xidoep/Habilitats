@@ -67,7 +67,6 @@ namespace Moviment3D
                 {
                     Debugar.Log("BLoquejat");
                     hit = Buscar.Bloquejat(helper, pla, moviment); //Mur davant d'on vol anar
-                    //HitNormal(ref hit, helper);
                 } 
                 else
                 {
@@ -81,7 +80,6 @@ namespace Moviment3D
                                 {
                                     Debugar.Log("Sostre");
                                     hit = Buscar.Sostre(helper, pla, moviment); //Si mes amunt hi torves un sostre
-                                    //HitNormal(ref hit, helper);
                                 }
                                 else
                                 {
@@ -89,13 +87,11 @@ namespace Moviment3D
                                     {
                                         Debugar.Log("Cantonada plana mes amunt");
                                         hit = Buscar.CantonadaPlanaAmunt(helper); //Si torves una cantonada plana
-                                        //HitNormal(ref hit, helper);
                                     }
                                     else 
                                     {
                                         Debugar.Log("Recta, no pla i amunt");
                                         hit = Buscar.Recta(helper, pla, moviment);
-                                        //HitNormal(ref hit, helper);
                                     } 
                                 }
                             }
@@ -103,14 +99,12 @@ namespace Moviment3D
                             {
                                 Debugar.Log("Recta no amunt");
                                 hit = Buscar.Recta(helper, pla, moviment);
-                                //HitNormal(ref hit, helper);
                             }
                         }
                         else
                         {
                             Debugar.Log("Recta i pla");
                             hit = Buscar.Recta(helper, pla, moviment);
-                            //HitNormal(ref hit, helper);
                         }
                     }
                     else
@@ -119,7 +113,6 @@ namespace Moviment3D
                         {
                             Debugar.Log("Cantonada");
                             hit = Buscar.Cantonada(helper, pla, moviment); //Busca cantonada
-                            //HitNormal(ref hit, helper);
                         } 
                     }
                 }

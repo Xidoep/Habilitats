@@ -39,7 +39,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            Inersia += Time.deltaTime * 0.5f;
+            Inersia += Time.deltaTime * 0.2f;
 
             if (Entorn.Buscar.Terra.Hit(transform).Hitted()) OrientarHelper(Entorn.Buscar.Terra.Hit(transform).normal);
 

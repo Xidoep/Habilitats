@@ -17,6 +17,7 @@ namespace Moviment3D
         const string movimentY = "MovimentY";
         const string saltPreparat = "SaltPreparat";
         const string saltSjupit = "SaltAjupit";
+        const string saltEscalant = "SaltEscalant";
 
         static bool aireFlanc;
 
@@ -94,7 +95,10 @@ namespace Moviment3D
         {
             Tigger(saltSjupit);
         }
-
+        public static void SaltEscalant()
+        {
+            Tigger(saltEscalant);
+        }
 
 
 

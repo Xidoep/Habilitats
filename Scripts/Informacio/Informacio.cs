@@ -24,9 +24,7 @@ namespace Moviment3D
         [SerializeField] Transform ikMPeuEsquerra;
 
         [SerializeField] bool testing;
-
-        [SerializeField] List<Vector3> frames;
-        [SerializeField] Vector3 velocitat;
+        public float debug;
 
         private void OnEnable()
         {
@@ -39,6 +37,7 @@ namespace Moviment3D
 
         private void Update()
         {
+            debug = Dinamic.Velocitat.magnitude;
             //IKs.Debug();
         }
 
@@ -98,9 +97,12 @@ namespace Moviment3D
             if (!Entorn.Buscar.Terra.Hit(transform).Hitted() && 
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
                 CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) && 
-                Preparacio.Preparat) 
-                
+                Preparacio.Preparat)
+            {
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio);
+            }
+                
         }
         public void C_Salt(Estat.Condicio condicio) 
         { 
@@ -130,9 +132,12 @@ namespace Moviment3D
         public void C_SaltarEscalantCaure(Estat.Condicio condicio) 
         {
             if (Preparacio.Preparat && 
-                CoyoteTime.Temps(Preparacio.Preparat, 0.5f)) 
-                
+                CoyoteTime.Temps(Preparacio.Preparat, 0.5f))
+            {
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio); 
+            }
+                
         }
         public void C_TornarAAgafarSiPot(Estat.Condicio condicio) 
         { 
@@ -161,24 +166,33 @@ namespace Moviment3D
         { 
             if (Entorn.Buscar.Terra.EsRelliscant(transform) && 
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f)) 
-                
+                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
+            {
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio); 
+            }
+                
         }
         public void C_RelliscarCoyoteTime(Estat.Condicio condicio) 
         { 
             if (Entorn.Buscar.Terra.EsRelliscant(transform) && 
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f)) 
-                
+                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f))
+            {
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio); 
+            }
+                
         }
         public void C_NoRelliscar(Estat.Condicio condicio)
         { 
             if (!Entorn.Buscar.Terra.EsRelliscant(transform) && 
-                CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f)) 
-                
+                CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f))
+            {
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio); 
+            }
+                
         }
         public void C_Esglao(Estat.Condicio condicio) 
         { 

@@ -43,10 +43,6 @@ namespace Moviment3D
 
             Resistencia.Saltar();
 
-            Animacio.SaltAjupid();
-            //Animacio.SaltPreparat(false);
-
-            //sAnimacio.Saltar();
         }
 
         private void SaltSeguintLaParet()
@@ -58,6 +54,9 @@ namespace Moviment3D
             rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
             Preparacio.Preparar = 0.5f;
             Inputs.SaltEscalantReenganxarse = true;
+
+            Animacio.Moviment(Inputs.Moviment);
+            Animacio.SaltEscalant();
         }
 
         private void SaltContraLaParet()
@@ -68,6 +67,8 @@ namespace Moviment3D
             transform.SetParent(null);
             rb.AddForce(DireccioContraParet, ForceMode.Impulse);
             transform.forward = -transform.forward;
+
+            Animacio.Saltar();
         }
 
         private void SaltAjupit()
@@ -76,6 +77,8 @@ namespace Moviment3D
 
             transform.SetParent(null);
             rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
+
+            Animacio.SaltAjupid();
         }
 
 
@@ -105,11 +108,11 @@ namespace Moviment3D
         {
             //Mirar la paret tot el ratu...
             //paretHit = Entorn.Buscar.Dret.Endevant(transform);
-            //paretHit = Fisiques.Raig(transform.position + transform.up * 1, transform.forward, Entorn.capaEntorn, 1);
-            /*if (paretHit.Impactat())
+            paretHit = XS_Physics.Ray(transform.position + transform.up * 1, transform.forward, Entorn.capaEntorn, 1);
+            if (paretHit.Hitted())
             {
                 transform.forward = -paretHit.normal;
-            }*/
+            }
         }
     }
 

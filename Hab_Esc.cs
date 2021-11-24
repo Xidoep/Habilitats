@@ -18,6 +18,7 @@ namespace Moviment3D
         bool enPosicio;
 
         [SerializeField] int velocitat;
+        int multiplicadorVelocitat = 1;
         [SerializeField] bool reenganxat = false;
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
         [SerializeField] LayerMask capaEntorn;
@@ -47,6 +48,7 @@ namespace Moviment3D
             Inputs.SaltEscalantPreparat = false;
             Inputs.SaltEscalantReenganxarse = false;
             temps = 0;
+            multiplicadorVelocitat = 2;
             inputSaltarFlanc = false;
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
@@ -86,8 +88,6 @@ namespace Moviment3D
             if (!enPosicio) Desplacar();
             else Quiet();
 
-            Debug.DrawRay(helper.position, helper.up, Color.green);
-            Debug.DrawRay(helper.position, helper.right, Color.red);
             Animacio.Pla(Pla);
 
             IKs.Debug();
@@ -95,7 +95,7 @@ namespace Moviment3D
 
         void Desplacar()
         {
-            temps += Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down),0,.5f));
+            temps += Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down),0,.5f)) * multiplicadorVelocitat ;
             transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition, temps);
 
             if (Pla)
@@ -122,15 +122,22 @@ namespace Moviment3D
                 enPosicio = true;
                 Inputs.SetHelperVectors = helper;
 
-                Animacio.EnMoviment(true);
+                Animacio.EnMoviment(false);
                 Animacio.Moviment(Vector2.zero);
-                Animacio.MovimentY(0);
+                //Animacio.MovimentY(0);
                 IKs.Actualitzar(1);
             }
             else 
             {
-                Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
-                IKs.Actualitzar(temps);
+                Animacio.EnMoviment(true);
+                if (Pla)
+                {
+                    Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
+                }
+                else
+                {
+                    IKs.Actualitzar(temps);
+                }
             } 
 
         }
@@ -145,7 +152,14 @@ namespace Moviment3D
                     Animacio.SaltPreparat(true);
                 }
 
-                if (Pla) transform.Orientar(10);
+                if (Pla) 
+                {
+                    transform.Orientar(10);
+                }
+                else
+                {
+                    Animacio.Moviment(Inputs.Moviment.normalized);
+                }
 
                 if (Inputs.Deixar)
                 {
@@ -191,6 +205,7 @@ namespace Moviment3D
 
 
                 temps = 0;
+                multiplicadorVelocitat = 1;
                 enPosicio = false;
 
 
@@ -198,9 +213,7 @@ namespace Moviment3D
 
             if (!Inputs.Saltar && inputSaltarFlanc)
             {
-                Debug.Log("Saltar!");
                 inputSaltarFlanc = false;
-
             }
 
             
@@ -219,9 +232,9 @@ namespace Moviment3D
                 joint.connectedBody = otherRigidbody;
             }
 
-            PosicionarHelper(hit);
+            PosicionarHelper(hit, -0.4f);
         }
-        void PosicionarHelper(RaycastHit hit)
+        void PosicionarHelper(RaycastHit hit, float offestVertical = 0)
         {
             helper.SetParent(hit.collider.transform);
             transform.SetParent(hit.collider.transform);
@@ -230,7 +243,7 @@ namespace Moviment3D
             rotacioInicial = transform.rotation;
 
             helper.forward = hit.normal;
-            helper.position = hit.point + (!Pla ? hit.normal * 0.4f : Vector3.zero);
+            helper.position = hit.point + (!Pla ? (hit.normal * 0.4f + helper.up * offestVertical) : Vector3.zero);
             Entorn.HitNormal(ref hit, helper);
             helper.forward = hit.normal;
         }

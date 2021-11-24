@@ -76,7 +76,7 @@ namespace Moviment3D
 
             if (Inputs.MovimentZero)
             {
-                Animacio.MovimentY(0);
+                //Animacio.MovimentY(0);
                 if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted()) 
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
                 if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
@@ -85,14 +85,16 @@ namespace Moviment3D
             }
             else
             {
-                Animacio.MovimentY(velocitatActual.magnitude / velocitat);
+                //Animacio.MovimentY(velocitatActual.magnitude / velocitat);
                 apretar = Entorn.Buscar.Dret.Endevant(transform).Hitted();
 
                 ui.forat.Amagar();
                 ui.paret.Amagar();
             }
-
-            if(!Inputs.Saltar)
+            Dinamic.ActualitzarSmooth(transform);
+            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            //Animacio.MovimentY(Dinamic.Velocitat.magnitude * 100);
+            if (!Inputs.Saltar)
                 Animacio.NoTerra(transform);
         }
         internal override void EnFixedUpdate()
@@ -105,6 +107,7 @@ namespace Moviment3D
             else
             {
                 transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+                velocitatActual = Vector3.zero;
             }
         }
 

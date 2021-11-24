@@ -35,6 +35,10 @@ namespace Moviment3D
             CoyoteTime.temps -= Time.deltaTime;
             return false;
         }
+        public static void Stop()
+        {
+            activat = false;
+        }
     }
 }
 
