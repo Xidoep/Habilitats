@@ -32,7 +32,13 @@ namespace Moviment3D
             Entorn.Iniciar(capaEntorn);
             Animacio.Iniciar(transform);
             Resistencia.testing = testing;
+            //IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             //IKs.Iniciar(transform, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            Debug.Log($"Colisio a {collision.relativeVelocity.magnitude}");
         }
 
         private void Update()

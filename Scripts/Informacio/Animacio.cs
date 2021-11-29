@@ -6,6 +6,7 @@ namespace Moviment3D
     public static class Animacio
     {
         const string dret = "Dret";
+        const string dreta = "Dreta";
         const string pla = "Pla";
         const string saltar = "Salt";
         const string caure = "Caure";
@@ -32,6 +33,10 @@ namespace Moviment3D
         public static void Dret()
         {
             Tigger(dret);
+        }
+        public static void Dreta(bool _dreta)
+        {
+            Bool(dreta, _dreta);
         }
         public static void Saltar()
         {

@@ -14,34 +14,104 @@ namespace Moviment3D
             this.offsetParet = offsetParet;
             this.ma = ma;
             this.dreta = dreta;
+            oldsCreated = false;
+            oldPoint = new GameObject("old" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
+            newPoint = new GameObject("new" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
+            /*oldPoint = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
+            newPoint = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
+            oldPoint.localScale = Vector3.one * 0.1f;
+            newPoint.localScale = Vector3.one * 0.1f;
+            oldPoint.name = "old" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E");
+            newPoint.name = "new" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E");
+        */
         }
-        public RaycastHit hit;
         public Transform ik;
+        RaycastHit hit;
         public Vector3 point;
         public Vector3 normal;
+
+        public Transform oldPoint;
+        public Transform newPoint;
+
 
         public float offsetParet;
         public bool ma;
         bool dreta;
-        
+        bool oldsCreated;
+        public bool moure;
+        public void Capturar(RaycastHit hit)
+        {
+            moure = true;
+            if (oldsCreated)
+            {
+            oldPoint.SetParent(newPoint.parent);
+            oldPoint.position = newPoint.position;
+            oldPoint.right = newPoint.right;
+
+            }
+
+            this.hit = hit;
+            newPoint.SetParent(hit.collider.transform);
+            newPoint.position = hit.point + hit.normal * offsetParet;
+            newPoint.right = hit.normal;
+
+            oldsCreated = true;
+        }
         public void Actualitzar(float temps, bool forçat)
         {
-            if (!Vector3.Distance(point, hit.point).IsNear(0, 0.1f))
+            /* if (!Vector3.Distance(point, hit.point).IsNear(0, 0.1f))
+             {
+                 point = Vector3.Lerp(point, hit.point, !forçat ? temps : 1);
+                 normal = Vector3.Lerp(normal, hit.normal, !forçat ? temps : 1);
+                 ik.position = point + hit.normal * offsetParet;
+                 ik.right = normal;
+                 if (ma)
+                 {
+                     ik.localRotation = Quaternion.Euler(ik.localEulerAngles + (Vector3.back * 90) + (Vector3.right * (dreta ? 35 : -35)));
+                 }
+             }
+            */
+            if (moure)
             {
-                point = Vector3.Lerp(point, hit.point, !forçat ? temps : 1);
-                normal = Vector3.Lerp(normal, hit.normal, !forçat ? temps : 1);
-                ik.position = point + hit.normal * offsetParet;
-                ik.right = normal;
-                if (ma)
+                if (!Vector3.Distance(ik.position, newPoint.position).IsNear(0, 0.1f))
                 {
-                    ik.localRotation = Quaternion.Euler(ik.localEulerAngles + (Vector3.back * 90) + (Vector3.right * (dreta ? 35 : -35)));
+
+                    Posicionar(oldPoint, newPoint, temps, forçat);
                 }
+
+            }
+            else
+            {
+                Posicionar(newPoint, newPoint, temps, forçat);
+            }
+        }
+
+        public void Apagar()
+        {
+            oldPoint = null;
+            newPoint = null;
+        }
+
+        void Posicionar(Transform start, Transform end, float temps, bool forçat)
+        {
+            ik.position = Vector3.Lerp(start.position, end.position, !forçat ? temps : 1);
+            ik.right = Vector3.Lerp(start.right, end.right, !forçat ? temps : 1);
+            if (ma)
+            {
+                ik.localRotation = Quaternion.Euler(ik.localEulerAngles + (Vector3.back * 90) + (Vector3.right * (dreta ? 35 : -35)));
             }
         }
     }
     public static class IKs
     {
-        public static void Iniciar(Transform _transform, LayerMask _capaEntorn, Rig _rig, Transform _ikMaDreta, Transform _ikMaEsquerra, Transform _ikPeuDret, Transform _ikPeuEsquerra)
+        public static void Iniciar(
+            Transform _transform, 
+            LayerMask _capaEntorn, 
+            Rig _rig, 
+            Transform _ikMaDreta, 
+            Transform _ikMaEsquerra, 
+            Transform _ikPeuDret, 
+            Transform _ikPeuEsquerra)
         {
             transform = _transform;
             capaEntorn = _capaEntorn;
@@ -276,27 +346,32 @@ namespace Moviment3D
             {
                 tmpDreta = RaigMaDreta(offset);
                 tmpEsquerra = RaigMaEsquerra(offset);
-                if (Vector3.Distance(maD.point, tmpDreta.point) > Vector3.Distance(maE.point, tmpEsquerra.point))
-                {
-                    maD.hit = tmpDreta;
-                    peuE.hit = RaigPeuEsquerra(offset);
+                forçat = false;
+                entrar = false;
+                //if (Vector3.Distance(maD.point, tmpDreta.point) > Vector3.Distance(maE.point, tmpEsquerra.point))
+                if (Vector3.Distance(maD.newPoint.position, tmpDreta.point) > Vector3.Distance(maE.newPoint.position, tmpEsquerra.point))
+                    {
+                    maD.Capturar(tmpDreta);
+                    peuE.Capturar(RaigPeuEsquerra(offset));
+                    maE.moure = false;
+                    peuD.moure = false;
                 }
                 else
                 {
-                    maE.hit = tmpEsquerra;
-                    peuD.hit = RaigPeuDret(offset);
+                    maE.Capturar(tmpEsquerra);
+                    peuD.Capturar(RaigPeuDret(offset));
+                    maD.moure = false;
+                    peuE.moure = false;
                 }
-                forçat = false;
-                entrar = false;
             }
             else
             {
-                maD.hit = RaigMaDreta(Vector2.zero);
-                maE.hit = RaigMaEsquerra(Vector2.zero);
-                peuE.hit = RaigPeuEsquerra(Vector2.zero);
-                peuD.hit = RaigPeuDret(Vector2.zero);
                 forçat = true;
                 entrar = true;
+                maD.Capturar(RaigMaDreta(Vector2.zero));
+                maE.Capturar(RaigMaEsquerra(Vector2.zero));
+                peuE.Capturar(RaigPeuEsquerra(Vector2.zero));
+                peuD.Capturar(RaigPeuDret(Vector2.zero));
             }
         }
 

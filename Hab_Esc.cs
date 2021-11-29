@@ -12,7 +12,9 @@ namespace Moviment3D
         Rigidbody rb;
 
         Vector3 posicioInicial;
+        Vector3 forwardInicial;
         Quaternion rotacioInicial;
+        Quaternion rotacioFinal;
 
         float temps;
         bool enPosicio;
@@ -33,10 +35,13 @@ namespace Moviment3D
 
         bool inputSaltarFlanc;
 
-        bool Pla => helper.forward.Pla();
         bool pla;
 
-        public override string ToString() => "Escalar!";
+
+        bool Pla => helper.forward.Pla();
+        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f)) * multiplicadorVelocitat;
+
+
 
         internal override void EnEntrar()
         {
@@ -53,16 +58,17 @@ namespace Moviment3D
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
             reenganxat = false;
+            pla = false;
 
-            pla = Pla;
-            Animacio.Pla(Pla);
+            //pla = Pla;
+            Animacio.Pla(pla);
             Animacio.Escalar();
             Animacio.Moviment(Vector2.zero);
             Animacio.MovimentY(0);
             Animacio.SaltPreparat(false);
 
             IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
-            if (!Pla) IKs.Capturar(Vector2.zero);
+            if (!pla) IKs.Capturar(Vector2.zero);
         }
 
         internal override void EnSortir()
@@ -88,17 +94,14 @@ namespace Moviment3D
             if (!enPosicio) Desplacar();
             else Quiet();
 
-            Animacio.Pla(Pla);
-
+            Animacio.Pla(pla);
             IKs.Debug();
         }
 
-        void Desplacar()
-        {
-            temps += Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down),0,.5f)) * multiplicadorVelocitat ;
-            transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition, temps);
 
-            if (Pla)
+        void ComprovarPla()
+        {
+            if (helper.forward.Pla())
             {
                 if (!pla)
                 {
@@ -113,9 +116,34 @@ namespace Moviment3D
                     pla = false;
                     IKs.Capturar(Vector2.zero);
                 }
+            }
+        }
+
+        void Desplacar()
+        {
+            temps += SumarTemps;
+            
+            
+            transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition, temps);
+
+            ComprovarPla();
+
+            Animacio.EnMoviment(true);
+            if (!pla)
+            {
                 transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
                 Resistencia.Actual -= 1 * Time.deltaTime;
+                Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
+                IKs.Actualitzar(temps);
             }
+            else 
+            {
+                //transform.forward = Entorn.Buscar.Terra.InclinacioRightFromHelper(helper);
+                //transform.rotation = Quaternion.Slerp(rotacioInicial, Entorn.Buscar.Terra.InclinacioForwardFromHelper(helper).ToQuaternion(), temps);
+                transform.rotation = Quaternion.Slerp(rotacioInicial, rotacioFinal, temps);
+                OrientacioPla();
+            }
+
 
             if (temps > 1)
             {
@@ -125,104 +153,121 @@ namespace Moviment3D
                 Animacio.EnMoviment(false);
                 Animacio.Moviment(Vector2.zero);
                 //Animacio.MovimentY(0);
-                IKs.Actualitzar(1);
+                 
+                if (!pla) IKs.Actualitzar(1);
             }
-            else 
-            {
-                Animacio.EnMoviment(true);
-                if (Pla)
-                {
-                    Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
-                }
-                else
-                {
-                    IKs.Actualitzar(temps);
-                }
-            } 
 
         }
+        
+       
+
+
         void Quiet()
         {
+            ComprovarPla();
+
             if (Inputs.Saltar)
-            {
-                if (!inputSaltarFlanc)
-                {
-                    inputSaltarFlanc = true;
-                    Inputs.SaltEscalantPreparat = true;
-                    Animacio.SaltPreparat(true);
-                }
-
-                if (Pla) 
-                {
-                    transform.Orientar(10);
-                }
-                else
-                {
-                    Animacio.Moviment(Inputs.Moviment.normalized);
-                }
-
-                if (Inputs.Deixar)
-                {
-                    inputSaltarFlanc = false;
-                    Inputs.SaltEscalantPreparat = false;
-                    Animacio.SaltPreparat(false);
-                }
-            }
+                Quiet_PrepararSalt();
 
             if (inputSaltarFlanc)
                 return;
 
-            if(!Inputs.Saltar)
+
+
+            Quiet_Orientar();
+            
+            if (!pla)
+                Resistencia.Actual -= 0.1f * Time.deltaTime;
+
+            Quiet_ComençarMoviment();
+
+            if (!Inputs.Saltar && inputSaltarFlanc)
             {
-                if (!Pla)
+                inputSaltarFlanc = false;
+            }
+        }
+
+        void OrientacioPla()
+        {
+            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        }
+
+        void Quiet_PrepararSalt()
+        {
+            if (!inputSaltarFlanc)
+            {
+                inputSaltarFlanc = true;
+                Inputs.SaltEscalantPreparat = true;
+                Animacio.SaltPreparat(true);
+            }
+
+            if (pla)
+            {
+                transform.Orientar(10);
+            }
+            else
+            {
+                Animacio.Moviment(Inputs.Moviment.normalized);
+            }
+
+            if (Inputs.Deixar)
+            {
+                inputSaltarFlanc = false;
+                Inputs.SaltEscalantPreparat = false;
+                Animacio.SaltPreparat(false);
+            }
+        }
+        void Quiet_Orientar()
+        {
+            if (!Inputs.Saltar)
+            {
+                if (!pla)
                 {
                     helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
                     transform.rotation = Quaternion.LookRotation(-helper.forward);
-                    Resistencia.Actual -= 0.1f * Time.deltaTime;
                 }
                 else
                 {
-                    transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-                    IKs.Apagar();
+                    OrientacioPla();
+                    //transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
+                    //transform.rotation = Entorn.Buscar.Terra.InclinacioRightFromHelper( helper).ToQuaternion();
+                    //IKs.Apagar();
                 }
             }
+                
+        }
+        void Quiet_ComençarMoviment()
+        {
 
-            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, Pla, Inputs.Moviment).Hitted())
+            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment).Hitted())
             {
-                PosicionarHelper(Entorn.Escalant.Moviment(helper, Pla, Inputs.Moviment));
+                PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment));
 
                 Animacio.EnMoviment(true);
-                if (Pla)
+                if (pla)
                 {
-                    transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
+                    //transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
+                    rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
                     Animacio.MovimentY(1);
                 }
                 else
                 {
                     Animacio.Moviment(Inputs.Moviment);
                     IKs.Capturar(Inputs.Moviment * 0.15f);
+                    rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
                 }
-
 
                 temps = 0;
                 multiplicadorVelocitat = 1;
                 enPosicio = false;
-
-
             }
-
-            if (!Inputs.Saltar && inputSaltarFlanc)
-            {
-                inputSaltarFlanc = false;
-            }
-
-            
-
         }
+
+
 
         void CrearHelper(RaycastHit hit)
         {
-            helper = GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
+            helper = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
             helper.localScale = Vector3.one * 0.3f;
 
             otherRigidbody = hit.collider.GetComponent<Rigidbody>();
@@ -240,12 +285,14 @@ namespace Moviment3D
             transform.SetParent(hit.collider.transform);
 
             posicioInicial = transform.localPosition;
+            forwardInicial = transform.forward;
             rotacioInicial = transform.rotation;
 
+            if(!helper.forward.PropDe1()) 
+                if(helper.forward.Pla()) Entorn.HitNormal(ref hit, helper);
+            
             helper.forward = hit.normal;
             helper.position = hit.point + (!Pla ? (hit.normal * 0.4f + helper.up * offestVertical) : Vector3.zero);
-            Entorn.HitNormal(ref hit, helper);
-            helper.forward = hit.normal;
         }
         void PrepararRigidBody(bool esc)
         {

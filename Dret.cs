@@ -22,13 +22,13 @@ namespace Moviment3D
         Vector3 velocitatActual;
         public override string ToString() => "Dret";
 
-        bool apretar;
+        [SerializeField] bool apretar;
 
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
 
-            Emparentar();
+            //Emparentar();
 
             Preparacio.Preparar = 0.15f;
             Animacio.Dret();
@@ -37,14 +37,14 @@ namespace Moviment3D
 
         void Emparentar() //Mentenir per si vull enganxarme a un objecte gran sense estar condicionat pel seu moviment
         {
-            /*
-            if (!Entorn.BuscarTerra(transform).Impactat())
+
+            /*if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
                 return;
 
-            if (otherRigidbody == Entorn.BuscarTerra(transform).collider.GetComponent<Rigidbody>())
+            if (otherRigidbody == Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>())
                 return;
 
-            otherRigidbody = Entorn.BuscarTerra(transform).collider.GetComponent<Rigidbody>();
+            otherRigidbody = Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>();
             if (otherRigidbody == null)
                 return;
 
@@ -52,9 +52,12 @@ namespace Moviment3D
 
             joint = gameObject.AddComponent<ConfigurableJoint>();
             joint.connectedBody = otherRigidbody;
-
-            transform.SetParent(Entorn.BuscarTerra(transform).collider.transform);
             */
+            if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
+                return;
+
+            transform.SetParent(Entorn.Buscar.Terra.Hit(transform).collider.transform);
+            
         }
 
         internal override void EnSortir()
@@ -71,7 +74,7 @@ namespace Moviment3D
 
 
             Resistencia.Recuperar();
-            Emparentar();
+            //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
             if (Inputs.MovimentZero)
@@ -81,7 +84,7 @@ namespace Moviment3D
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
                 if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
                     ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
-
+                Animacio.MovimentY(0);
             }
             else
             {
@@ -90,9 +93,8 @@ namespace Moviment3D
 
                 ui.forat.Amagar();
                 ui.paret.Amagar();
-            }
-            Dinamic.ActualitzarSmooth(transform);
             Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            }
             //Animacio.MovimentY(Dinamic.Velocitat.magnitude * 100);
             if (!Inputs.Saltar)
                 Animacio.NoTerra(transform);
@@ -106,8 +108,9 @@ namespace Moviment3D
             }
             else
             {
-                transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+                //transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
                 velocitatActual = Vector3.zero;
+                transform.Orientar(4);
             }
         }
 

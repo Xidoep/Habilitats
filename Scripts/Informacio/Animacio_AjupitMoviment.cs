@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Moviment3D;
 
 public class Animacio_AjupitMoviment : StateMachineBehaviour
 {
-    const string DRETA = "Dreta";
     [SerializeField] bool dreta;
      //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(DRETA, dreta);
+        Animacio.Dreta(dreta);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

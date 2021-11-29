@@ -23,10 +23,10 @@ namespace Moviment3D
 
         internal override void EnSortir()
         {
-            GameObject final = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            /*GameObject final = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             final.transform.position = transform.position;
             final.transform.localScale = Vector3.one * 0.25f;
-            Destroy(final.GetComponent<SphereCollider>());
+            Destroy(final.GetComponent<SphereCollider>());*/
         }
 
         internal override void EnUpdate()

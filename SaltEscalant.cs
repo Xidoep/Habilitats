@@ -77,7 +77,7 @@ namespace Moviment3D
 
             transform.SetParent(null);
             rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
-
+            //Preparacio.Preparar = 0.25f;
             Animacio.SaltAjupid();
         }
 

@@ -8,15 +8,15 @@ using Moviment3D;
 
 namespace Moviment3D
 {
-public class CamaraLliure : MonoBehaviour
-{
-    public Camera camaraPrincipal;
+    public class CamaraLliure : MonoBehaviour
+    {
+        public Camera camaraPrincipal;
 
-    public CinemachineFreeLook freeLook;
+        public CinemachineFreeLook freeLook;
 
-    public float altura;
+        public float altura;
 
-    public float distancia;
+        public float distancia;
         [SerializeField] InputActionReference visio;
 
 
@@ -26,21 +26,28 @@ public class CamaraLliure : MonoBehaviour
         }
 
         public void Update()
-    {
+        {
             if (!freeLook)
                 return;
 
-        freeLook.XS_AddOrientar(visio.GetVector2());
+            freeLook.XS_AddOrientar(visio.GetVector2());
 
-        if(!altura.IsNear(Entorn.Camera.DistanciaDesdeTerra(transform), 0.1f))
-        {
-            altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
+            if (!altura.IsNear(Entorn.Camera.DistanciaDesdeTerra(transform), 0.1f))
+            {
+                altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
+            }
+
+            SetArcsCamara(distancia + Dinamic.Velocitat.magnitude * 2);
         }
 
-        freeLook.XS_OrbitaSuperior(8 * distancia, 3 * distancia);
-        freeLook.XS_OrbitaMitja(2 * distancia, 7 * distancia);
-        freeLook.XS_OrbitaInferior((-altura) * distancia, 1 * distancia);
+
+
+        void SetArcsCamara(float distancia)
+        {
+            freeLook.XS_OrbitaSuperior(8 * distancia, 3 * distancia);
+            freeLook.XS_OrbitaMitja(2 * distancia, 7 * distancia);
+            freeLook.XS_OrbitaInferior((-altura) * distancia, 1 * distancia);
+        }
     }
-}
 
 }
