@@ -60,6 +60,7 @@ namespace Moviment3D
             reenganxat = false;
             pla = false;
 
+
             //pla = Pla;
             Animacio.Pla(pla);
             Animacio.Escalar();
@@ -69,6 +70,7 @@ namespace Moviment3D
 
             IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             if (!pla) IKs.Capturar(Vector2.zero);
+
         }
 
         internal override void EnSortir()
@@ -129,11 +131,11 @@ namespace Moviment3D
             ComprovarPla();
 
             Animacio.EnMoviment(true);
+            Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
             if (!pla)
             {
                 transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
                 Resistencia.Actual -= 1 * Time.deltaTime;
-                Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
                 IKs.Actualitzar(temps);
             }
             else 
@@ -166,31 +168,33 @@ namespace Moviment3D
         {
             ComprovarPla();
 
-            if (Inputs.Saltar)
-                Quiet_PrepararSalt();
+            if (Inputs.Saltar) Quiet_PrepararSalt();
 
-            if (inputSaltarFlanc)
+            if (inputSaltarFlanc) 
                 return;
 
 
 
-            Quiet_Orientar();
-            
-            if (!pla)
-                Resistencia.Actual -= 0.1f * Time.deltaTime;
+            if (!Inputs.Saltar)
+            {
+                if (!pla)
+                    OrientacioVertical();
+                //else OrientacioPla();
+            }
+
+            if (!pla) Resistencia.Actual -= 0.1f * Time.deltaTime;
 
             Quiet_ComençarMoviment();
 
-            if (!Inputs.Saltar && inputSaltarFlanc)
-            {
-                inputSaltarFlanc = false;
-            }
+            if (!Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
         }
 
-        void OrientacioPla()
+        void OrientacioVertical()
         {
-            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+            helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
+            transform.rotation = Quaternion.LookRotation(-helper.forward);
         }
+        void OrientacioPla() => transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
 
         void Quiet_PrepararSalt()
         {
@@ -217,25 +221,8 @@ namespace Moviment3D
                 Animacio.SaltPreparat(false);
             }
         }
-        void Quiet_Orientar()
-        {
-            if (!Inputs.Saltar)
-            {
-                if (!pla)
-                {
-                    helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
-                    transform.rotation = Quaternion.LookRotation(-helper.forward);
-                }
-                else
-                {
-                    OrientacioPla();
-                    //transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
-                    //transform.rotation = Entorn.Buscar.Terra.InclinacioRightFromHelper( helper).ToQuaternion();
-                    //IKs.Apagar();
-                }
-            }
-                
-        }
+    
+        
         void Quiet_ComençarMoviment()
         {
 
@@ -246,13 +233,10 @@ namespace Moviment3D
                 Animacio.EnMoviment(true);
                 if (pla)
                 {
-                    //transform.forward = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
                     rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
-                    Animacio.MovimentY(1);
                 }
                 else
                 {
-                    Animacio.Moviment(Inputs.Moviment);
                     IKs.Capturar(Inputs.Moviment * 0.15f);
                     rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
                 }
@@ -278,6 +262,7 @@ namespace Moviment3D
             }
 
             PosicionarHelper(hit, -0.4f);
+            rotacioFinal = transform.rotation;
         }
         void PosicionarHelper(RaycastHit hit, float offestVertical = 0)
         {

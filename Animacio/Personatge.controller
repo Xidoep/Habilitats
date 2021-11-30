@@ -1471,7 +1471,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 0}
   - m_Name: Dreta
     m_Type: 4
@@ -2074,6 +2074,14 @@ BlendTree:
     m_DirectBlendParameter: MovimentY
     m_Mirror: 0
   - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: c5720100cea7ec64a8a8a141703bebbb, type: 3}
+    m_Threshold: 0.1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MovimentY
+    m_Mirror: 0
+  - serializedVersion: 2
     m_Motion: {fileID: -203655887218126122, guid: 2ee9d2c0c5dce964f9d189be4f5fd053, type: 3}
     m_Threshold: 0.5
     m_Position: {x: 0, y: 0}
@@ -2090,10 +2098,10 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 926a9d92b468c0144b278b10f5145f58, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: f0c17b3b15dbefa40be1317978252450, type: 3}
     m_Threshold: 1.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 2
+    m_TimeScale: 1.2
     m_CycleOffset: 0
     m_DirectBlendParameter: MovimentY
     m_Mirror: 0

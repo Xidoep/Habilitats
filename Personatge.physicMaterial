@@ -7,7 +7,7 @@ PhysicMaterial:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Personatge
-  dynamicFriction: 0.95
+  dynamicFriction: 0.7
   staticFriction: 1
   bounciness: 0
   frictionCombine: 0

@@ -19,7 +19,9 @@ namespace Moviment3D
         //Vector3 PujarSiEsglao => (info.Esglao(transform) ? Vector3.up * 2 : Vector3.zero);
         Vector3 PujarSiEsglao => (Entorn.Buscar.Terra.HiHaEsglao(transform) ? Vector3.up * 2 : Vector3.zero);
 
+        Vector2 input;
         Vector3 velocitatActual;
+        float acceleracio;
         public override string ToString() => "Dret";
 
         [SerializeField] bool apretar;
@@ -84,7 +86,7 @@ namespace Moviment3D
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
                 if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
                     ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
-                Animacio.MovimentY(0);
+                //Animacio.MovimentY(0);
             }
             else
             {
@@ -93,24 +95,36 @@ namespace Moviment3D
 
                 ui.forat.Amagar();
                 ui.paret.Amagar();
-            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             }
+            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             //Animacio.MovimentY(Dinamic.Velocitat.magnitude * 100);
             if (!Inputs.Saltar)
                 Animacio.NoTerra(transform);
-        }
-        internal override void EnFixedUpdate()
-        { 
+
+
+
             if (!Inputs.MovimentZero)
             {
+                input = Inputs.Moviment;
+
                 transform.Orientar(20);
-                Moviment();
+                acceleracio += Time.deltaTime * 2;
+                acceleracio = Mathf.Clamp01(acceleracio);
             }
             else
             {
-                //transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-                velocitatActual = Vector3.zero;
                 transform.Orientar(4);
+                acceleracio -= Time.deltaTime * 1;
+                acceleracio = Mathf.Clamp01(acceleracio);
+            }
+        }
+        internal override void EnFixedUpdate()
+        {
+           
+
+            if(acceleracio > 0)
+            {
+                Moviment();
             }
         }
 
@@ -120,8 +134,11 @@ namespace Moviment3D
 
             velocitatActual = ((Entorn.Buscar.Terra.InclinacioForward(transform) + PujarSiEsglao) *
                 velocitat *
-                Inputs.Moviment.sqrMagnitude *
-                Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.Buscar.Terra.InclinacioForward(transform))));
+                //(Inputs.Moviment.sqrMagnitude) *
+                (input.sqrMagnitude * acceleracio) *
+                Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.Buscar.Terra.InclinacioForward(transform)))
+                
+                );
 
             /*Animator.SetFloat(MOVIMENY_Y, ((Entorn.EndevantAmbInclinacio(transform) + PujarSiEsglao) *
                 velocitat *

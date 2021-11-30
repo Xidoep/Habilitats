@@ -24,11 +24,12 @@ namespace Moviment3D
         Vector3 DireccioSaltAjupit => (((Vector3.up / 2f) + transform.forward) * ajupit + (Dinamic.VelocitatSalt)) * 50;
 
         RaycastHit paretHit;
+        RigidbodyConstraints currentConstraints;
 
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
-
+            currentConstraints = rb.constraints;
             Preparacio.Preparar = 0.25f;
 
             if (Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
@@ -42,7 +43,7 @@ namespace Moviment3D
             }
 
             Resistencia.Saltar();
-
+            
         }
 
         private void SaltSeguintLaParet()
@@ -51,6 +52,8 @@ namespace Moviment3D
             rb.useGravity = false;
 
             Debugar.Log("Salt seguint pret");
+
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
             Preparacio.Preparar = 0.5f;
             Inputs.SaltEscalantReenganxarse = true;
@@ -86,6 +89,7 @@ namespace Moviment3D
         internal override void EnSortir()
         {
             rb.useGravity = true;
+            rb.constraints = currentConstraints;
         }
 
         internal override void EnUpdate()

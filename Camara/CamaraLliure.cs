@@ -17,6 +17,7 @@ namespace Moviment3D
         public float altura;
 
         public float distancia;
+        public float extraDistancia;
         [SerializeField] InputActionReference visio;
 
 
@@ -37,7 +38,7 @@ namespace Moviment3D
                 altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
             }
 
-            SetArcsCamara(distancia + Dinamic.Velocitat.magnitude * 2);
+            SetArcsCamara(distancia + Dinamic.Velocitat.magnitude * 2 + extraDistancia);
         }
 
 
@@ -48,6 +49,8 @@ namespace Moviment3D
             freeLook.XS_OrbitaMitja(2 * distancia, 7 * distancia);
             freeLook.XS_OrbitaInferior((-altura) * distancia, 1 * distancia);
         }
+
+        public void SetExtraDistancia(float extraDistancia) => this.extraDistancia = extraDistancia;
     }
 
 }
