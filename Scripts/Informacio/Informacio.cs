@@ -16,8 +16,8 @@ namespace Moviment3D
         [SerializeField] InputActionReference saltar;
         [SerializeField] InputActionReference agafar;
         [SerializeField] InputActionReference deixar;
-
         [SerializeField] Rig rig;
+
         [SerializeField] Transform ikMaDreta;
         [SerializeField] Transform ikMaEsquerra;
         [SerializeField] Transform ikPeuDreta;

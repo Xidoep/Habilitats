@@ -20,7 +20,6 @@ namespace Moviment3D
         bool enPosicio;
 
         [SerializeField] int velocitat;
-        int multiplicadorVelocitat = 1;
         [SerializeField] bool reenganxat = false;
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
         [SerializeField] LayerMask capaEntorn;
@@ -36,10 +35,11 @@ namespace Moviment3D
         bool inputSaltarFlanc;
 
         bool pla;
-
+        bool velocitatEntrada = true;
+        bool reenganxarCantondaSuperior = false;
 
         bool Pla => helper.forward.Pla();
-        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f)) * multiplicadorVelocitat;
+        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f)) * (reenganxarCantondaSuperior ? 0.5f : velocitatEntrada ? 2 : 1);
 
 
 
@@ -53,7 +53,7 @@ namespace Moviment3D
             Inputs.SaltEscalantPreparat = false;
             Inputs.SaltEscalantReenganxarse = false;
             temps = 0;
-            multiplicadorVelocitat = 2;
+            velocitatEntrada = true;
             inputSaltarFlanc = false;
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
@@ -63,7 +63,9 @@ namespace Moviment3D
 
             //pla = Pla;
             Animacio.Pla(pla);
-            Animacio.Escalar();
+            if (!reenganxarCantondaSuperior)
+                Animacio.Escalar();
+            else Animacio.ReenganxarCantondaSuperior();
             Animacio.Moviment(Vector2.zero);
             Animacio.MovimentY(0);
             Animacio.SaltPreparat(false);
@@ -173,7 +175,7 @@ namespace Moviment3D
             if (inputSaltarFlanc) 
                 return;
 
-
+            if (reenganxarCantondaSuperior) reenganxarCantondaSuperior = false;
 
             if (!Inputs.Saltar)
             {
@@ -242,7 +244,7 @@ namespace Moviment3D
                 }
 
                 temps = 0;
-                multiplicadorVelocitat = 1;
+                velocitatEntrada = false;
                 enPosicio = false;
             }
         }
@@ -313,6 +315,7 @@ namespace Moviment3D
             if (Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
             {
                 reenganxat = true;
+                reenganxarCantondaSuperior = true;
                 Resistencia.NoBuidarDelTot();
                 CrearHelper(hit);
                 Estat.Sortida(condicio);
