@@ -21,11 +21,14 @@ namespace Moviment3D
         const string saltEscalant = "SaltEscalant";
         const string reenganxarCantondaSuperior = "ReenganxarCantondaSuperior";
 
+        static int dretHash;
+
         static bool aireFlanc;
 
         public static void Iniciar(Transform _transform)
         {
             animator = _transform.GetComponentInChildren<Animator>();
+            dretHash = Animator.StringToHash(dret);
         }
         //REFERENCIES
         static Animator animator;
@@ -33,7 +36,7 @@ namespace Moviment3D
 
         public static void Dret()
         {
-            Tigger(dret);
+            Trigger(dretHash);
         }
         public static void Dreta(bool _dreta)
         {
@@ -41,19 +44,19 @@ namespace Moviment3D
         }
         public static void Saltar()
         {
-            Tigger(saltar);
+            Trigger(saltar);
         }
         public static void Caure()
         {
-            Tigger(caure);
+            Trigger(caure);
         }
         public static void Escalar()
         {
-            Tigger(escalar);
+            Trigger(escalar);
         }
         public static void Relliscar()
         {
-            Tigger(relliscar);
+            Trigger(relliscar);
         }
         public static void NoTerra(Transform transform)
         {
@@ -99,15 +102,15 @@ namespace Moviment3D
         }
         public static void SaltAjupid()
         {
-            Tigger(saltSjupit);
+            Trigger(saltSjupit);
         }
         public static void SaltEscalant()
         {
-            Tigger(saltEscalant);
+            Trigger(saltEscalant);
         }
         public static void ReenganxarCantondaSuperior()
         {
-            Tigger(reenganxarCantondaSuperior);
+            Trigger(reenganxarCantondaSuperior);
         }
 
 
@@ -118,9 +121,17 @@ namespace Moviment3D
                Preparacio.Preparat;
         }
 
-        static void Tigger(string parametre)
+        static void Trigger(string parametre)
         {
             if (!animator) 
+                return;
+
+            animator.SetTrigger(parametre);
+        }
+
+        static void Trigger(int parametre)
+        {
+            if (!animator)
                 return;
 
             animator.SetTrigger(parametre);
