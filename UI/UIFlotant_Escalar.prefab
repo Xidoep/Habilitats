@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7432120216692680444}
   m_RootOrder: 1
@@ -110,6 +111,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.48, y: -0.035, z: 0}
   m_LocalScale: {x: 5, y: 1.005, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7432120216738367865}
   m_RootOrder: 2
@@ -163,7 +165,7 @@ SpriteRenderer:
   m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7432120216692680443
@@ -192,6 +194,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7432120217634460093}
   - {fileID: 7432120215982161655}
@@ -226,6 +229,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.61, y: 1.31, z: -3.93}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7432120216692680444}
   - {fileID: 7432120216992533096}
@@ -258,22 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc060dd0798ce848b98677644d4d0bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reconeixement: {fileID: 11400000, guid: d435628161b5073428f2622f9c70b669, type: 2}
   binding: {fileID: 7432120215982161654}
   fondo: {fileID: 7432120217634460092}
-  etiqueta: {fileID: 7432120217471927382}
-  texte:
-    m_TableReference:
-      m_TableCollectionName: GUID:c57b1a19b115908409fbf8060f51e954
-    m_TableEntryReference:
-      m_KeyId: 2887438738051072
-      m_Key: 
-  fonts:
-    m_TableReference:
-      m_TableCollectionName: GUID:9436256bc28d1fe408dad9be48c59526
-    m_TableEntryReference:
-      m_KeyId: 13279875072
-      m_Key: 
-  reconeixement: {fileID: 11400000, guid: d435628161b5073428f2622f9c70b669, type: 2}
   inputBinding: {fileID: -6437315812536265154, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
 --- !u!1 &7432120216992533108
 GameObject:
@@ -304,6 +295,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7432120217471927383}
   m_Father: {fileID: 7432120216738367865}
@@ -403,6 +395,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7432120216992533096}
   m_RootOrder: 0
@@ -573,6 +566,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7432120216692680444}
   m_RootOrder: 0

@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Correr/Deixar",
+                    "name": "Correr_Deixar",
                     "type": "Button",
                     "id": "3a24b17f-cd0d-45d8-8b35-13e140fc1ee8",
                     "expectedControlType": "Button",
@@ -144,7 +144,7 @@
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Agafar",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -155,7 +155,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "Agafar",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -166,7 +166,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Saltar",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -177,7 +177,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "Saltar",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -199,8 +199,8 @@
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Correr/Deixar",
+                    "groups": "Gamepad",
+                    "action": "Correr_Deixar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -210,8 +210,8 @@
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Correr/Deixar",
+                    "groups": "Keyboard",
+                    "action": "Correr_Deixar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -418,39 +418,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "d5faf434-b02d-4704-ae32-288a865c6a2d",
-                    "path": "<Gamepad>/dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;PlayStation;Xbox;Switch",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8554c919-8141-45d1-bbb6-9f838daa7df5",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "85d8418c-666f-4510-95c4-f4d1a7ba1629",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "Gamepad",
                     "id": "b532e788-9292-43c2-b5af-988044278074",
                     "path": "2DVector",
@@ -484,6 +451,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "up",
+                    "id": "0bf66b41-27a4-42ad-842e-d88ce7a46c55",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;PlayStation;Xbox;Switch",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "down",
                     "id": "20c7823f-1dc6-4db8-b383-3e5c2b32c8c8",
                     "path": "<Gamepad>/leftStick/down",
@@ -498,6 +476,17 @@
                     "name": "down",
                     "id": "f16a95bd-53be-443f-864f-47f7189e9648",
                     "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Switch;Xbox;PlayStation",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "b34bf5b5-f4bb-457d-b04b-602e39e9b78a",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad;Switch;Xbox;PlayStation",
@@ -528,6 +517,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "left",
+                    "id": "52e7b2cd-d64e-447d-a8f9-ea096fe72627",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;PlayStation;Xbox;Switch",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "right",
                     "id": "ec060960-7483-42e6-9ab3-fe399a06717e",
                     "path": "<Gamepad>/leftStick/right",
@@ -542,6 +542,17 @@
                     "name": "right",
                     "id": "06417262-c80d-442e-8f3a-9a6edeb1b2fd",
                     "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;PlayStation;Xbox;Switch",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "7d23c3a8-591d-45ba-bd88-0f3e77bdafc3",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad;PlayStation;Xbox;Switch",
