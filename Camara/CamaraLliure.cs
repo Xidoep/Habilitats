@@ -19,7 +19,8 @@ namespace Moviment3D
         public float distancia;
         public float extraDistancia;
         [SerializeField] InputActionReference visio;
-
+        public float distanciaVelocitat;
+        float iniciTornada;
 
         private void OnEnable()
         {
@@ -31,14 +32,27 @@ namespace Moviment3D
             if (!freeLook)
                 return;
 
-            freeLook.XS_AddOrientar(visio.GetVector2());
+            if (Dinamic.Velocitat.magnitude > 0)
+            {
+                distanciaVelocitat += Time.deltaTime * Dinamic.Velocitat.magnitude * 2;
+                distanciaVelocitat = Mathf.Clamp01(distanciaVelocitat);
+                iniciTornada = 0;
+            }
+            else 
+            {
+                iniciTornada += Time.deltaTime;
+                distanciaVelocitat -= Time.deltaTime * distanciaVelocitat * (Mathf.Clamp01(iniciTornada));
+                distanciaVelocitat = Mathf.Clamp01(distanciaVelocitat);
+            }
+
+            //freeLook.XS_AddOrientar(visio.GetVector2());
 
             if (!altura.IsNear(Entorn.Camera.DistanciaDesdeTerra(transform), 0.1f))
             {
                 altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
             }
 
-            SetArcsCamara(distancia + Dinamic.Velocitat.magnitude * 2 + extraDistancia);
+            SetArcsCamara(distancia + Mathf.Clamp01(distanciaVelocitat) + extraDistancia);
         }
 
 

@@ -15,15 +15,8 @@ namespace Moviment3D
             this.ma = ma;
             this.dreta = dreta;
             oldsCreated = false;
-            oldPoint = new GameObject("old" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
-            newPoint = new GameObject("new" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
-            /*oldPoint = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-            newPoint = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-            oldPoint.localScale = Vector3.one * 0.1f;
-            newPoint.localScale = Vector3.one * 0.1f;
-            oldPoint.name = "old" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E");
-            newPoint.name = "new" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E");
-        */
+            if (oldPoint == null) oldPoint = new GameObject("old" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
+            if (newPoint == null) newPoint = new GameObject("new" + (ma ? "Ma" : "Peu") + (dreta ? "D" : "E")).transform;
         }
         public Transform ik;
         RaycastHit hit;
@@ -59,37 +52,18 @@ namespace Moviment3D
         }
         public void Actualitzar(float temps, bool forçat)
         {
-            /* if (!Vector3.Distance(point, hit.point).IsNear(0, 0.1f))
-             {
-                 point = Vector3.Lerp(point, hit.point, !forçat ? temps : 1);
-                 normal = Vector3.Lerp(normal, hit.normal, !forçat ? temps : 1);
-                 ik.position = point + hit.normal * offsetParet;
-                 ik.right = normal;
-                 if (ma)
-                 {
-                     ik.localRotation = Quaternion.Euler(ik.localEulerAngles + (Vector3.back * 90) + (Vector3.right * (dreta ? 35 : -35)));
-                 }
-             }
-            */
             if (moure)
             {
                 if (!Vector3.Distance(ik.position, newPoint.position).IsNear(0, 0.1f))
-                {
-
                     Posicionar(oldPoint, newPoint, temps, forçat);
-                }
-
             }
-            else
-            {
-                Posicionar(newPoint, newPoint, temps, forçat);
-            }
+            else Posicionar(newPoint, newPoint, temps, forçat);
         }
 
         public void Apagar()
         {
-            oldPoint = null;
-            newPoint = null;
+            //oldPoint = null;
+            //newPoint = null;
         }
 
         void Posicionar(Transform start, Transform end, float temps, bool forçat)
@@ -117,10 +91,10 @@ namespace Moviment3D
             capaEntorn = _capaEntorn;
             rig = _rig;
             //ikMaDreta = _ikMaDreta;
-            maD = new IK(_ikMaDreta, 0.05f, true, true);
-            maE = new IK(_ikMaEsquerra, 0.05f, true, false);
-            peuD = new IK(_ikPeuDret, 0.17f, false, true);
-            peuE = new IK(_ikPeuEsquerra, 0.17f, false, false);
+            if (maD == null) maD = new IK(_ikMaDreta, 0.05f, true, true);
+            if (maE == null) maE = new IK(_ikMaEsquerra, 0.05f, true, false);
+            if (peuD == null) peuD = new IK(_ikPeuDret, 0.17f, false, true);
+            if (peuE == null) peuE = new IK(_ikPeuEsquerra, 0.17f, false, false);
         }
         static Transform transform;
         static LayerMask capaEntorn;
@@ -137,11 +111,8 @@ namespace Moviment3D
         static bool forçat;
         static bool entrar;
 
-        //static Vector3 Forward => transform.forward;
         static Vector3 Forward => -transform.forward;
-        //static Vector3 Up => transform.up;
         static Vector3 Up => transform.up;
-        //static Vector3 Right => transform.right;
         static Vector3 Right => -transform.right;
         public static void Debug()
         {
@@ -149,16 +120,8 @@ namespace Moviment3D
             if (maE.point != Vector3.zero) Debugar.DrawRay(maE.point, maE.normal);
             if (peuD.point != Vector3.zero) Debugar.DrawRay(peuD.point, peuD.normal);
             if (peuE.point != Vector3.zero) Debugar.DrawRay(peuE.point, peuE.normal);
-            /*RaigMaDreta(Inputs.Moviment * 0.5f);
-            RaigMaEsquerra(Inputs.Moviment * 0.5f);
-            RaigPeuEsquerra(Inputs.Moviment * 0.5f);
-            RaigPeuDret(Inputs.Moviment * 0.5f);*/
-
+ 
             RaigMaDreta(Vector2.zero);
-            //RaigMaEsquerra(Vector2.zero);
-            //RaigPeuDret(Vector2.zero);
-            //RaigPeuEsquerra(Vector2.zero);
-
         }
         public static void Actualitzar(float temps)
         {
@@ -181,84 +144,7 @@ namespace Moviment3D
         static Vector3 oFinal(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => Origen(origen) + Moviment(moviment * 0.5f) + Forward * 0.50f;
         static Vector3 dInici(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => ( direccio * 0.50f) + Forward * 0.25f;
         static Vector3 dFinal(Transform transform, Vector3 direccio, Vector2 origen, Vector2 moviment) => (-direccio * 1.00f) + Forward * 0.25f;
-        /*
-        static RaycastHit RaigCorva(Transform transform, Vector3 direccio, Vector3 direccioRI, Vector2 origen, Vector2 moviment)
-        {
-            int max = 10;
-            int actual = 0;<
-            bool impactat = false;
-            RaycastHit hit = new RaycastHit();
-            while(actual < max && !impactat)
-            {
-                hit = XS_Physics.RayDebug(
-                    Vector3.Lerp(oInici(transform, (direccio), origen, moviment), oFinal(transform, (direccio), origen, moviment), actual / (float)max),
-                    Vector3.Lerp(dInici(transform, (direccio), origen, moviment), dFinal(transform, (direccio), origen, moviment), actual / (float)max), 
-                    0.5f + (actual / (float)max) * 1.5f, 
-                    capaEntorn);
-                impactat = hit.Hitted();
-                if (!impactat)
-                    actual++;
-            }
-            if (impactat)
-            {
-                return hit;
-            }
-            else
-            {
-                max = 10;
-                actual = 0;
-                impactat = false;
-                hit = new RaycastHit();
-                while (actual < max && !impactat)
-                {
-                    //(Right + (transform.forward * 0.50f)).normalized
-                    hit = XS_Physics.RayDebug(
-                        Vector3.Lerp(oInici(transform, Up, origen, moviment), oFinal(transform, Up, origen, moviment), actual / (float)max),
-                        Vector3.Lerp(dInici(transform, Up, origen, moviment), dFinal(transform, Up, origen, moviment), actual / (float)max),
-                        0.5f + (actual / (float)max) * 1.5f,
-                        capaEntorn);
-                    impactat = hit.Hitted();
-                    if (!impactat)
-                        actual++;
-                }
-                if (impactat)
-                {
-                    return hit;
-                }
-                else
-                {
-                    max = 10;
-                    actual = 0;
-                    impactat = false;
-                    hit = new RaycastHit();
-                    while (actual < max && !impactat)
-                    {
-                        hit = XS_Physics.RayDebug(
-                            Vector3.Lerp(oInici(transform, direccioRI, origen, moviment), oFinal(transform, direccioRI, origen, moviment), actual / (float)max),
-                            Vector3.Lerp(dInici(transform, direccioRI, origen, moviment), dFinal(transform, direccioRI, origen, moviment), actual / (float)max),
-                            0.5f + (actual / (float)max) * 1.5f,
-                            capaEntorn);
-                        impactat = hit.Hitted();
-                        if (!impactat)
-                            actual++;
-                    }
-                    if (impactat)
-                    {
-                        return hit;
-                    }
-                    else
-                    {
-                        //Debugar.Log("hola?");
-                        return new RaycastHit();
-                    }
-                }
-               
-            }
 
-
-            return new RaycastHit();
-        }
-        */
         static RaycastHit RaigCorva(Transform transform, Vector3 direccio, Vector3 direccioRI, Vector2 origen, Vector2 moviment)
         {
             int max = 10;
@@ -381,11 +267,7 @@ namespace Moviment3D
         static RaycastHit RaigMaEsquerra(Vector2 offset) => RaigCorva(transform, (-Right + (Up * 0.50f)).normalized, (Right + (Up * 0.50f)).normalized, new Vector2(-0.2f, 1.25f), offset);
         static RaycastHit RaigPeuDret(Vector2 offset) => RaigCorva(transform, (Right - Up).normalized, (-Right - Up).normalized, new Vector2(0.1f, 0.55f), offset);
         static RaycastHit RaigPeuEsquerra(Vector2 offset) => RaigCorva(transform, (-Right - Up).normalized, (Right - Up).normalized, new Vector2(-0.1f, 0.55f), offset);
-        /*static RaycastHit RaigMaDreta(Vector2 offset) => Raig(offset, Up * 1.25f, Right * 0.5f, Up * 0.5f);
-        static RaycastHit RaigMaEsquerra(Vector2 offset) => Raig(offset, Up * 1.25f, -Right * 0.5f, Up * 0.5f);
-        static RaycastHit RaigPeuDret(Vector2 offset) => Raig(offset, -Up, Right * 0.4f, Up * 0.85f);
-        static RaycastHit RaigPeuEsquerra(Vector2 offset) => Raig(offset, -Up, -Right * 0.4f, Up * 0.85f);
-        */
+
         public static void Apagar()
         {
             Debugar.Log("Apagar");

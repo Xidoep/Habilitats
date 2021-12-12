@@ -68,6 +68,9 @@ namespace Moviment3D
 
             ui.forat.Amagar();
             ui.paret.Amagar();
+
+            acceleracio = 0;
+            velocitatActual = Vector3.zero;
         }
 
         internal override void EnUpdate()
@@ -96,10 +99,7 @@ namespace Moviment3D
                 ui.forat.Amagar();
                 ui.paret.Amagar();
             }
-            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             //Animacio.MovimentY(Dinamic.Velocitat.magnitude * 100);
-            if (!Inputs.Saltar)
-                Animacio.NoTerra(transform);
 
 
 
@@ -117,6 +117,10 @@ namespace Moviment3D
                 acceleracio -= Time.deltaTime * 1;
                 acceleracio = Mathf.Clamp01(acceleracio);
             }
+            
+            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            if (!Inputs.Saltar)
+                Animacio.NoTerra(transform);
         }
         internal override void EnFixedUpdate()
         {

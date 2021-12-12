@@ -45,6 +45,12 @@ namespace Moviment3D
             frames.Add(transform.position);
             if (frames.Count > 3) frames.RemoveAt(0);
         }
+        public static void Stop()
+        {
+            frames.Clear();
+            tmp = Vector3.zero;
+            velocitat = Vector3.zero;
+        }
     }
 }
 

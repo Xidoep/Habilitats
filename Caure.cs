@@ -41,8 +41,10 @@ namespace Moviment3D
                 rb.Gravetat();
             }
 
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, new Vector3(0, transform.localEulerAngles.z, 0).ToQuaternion(), 10);
+            transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
             transform.Orientar(4);
-
+            
 
             Animacio.VelocitatVertical();
         }

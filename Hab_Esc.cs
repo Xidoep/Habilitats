@@ -67,11 +67,13 @@ namespace Moviment3D
                 Animacio.Escalar();
             else Animacio.ReenganxarCantondaSuperior();
             Animacio.Moviment(Vector2.zero);
-            Animacio.MovimentY(0);
+            //Animacio.MovimentY(0);
             Animacio.SaltPreparat(false);
 
             IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             if (!pla) IKs.Capturar(Vector2.zero);
+
+            Dinamic.Stop();
 
         }
 
@@ -87,7 +89,7 @@ namespace Moviment3D
             if (joint != null) Destroy(joint);
 
             Animacio.Moviment(Vector2.zero);
-            Animacio.MovimentY(0);
+            //Animacio.MovimentY(0);
             IKs.Apagar();
         }
 
@@ -133,7 +135,7 @@ namespace Moviment3D
             ComprovarPla();
 
             Animacio.EnMoviment(true);
-            Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
+            //Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
             if (!pla)
             {
                 transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
@@ -155,7 +157,7 @@ namespace Moviment3D
                 Inputs.SetHelperVectors = helper;
 
                 Animacio.EnMoviment(false);
-                Animacio.Moviment(Vector2.zero);
+                //Animacio.Moviment(Vector2.zero);
                 //Animacio.MovimentY(0);
                  
                 if (!pla) IKs.Actualitzar(1);
@@ -239,7 +241,8 @@ namespace Moviment3D
                 }
                 else
                 {
-                    IKs.Capturar(Inputs.Moviment * 0.15f);
+                    //IKs.Capturar(Inputs.Moviment * 0.15f);
+                    IKs.Capturar(Inputs.Moviment * 0.5f);
                     rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
                 }
 
