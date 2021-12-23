@@ -28,7 +28,7 @@ namespace Moviment3D
                     return;
 
                 esperant = true;
-                proces = Corrutina.Iniciar(temps, Mostrar);
+                proces = XS_Coroutine.Iniciar(temps, Mostrar);
             }
 
             void Mostrar()

@@ -14,7 +14,7 @@ namespace Moviment3D
             set
             {
                 preparat = false;
-                Corrutina.Iniciar(value, () => { preparat = true; });
+                XS_Coroutine.Iniciar(value, () => { preparat = true; });
             }
         }
 
