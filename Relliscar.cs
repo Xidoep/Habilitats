@@ -35,6 +35,7 @@ namespace Moviment3D
         internal override void EnSortir()
         {
             //info.SetVelocitat = rb.velocity;
+            transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
         }
 
         internal override void EnUpdate()

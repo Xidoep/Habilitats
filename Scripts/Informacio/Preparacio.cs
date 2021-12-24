@@ -14,10 +14,10 @@ namespace Moviment3D
             set
             {
                 preparat = false;
-                XS_Coroutine.Iniciar(value, () => { preparat = true; });
+                XS_Coroutine.StartCoroutine(value, PreparatTrue);
             }
         }
-
+        static void PreparatTrue() => preparat = true;
     }
 }
 

@@ -26,7 +26,7 @@ namespace Moviment3D
 
             transform.SetParent(null);
 
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
             rb.AddForce(((Vector3.up + (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
 
             Resistencia.Saltar();

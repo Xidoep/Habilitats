@@ -306,13 +306,17 @@ namespace Moviment3D
             {
                 static bool relliscar;
 
-                public static RaycastHit Hit(Transform transform)
+                /*public static RaycastHit Hit(Transform transform)
                 {
                     if (Devant(transform).Hitted()) return Devant(transform);
                     else if (Derrera(transform).Hitted()) return Derrera(transform);
                     else if (Dreta(transform).Hitted()) return Dreta(transform);
                     else if (Esquerra(transform).Hitted()) return Esquerra(transform);
                     else return Centre(transform);
+                }*/
+                public static RaycastHit Hit(Transform transform)
+                {
+                    return Unic(transform);
                 }
                 /*public static RaycastHit AmbEsfera(Transform transform)
                 {
@@ -356,16 +360,19 @@ namespace Moviment3D
                 }
                 public static bool EsRelliscant(Transform transform)
                 {
-
-                    relliscar = true;
+                    relliscar = false;
+                    if (Unic(transform).Hitted() && Unic(transform).normal.Relliscar()) relliscar = true;
+                    
+                        
+                        /*relliscar = true;
                     if (Centre(transform).Hitted() && !Centre(transform).normal.Relliscar()) relliscar = false;
                     else if (Devant(transform).Hitted() && !Devant(transform).normal.Relliscar()) relliscar = false;
                     else if (Derrera(transform).Hitted() && !Derrera(transform).normal.Relliscar()) relliscar = false;
                     else if (Dreta(transform).Hitted() && !Dreta(transform).normal.Relliscar()) relliscar = false;
                     else if (Esquerra(transform).Hitted() && !Esquerra(transform).normal.Relliscar()) relliscar = false;
                     else if (!Hit(transform).Hitted()) relliscar = false;
+                        */
                     return relliscar;
-                    //return Physics.CheckSphere(transform.position + transform.up * 0.3f, .4f, capaEntorn);
                 }
                 public static bool HiHaEsglao(Transform transform, float altura = 0.5f)
                 {
@@ -391,7 +398,7 @@ namespace Moviment3D
                 static RaycastHit Esquerra(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Centre(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
 
-
+                public static RaycastHit Unic(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.25f);
             }
 
 

@@ -28,7 +28,7 @@ namespace Moviment3D
                     return;
 
                 esperant = true;
-                proces = XS_Coroutine.Iniciar(temps, Mostrar);
+                proces = XS_Coroutine.StartCoroutine(temps, Mostrar);
             }
 
             void Mostrar()
@@ -44,7 +44,7 @@ namespace Moviment3D
                     if (esperant) 
                     {
                         if(proces != null)
-                            proces.Aturar();
+                            proces.StopCoroutine();
                     } 
                     return;
                 }

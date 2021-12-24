@@ -72,9 +72,14 @@ namespace Moviment3D
             acceleracio = 0;
             velocitatActual = Vector3.zero;
         }
-
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.3f);
+        }
         internal override void EnUpdate()
         {
+
+
             rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
 
 

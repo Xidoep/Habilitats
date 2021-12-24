@@ -19,6 +19,7 @@ namespace Moviment3D
             transform.SetParent(null);
             
             Animacio.Caure();
+            transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
         }
 
         internal override void EnSortir()
@@ -27,6 +28,7 @@ namespace Moviment3D
             final.transform.position = transform.position;
             final.transform.localScale = Vector3.one * 0.25f;
             Destroy(final.GetComponent<SphereCollider>());*/
+           
         }
 
         internal override void EnUpdate()
