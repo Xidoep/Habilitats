@@ -47,7 +47,7 @@ namespace Moviment3D
             //rb.MovePosition(rb.transform.position + -helper.up * velocitat * Inersia * Time.deltaTime);
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;
             transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
-            transform.MirarObjectiu((-helper.up).ToQuaternion(Vector3.up), 40);
+            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 40);
         }
 
         void CrearHelper(RaycastHit hit)

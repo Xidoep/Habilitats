@@ -11,8 +11,8 @@ namespace Moviment3D
         public static void Orientar(this Transform transform, int velocitat)
         {
             if (Inputs.Moviment != Vector2.zero)
-                transform.MirarObjectiu(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion(Vector3.up), velocitat);
-            else transform.MirarObjectiu(transform.forward.ToQuaternion(Vector3.up), velocitat);
+                transform.RotateToQuaternionSmooth(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion(Vector3.up), velocitat);
+            else transform.RotateToQuaternionSmooth(transform.forward.ToQuaternion(Vector3.up), velocitat);
         }
         public static void Gravetat(this Rigidbody rigidbody)
         {
