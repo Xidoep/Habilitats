@@ -11,7 +11,7 @@ namespace Moviment3D
         static Vector3 velocitat;
 
         public static Vector3 Velocitat => velocitat;
-        public static Vector3 VelocitatSalt => velocitat * 20;
+        public static Vector3 VelocitatSalt => velocitat * 50;
         public static Vector3 VelocitatGravetat => velocitat * 4;
         public static bool VelocitatVerticalNegativa => velocitat.y < 0;
 

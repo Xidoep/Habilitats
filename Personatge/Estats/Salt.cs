@@ -35,7 +35,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime * 2;
             rb.AddForce(moviment * 4000);
 
             if (!Inputs.Saltar)

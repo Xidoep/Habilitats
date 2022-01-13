@@ -361,18 +361,18 @@ namespace Moviment3D
                 public static bool EsRelliscant(Transform transform)
                 {
                     relliscar = false;
-                    Debugar.DrawRay(Unic(transform).point, Unic(transform).normal, Color.red);
-                    if (Unic(transform).Hitted() && Unic(transform).normal.Relliscar()) relliscar = true;
+                    //Debugar.DrawRay(Unic(transform).point, Unic(transform).normal, Color.red);
+                    //if (Unic(transform).Hitted() && Unic(transform).normal.Relliscar()) relliscar = true;
                     
                         
-                        /*relliscar = true;
+                        relliscar = true;
                     if (Centre(transform).Hitted() && !Centre(transform).normal.Relliscar()) relliscar = false;
                     else if (Devant(transform).Hitted() && !Devant(transform).normal.Relliscar()) relliscar = false;
                     else if (Derrera(transform).Hitted() && !Derrera(transform).normal.Relliscar()) relliscar = false;
                     else if (Dreta(transform).Hitted() && !Dreta(transform).normal.Relliscar()) relliscar = false;
                     else if (Esquerra(transform).Hitted() && !Esquerra(transform).normal.Relliscar()) relliscar = false;
                     else if (!Hit(transform).Hitted()) relliscar = false;
-                        */
+                        
                     return relliscar;
                 }
                 public static bool HiHaEsglao(Transform transform, float altura = 0.5f)
@@ -399,7 +399,7 @@ namespace Moviment3D
                 static RaycastHit Esquerra(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Centre(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
 
-                public static RaycastHit Unic(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra + 0.35f - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.30f);
+                public static RaycastHit Unic(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra + 0.4f - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.35f);
             }
 
 

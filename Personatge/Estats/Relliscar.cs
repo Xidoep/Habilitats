@@ -16,7 +16,7 @@ namespace Moviment3D
         [SerializeField] int velocitat;
 
         //float Inersia { get => inersia; set => inersia = Mathf.Clamp01(value); }
-        float Inersia { get => 1; set => inersia = Mathf.Clamp01(value); }
+        float Inersia { get => inersia; set => inersia = Mathf.Clamp(value, 0, 2); }
 
         Vector3 Direccio => -helper.right * (Vector3.Dot(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment.ToVector3_Vertical()), -helper.right) * 1f);
 
@@ -40,14 +40,14 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            Inersia += Time.deltaTime * 0.2f;
+            Inersia += Time.deltaTime * 10f;
 
             if (Entorn.Buscar.Terra.Hit(transform).Hitted()) OrientarHelper(Entorn.Buscar.Terra.Hit(transform).normal);
 
             //rb.MovePosition(rb.transform.position + -helper.up * velocitat * Inersia * Time.deltaTime);
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;
             transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
-            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 40);
+            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 20);
         }
 
         void CrearHelper(RaycastHit hit)

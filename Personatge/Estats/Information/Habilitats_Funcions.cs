@@ -26,7 +26,7 @@ namespace Moviment3D
         public static bool Pla(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.up) > 0.65f;
         public static bool PropDe1(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.up) > 0.8f;
         //public static bool Relliscar(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.up) < 0.75f;
-        public static bool Relliscar(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.up) == Mathf.Clamp(Vector3.Dot(vector3, Vector3.up), 0.35f, 0.75f);
+        public static bool Relliscar(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.up) == Mathf.Clamp(Vector3.Dot(vector3, Vector3.up), 0.25f, 0.8f);
         public static bool Positiu(this Vector3 normal) => Vector3.Dot(normal, Vector3.up) > 0;
         public static bool CasiMenys1(this Vector3 vector3) => Vector3.Dot(vector3, Vector3.down) > 0.9f;
     }

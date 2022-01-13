@@ -31,36 +31,15 @@ namespace Moviment3D
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             //Emparentar();
-
+            if(!Inputs.MovimentZero)
+                acceleracio = new Vector3(Dinamic.Velocitat.x,0,Dinamic.Velocitat.z).magnitude * 100;
+            
             Preparacio.Preparar = 0.15f;
             Animacio.Dret();
 
         }
 
-        void Emparentar() //Mentenir per si vull enganxarme a un objecte gran sense estar condicionat pel seu moviment
-        {
-
-            /*if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
-                return;
-
-            if (otherRigidbody == Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>())
-                return;
-
-            otherRigidbody = Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>();
-            if (otherRigidbody == null)
-                return;
-
-            if (joint != null) Destroy(joint);
-
-            joint = gameObject.AddComponent<ConfigurableJoint>();
-            joint.connectedBody = otherRigidbody;
-            */
-            if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
-                return;
-
-            transform.SetParent(Entorn.Buscar.Terra.Hit(transform).collider.transform);
-            
-        }
+        
 
         internal override void EnSortir()
         {
@@ -72,20 +51,15 @@ namespace Moviment3D
             acceleracio = 0;
             velocitatActual = Vector3.zero;
         }
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawSphere(transform.position + transform.up * (0.9f + 0.35f - 0.1f) - (transform.up * 0.9f), 0.3f);
-            //Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.4f);
-        }
+       
+
+       
         internal override void EnUpdate()
         {
-
-
-            rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
-
+            TornarKinematicSiTrobaEsglao();
 
             Resistencia.Recuperar();
+
             //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
@@ -131,14 +105,10 @@ namespace Moviment3D
         }
         internal override void EnFixedUpdate()
         {
-
-
             if (acceleracio > 0)
             {
                 Moviment();
             }
-            else
-                rb.velocity = Vector3.down * Time.fixedDeltaTime;
         }
 
         void Moviment()
@@ -150,7 +120,6 @@ namespace Moviment3D
                 //(Inputs.Moviment.sqrMagnitude) *
                 (input.sqrMagnitude * acceleracio) *
                 Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.Buscar.Terra.InclinacioForward(transform)))
-                
                 );
 
             /*Animator.SetFloat(MOVIMENY_Y, ((Entorn.EndevantAmbInclinacio(transform) + PujarSiEsglao) *
@@ -166,10 +135,48 @@ namespace Moviment3D
                 velocitat *
                 Inputs.Moviment.sqrMagnitude *
                 Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.EndevantAmbInclinacio(transform)));*/
-            rb.velocity = velocitatActual * Time.fixedDeltaTime;
             transform.position += velocitatActual * Time.fixedDeltaTime;
             //rb.velocity = Vector3.zero;
         }
 
+        void Emparentar() //Mentenir per si vull enganxarme a un objecte gran sense estar condicionat pel seu moviment
+        {
+
+            /*if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
+                return;
+
+            if (otherRigidbody == Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>())
+                return;
+
+            otherRigidbody = Entorn.Buscar.Terra.Hit(transform).collider.GetComponent<Rigidbody>();
+            if (otherRigidbody == null)
+                return;
+
+            if (joint != null) Destroy(joint);
+
+            joint = gameObject.AddComponent<ConfigurableJoint>();
+            joint.connectedBody = otherRigidbody;
+            */
+            if (!Entorn.Buscar.Terra.Hit(transform).Hitted())
+                return;
+
+            transform.SetParent(Entorn.Buscar.Terra.Hit(transform).collider.transform);
+
+        }
+
+        void TornarKinematicSiTrobaEsglao() => rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
+
+
+
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawSphere(transform.position + transform.up * (0.9f + 0.35f - 0.1f) - (transform.up * 0.9f), 0.3f);
+            //Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.4f);
+        }
     }
+
+   
+  
 }
