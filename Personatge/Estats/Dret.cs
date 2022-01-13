@@ -74,7 +74,9 @@ namespace Moviment3D
         }
         private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.3f);
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawSphere(transform.position + transform.up * (0.9f + 0.35f - 0.1f) - (transform.up * 0.9f), 0.3f);
+            //Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.4f);
         }
         internal override void EnUpdate()
         {
@@ -129,12 +131,14 @@ namespace Moviment3D
         }
         internal override void EnFixedUpdate()
         {
-           
 
-            if(acceleracio > 0)
+
+            if (acceleracio > 0)
             {
                 Moviment();
             }
+            else
+                rb.velocity = Vector3.down * Time.fixedDeltaTime;
         }
 
         void Moviment()
@@ -154,7 +158,7 @@ namespace Moviment3D
                 Inputs.Moviment.sqrMagnitude *
                 Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.EndevantAmbInclinacio(transform)))).magnitude / velocitat);*/
 
-           
+
 
             /*transform.position +=
                 (Entorn.EndevantAmbInclinacio(transform) + PujarSiEsglao) *
@@ -162,7 +166,7 @@ namespace Moviment3D
                 velocitat *
                 Inputs.Moviment.sqrMagnitude *
                 Mathf.Clamp01(1 - Vector3.Dot(transform.up, Entorn.EndevantAmbInclinacio(transform)));*/
-
+            rb.velocity = velocitatActual * Time.fixedDeltaTime;
             transform.position += velocitatActual * Time.fixedDeltaTime;
             //rb.velocity = Vector3.zero;
         }

@@ -361,6 +361,7 @@ namespace Moviment3D
                 public static bool EsRelliscant(Transform transform)
                 {
                     relliscar = false;
+                    Debugar.DrawRay(Unic(transform).point, Unic(transform).normal, Color.red);
                     if (Unic(transform).Hitted() && Unic(transform).normal.Relliscar()) relliscar = true;
                     
                         
@@ -398,7 +399,7 @@ namespace Moviment3D
                 static RaycastHit Esquerra(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up - transform.right * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);
                 static RaycastHit Centre(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.1f);
 
-                public static RaycastHit Unic(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.25f);
+                public static RaycastHit Unic(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra + 0.35f - 0.1f), -transform.up, distBuscarTerra, capaEntorn, 0.30f);
             }
 
 
