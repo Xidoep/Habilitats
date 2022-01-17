@@ -19,7 +19,7 @@ namespace Moviment3D
         [SerializeField] float ajupit = 0.7f;
 
 
-        Vector3 DireccioSeguintParet => ((Inputs.GetHelperUp * Inputs.Moviment.y + Inputs.GetHelperRight * -Inputs.Moviment.x) * seguintParet + (Dinamic.VelocitatSalt)) * 50;
+        Vector3 DireccioSeguintParet => ((Inputs.GetHelperUp * Inputs.Moviment.y + Inputs.GetHelperRight * -Inputs.Moviment.x) * seguintParet + (Dinamic.VelocitatSalt)) * 70;
         Vector3 DireccioContraParet => ((Vector3.up - transform.forward) * contraParet + (Dinamic.VelocitatSalt)) * 50;
         Vector3 DireccioSaltAjupit => (((Vector3.up / 2f) + transform.forward) * ajupit + (Dinamic.VelocitatSalt)) * 50;
 

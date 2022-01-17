@@ -305,19 +305,20 @@ namespace Moviment3D
             public static class Terra
             {
                 static bool relliscar;
-
-                /*public static RaycastHit Hit(Transform transform)
+                static RaycastHit raycastHit;
+                public static RaycastHit Hit(Transform transform)
                 {
                     if (Devant(transform).Hitted()) return Devant(transform);
                     else if (Derrera(transform).Hitted()) return Derrera(transform);
                     else if (Dreta(transform).Hitted()) return Dreta(transform);
                     else if (Esquerra(transform).Hitted()) return Esquerra(transform);
                     else return Centre(transform);
-                }*/
-                public static RaycastHit Hit(Transform transform)
+                }
+                /*public static RaycastHit Hit(Transform transform)
                 {
                     return Unic(transform);
-                }
+                }*/
+
                 /*public static RaycastHit AmbEsfera(Transform transform)
                 {
                     if (Physics.CheckSphere(transform.position + transform.up * 0.25f, .4f))
@@ -334,8 +335,9 @@ namespace Moviment3D
                 }*/
                 public static Vector3 InclinacioForward(Transform transform)
                 {
-                    if (Hit(transform).Hitted())
-                        return Vector3.Cross(transform.right, Hit(transform).normal).normalized;
+                    raycastHit = Hit(transform);
+                    if (raycastHit.Hitted())
+                        return Vector3.Cross(transform.right, raycastHit.normal).normalized;
                     else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
                 public static Vector3 InclinacioRightFromHelper(Transform helper)
@@ -378,8 +380,8 @@ namespace Moviment3D
                 public static bool HiHaEsglao(Transform transform, float altura = 0.5f)
                 {
                     //Amb inclinacio
-                    return XS_Physics.RayDebug(transform.position + transform.up * 0.1f, InclinacioForward(transform), 0.5f, capaEntorn).Hitted()
-                        && !XS_Physics.RayDebug(transform.position + transform.up * (0.1f + altura), InclinacioForward(transform), 1.5f, capaEntorn).Hitted();
+                    return XS_Physics.RayDebug(transform.position + transform.up * 0.05f, InclinacioForward(transform), 0.5f, capaEntorn).Hitted()
+                        && !XS_Physics.RayDebug(transform.position + transform.up * (0.05f + altura), InclinacioForward(transform), 1.5f, capaEntorn).Hitted();
 
                     //Sense inlinacio
                     //return Fisiques.Raig(transform.position + transform.up * 0.1f, transform.forward, 0.5f, capaEntorn).Impactat()

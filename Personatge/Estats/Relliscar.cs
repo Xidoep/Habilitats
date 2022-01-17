@@ -30,24 +30,27 @@ namespace Moviment3D
 
             Preparacio.Preparar = 0.5f;
             Animacio.Relliscar();
+           
         }
 
         internal override void EnSortir()
         {
             //info.SetVelocitat = rb.velocity;
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
+            
         }
 
         internal override void EnUpdate()
         {
-            Inersia += Time.deltaTime * 10f;
+            Inersia += Time.deltaTime * 5f;
 
             if (Entorn.Buscar.Terra.Hit(transform).Hitted()) OrientarHelper(Entorn.Buscar.Terra.Hit(transform).normal);
 
             //rb.MovePosition(rb.transform.position + -helper.up * velocitat * Inersia * Time.deltaTime);
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;
             transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
-            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 20);
+            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 10);
+            Dinamic.Actualitzar(transform);
         }
 
         void CrearHelper(RaycastHit hit)

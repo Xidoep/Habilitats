@@ -181,8 +181,8 @@ namespace Moviment3D
 
             if (!Inputs.Saltar)
             {
-                if (!pla)
-                    OrientacioVertical();
+                /*if (!pla)
+                    OrientacioVertical();*/
                 //else OrientacioPla();
             }
 
@@ -318,7 +318,7 @@ namespace Moviment3D
             if (Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
             {
                 reenganxat = true;
-                reenganxarCantondaSuperior = true;
+                reenganxarCantondaSuperior = hit.normal.PropDe1();
                 Resistencia.NoBuidarDelTot();
                 CrearHelper(hit);
                 Estat.Sortida(condicio);
