@@ -336,7 +336,7 @@ namespace Moviment3D
                 public static Vector3 InclinacioForward(Transform transform)
                 {
                     raycastHit = Hit(transform);
-                    if (raycastHit.Hitted())
+                    if (raycastHit.Hitted() && raycastHit.normal.Pla())
                         return Vector3.Cross(transform.right, raycastHit.normal).normalized;
                     else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
