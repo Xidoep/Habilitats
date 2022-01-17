@@ -24,7 +24,7 @@ namespace Moviment3D
 
         private void OnEnable()
         {
-            MyCamera.CameraMain = camaraPrincipal;
+            MyCamera.Main = camaraPrincipal;
         }
 
         public void Update()
