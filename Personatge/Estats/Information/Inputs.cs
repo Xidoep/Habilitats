@@ -75,7 +75,7 @@ namespace Moviment3D
         public static Vector3 GetHelperForward => vectors.forward;
 
 
-
+        public static bool AreActived => moviment != null;
     }
 
 }

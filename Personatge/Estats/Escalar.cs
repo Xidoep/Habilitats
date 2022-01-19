@@ -16,7 +16,10 @@ namespace Moviment3D
         Quaternion rotacioInicial;
         Quaternion rotacioFinal;
 
-        float temps;
+        public float temps;
+        public bool pla;
+        public float plaSmooth = 1;
+
         bool enPosicio;
 
         [SerializeField] int velocitat;
@@ -34,7 +37,6 @@ namespace Moviment3D
 
         bool inputSaltarFlanc;
 
-        bool pla;
         bool velocitatEntrada = true;
         bool reenganxarCantondaSuperior = false;
 
@@ -113,6 +115,7 @@ namespace Moviment3D
                 {
                     pla = true;
                     IKs.Apagar();
+                    //plaSmooth = 0;
                 }
             }
             else
@@ -121,9 +124,12 @@ namespace Moviment3D
                 {
                     pla = false;
                     IKs.Capturar(Vector2.zero);
+                    //plaSmooth = 1;
                 }
             }
         }
+
+        
 
         void Desplacar()
         {
@@ -138,17 +144,24 @@ namespace Moviment3D
             //Animacio.MovimentY(velocitatMovimentAjupit.Evaluate(temps));
             if (!pla)
             {
-                transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
+                if (plaSmooth < 1) plaSmooth = temps;
+                //transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
                 Resistencia.Actual -= 1 * Time.deltaTime;
                 IKs.Actualitzar(temps);
             }
             else 
             {
+                if (plaSmooth > 0) plaSmooth = 1 - temps;
                 //transform.forward = Entorn.Buscar.Terra.InclinacioRightFromHelper(helper);
                 //transform.rotation = Quaternion.Slerp(rotacioInicial, Entorn.Buscar.Terra.InclinacioForwardFromHelper(helper).ToQuaternion(), temps);
-                transform.rotation = Quaternion.Slerp(rotacioInicial, rotacioFinal, temps);
+                //transform.rotation = Quaternion.Slerp(rotacioInicial, rotacioFinal, temps);
                 OrientacioPla();
             }
+
+            transform.rotation = Quaternion.Slerp(
+                Quaternion.Slerp(rotacioInicial, rotacioFinal, temps),
+                Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps),
+                plaSmooth);
 
 
             if (temps > 1)
@@ -163,6 +176,8 @@ namespace Moviment3D
                 if (!pla) IKs.Actualitzar(1);
             }
 
+            //if (plaSmooth < 1) plaSmooth += SumarTemps;
+            
         }
         
        
@@ -191,6 +206,15 @@ namespace Moviment3D
             Quiet_ComençarMoviment();
 
             if (!Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
+
+            if (!pla)
+            {
+                if (plaSmooth < 1) plaSmooth += Time.deltaTime * 0.5f;
+            }
+            else
+            {
+                if (plaSmooth > 0) plaSmooth -= Time.deltaTime * 0.5f;
+            }
         }
 
         void OrientacioVertical()
@@ -235,16 +259,11 @@ namespace Moviment3D
                 PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment));
 
                 Animacio.EnMoviment(true);
-                if (pla)
-                {
-                    rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
-                }
-                else
-                {
-                    //IKs.Capturar(Inputs.Moviment * 0.15f);
+
+                if (!pla)
                     IKs.Capturar(Inputs.Moviment * 0.5f);
-                    rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
-                }
+
+                rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
 
                 temps = 0;
                 velocitatEntrada = false;

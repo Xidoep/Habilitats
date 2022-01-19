@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 7432120216738367865}
   - component: {fileID: 7432120216738367864}
   - component: {fileID: 7432120216738367815}
+  - component: {fileID: 4388551344780132697}
   m_Layer: 5
   m_Name: UIFlotant_Escalar
   m_TagString: Untagged
@@ -266,6 +267,19 @@ MonoBehaviour:
   binding: {fileID: 7432120215982161654}
   fondo: {fileID: 7432120217634460092}
   inputBinding: {fileID: -6437315812536265154, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
+--- !u!114 &4388551344780132697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7432120216738367813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddc6127fb893ab42aa2b642c49cf37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Info: Agafa la mateixa rotacio que la 'Main Camera'
 --- !u!1 &7432120216992533108
 GameObject:
   m_ObjectHideFlags: 0

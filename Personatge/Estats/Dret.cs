@@ -31,9 +31,12 @@ namespace Moviment3D
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             //Emparentar();
-            if(!Inputs.MovimentZero)
-                acceleracio = new Vector3(Dinamic.Velocitat.x,0,Dinamic.Velocitat.z).magnitude * 100;
-            
+            if (Inputs.AreActived)
+            {
+                if (!Inputs.MovimentZero)
+                    acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
+            }
+
             Preparacio.Preparar = 0.15f;
             Animacio.Dret();
 

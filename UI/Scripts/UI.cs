@@ -34,6 +34,7 @@ namespace Moviment3D
             void Mostrar()
             {
                 mostrat = true;
+                esperant = false;
                 instanciat = GameObject.Instantiate(prefab, posicio, Quaternion.identity);
             }
 
