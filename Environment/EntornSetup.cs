@@ -39,8 +39,11 @@ public class EntornSetup : MonoBehaviour
             item.updateMode = AnimatorUpdateMode.AnimatePhysics;
             item.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
             rb = item.gameObject.AddComponent<Rigidbody>();
-            rb.useGravity = false;
-            rb.isKinematic = true;
+            if(rb != null)
+            {
+                rb.useGravity = false;
+                rb.isKinematic = true;
+            }
             col = item.gameObject.GetComponent<Collider>();
             if (col != null) col.material = dinamic;
         }
