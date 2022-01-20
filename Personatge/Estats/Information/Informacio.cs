@@ -38,7 +38,7 @@ namespace Moviment3D
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log($"Colisio a {collision.relativeVelocity.magnitude}");
+            Debugar.Log($"Colisio a {collision.relativeVelocity.magnitude}");
         }
 
         private void Update()
