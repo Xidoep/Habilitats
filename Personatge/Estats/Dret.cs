@@ -31,11 +31,7 @@ namespace Moviment3D
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             //Emparentar();
-            if (Inputs.AreActived)
-            {
-                if (!Inputs.MovimentZero)
-                    acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
-            }
+            MantenirAcceleracioSiInput();
 
             Preparacio.Preparar = 0.15f;
             Animacio.Dret();
@@ -46,10 +42,9 @@ namespace Moviment3D
 
         internal override void EnSortir()
         {
-            if (joint != null) Destroy(joint);
+            //Desemparentar();
 
-            ui.forat.Amagar();
-            ui.paret.Amagar();
+            UIContextual_Amagar();
 
             acceleracio = 0;
             velocitatActual = Vector3.zero;
@@ -59,6 +54,11 @@ namespace Moviment3D
        
         internal override void EnUpdate()
         {
+            if (XS_Input.OnPress(UnityEngine.InputSystem.Key.A))
+            {
+                Environment.Effect_Utils.WatchStep(transform.position, XS_Layers.Everything);
+            }
+
             TornarKinematicSiTrobaEsglao();
 
             Resistencia.Recuperar();
@@ -66,45 +66,12 @@ namespace Moviment3D
             //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
-            if (Inputs.MovimentZero)
-            {
-                //Animacio.MovimentY(0);
-                if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted()) 
-                    ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
-                if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
-                    ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
-                //Animacio.MovimentY(0);
-            }
-            else
-            {
-                //Animacio.MovimentY(velocitatActual.magnitude / velocitat);
-                apretar = Entorn.Buscar.Dret.Endevant(transform).Hitted();
+            MostrarUIContextual();
 
-                ui.forat.Amagar();
-                ui.paret.Amagar();
-            }
-            //Animacio.MovimentY(Dinamic.Velocitat.magnitude * 100);
+            Acceleracio();
+            Orientacio();
 
-
-
-            if (!Inputs.MovimentZero)
-            {
-                input = Inputs.Moviment;
-
-                transform.Orientar(20);
-                acceleracio += Time.deltaTime * 2;
-                acceleracio = Mathf.Clamp01(acceleracio);
-            }
-            else
-            {
-                transform.Orientar(4);
-                acceleracio -= Time.deltaTime * 1;
-                acceleracio = Mathf.Clamp01(acceleracio);
-            }
-            
-            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
-            if (!Inputs.Saltar)
-                Animacio.NoTerra(transform);
+            Animar();
         }
         internal override void EnFixedUpdate()
         {
@@ -167,10 +134,81 @@ namespace Moviment3D
 
         }
 
+        void Desemparentar()
+        {
+            if (joint != null) Destroy(joint);
+        }
+
         void TornarKinematicSiTrobaEsglao() => rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
 
+        void MostrarUIContextual()
+        {
+            if (Inputs.MovimentZero)
+            {
+                //Animacio.MovimentY(0);
+                if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted())
+                    ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
+                if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
+                    ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
+                //Animacio.MovimentY(0);
+            }
+            else
+            {
+                //Animacio.MovimentY(velocitatActual.magnitude / velocitat);
+                apretar = Entorn.Buscar.Dret.Endevant(transform).Hitted();
 
+                ui.forat.Amagar();
+                ui.paret.Amagar();
+            }
+        }
 
+        void UIContextual_Amagar()
+        {
+            ui.forat.Amagar();
+            ui.paret.Amagar();
+        }
+
+        void Animar()
+        {
+            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            if (!Inputs.Saltar)
+                Animacio.NoTerra(transform);
+        }
+
+        void MantenirAcceleracioSiInput()
+        {
+            if (Inputs.AreActived)
+            {
+                if (!Inputs.MovimentZero)
+                    acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
+            }
+        }
+        void Acceleracio()
+        {
+            if (!Inputs.MovimentZero)
+            {
+                input = Inputs.Moviment;
+
+                acceleracio += Time.deltaTime * 2;
+                acceleracio = Mathf.Clamp01(acceleracio);
+            }
+            else
+            {
+                acceleracio -= Time.deltaTime * 1;
+                acceleracio = Mathf.Clamp01(acceleracio);
+            }
+        }
+        void Orientacio()
+        {
+            if (!Inputs.MovimentZero)
+            {
+                transform.Orientar(20);
+            }
+            else
+            {
+                transform.Orientar(4);
+            }
+        }
 
         private void OnDrawGizmos()
         {
