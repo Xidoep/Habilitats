@@ -59,7 +59,6 @@ public abstract class Estat : MonoBehaviour
         private Estat my;
         [SerializeField] private Estat objectiu;
         [SerializeField] private UnityEvent<Condicio> condicions;
-
         public Estat My { get => my; set => my = value; }
 
         public Estat Objectiu => objectiu;

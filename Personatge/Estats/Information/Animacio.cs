@@ -9,8 +9,10 @@ namespace Moviment3D
         const string dreta = "Dreta";
         const string pla = "Pla";
         const string saltar = "Salt";
+        const string aire = "Aire";
         const string caure = "Caure";
         const string escalar = "Escalar";
+        const string escalant = "Escalant";
         const string relliscar = "Relliscar";
         const string velocitatVertical = "VelocitatVertical";
         const string moviment = "Moviment";
@@ -37,6 +39,8 @@ namespace Moviment3D
         public static void Dret()
         {
             Trigger(dretHash);
+            Bool(aire, false);
+            Bool(escalant, false);
         }
         public static void Dreta(bool _dreta)
         {
@@ -45,18 +49,26 @@ namespace Moviment3D
         public static void Saltar()
         {
             Trigger(saltar);
+            Bool(aire, true);
+            Bool(escalant, false);
         }
         public static void Caure()
         {
             Trigger(caure);
+            Bool(aire, true);
+            Bool(escalant, false);
         }
         public static void Escalar()
         {
             Trigger(escalar);
+            Bool(aire, false);
+            Bool(escalant, true);
         }
         public static void Relliscar()
         {
             Trigger(relliscar);
+            Bool(aire, false);
+            Bool(escalant, false);
         }
         public static void NoTerra(Transform transform)
         {
@@ -103,15 +115,23 @@ namespace Moviment3D
         public static void SaltAjupid()
         {
             Trigger(saltSjupit);
+            Bool(aire, true);
+            Bool(escalant, false);
         }
         public static void SaltEscalant()
         {
             Trigger(saltEscalant);
+            Bool(aire, true);
+            Bool(escalant, false);
         }
         public static void ReenganxarCantondaSuperior()
         {
             Trigger(reenganxarCantondaSuperior);
         }
+
+
+
+
 
 
         static bool Aire(Transform transform)

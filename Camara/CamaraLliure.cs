@@ -52,7 +52,7 @@ namespace Moviment3D
                 altura += (Entorn.Camera.DistanciaDesdeTerra(transform) - altura) * Time.deltaTime;
             }
 
-            SetArcsCamara(distancia + Mathf.Clamp01(distanciaVelocitat) + extraDistancia);
+            SetArcsCamara(distancia + extraDistancia);
         }
 
 

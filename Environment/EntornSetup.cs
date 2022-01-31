@@ -6,9 +6,11 @@ public class EntornSetup : MonoBehaviour
 {
     public PhysicMaterial dinamic;
     public PhysicMaterial estatic;
+    public LayerMask layerMask;
 
     Rigidbody rb;
     Collider col;
+
     private void Awake()
     {
         Setup();
@@ -31,8 +33,8 @@ public class EntornSetup : MonoBehaviour
             {
                 col.material = dinamic;
                 if (col is MeshCollider) (col as MeshCollider).convex = true;
-            } 
-            
+            }
+            item.gameObject.AddComponent<Environment.Effector>().LayerMask = layerMask;
         }
         foreach (var item in GetComponentsInChildren<Animator>())
         {

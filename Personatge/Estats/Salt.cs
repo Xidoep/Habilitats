@@ -17,6 +17,8 @@ namespace Moviment3D
         Vector3 moviment;
 
         [SerializeField] float forca;
+        Vector3 ForcaLateral => ObjecteDevant ? Vector3.zero : (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f);
+        bool ObjecteDevant => XS_Physics.Ray(transform.position + transform.up, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 1, Entorn.capaEntorn).Hitted();
 
         internal override void EnEntrar()
         {
@@ -27,16 +29,21 @@ namespace Moviment3D
             transform.SetParent(null);
 
             //rb.velocity = Vector3.zero;
-            rb.AddForce(((Vector3.up + (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f)) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
 
+
+            rb.AddForce(((Vector3.up + ForcaLateral) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
+            
             Resistencia.Saltar();
             Animacio.Saltar();
         }
 
         internal override void EnUpdate()
         {
+            Animacio.VelocitatVertical();
+
             moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime * 2;
             rb.AddForce(moviment * 4000);
+
 
             if (!Inputs.Saltar)
             {
@@ -45,7 +52,15 @@ namespace Moviment3D
 
             transform.Orientar(6);
 
-            Animacio.VelocitatVertical();
+           
+            Debugar.DrawRay(
+                transform.position + transform.up,
+                MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).normalized,
+            XS_Physics.Ray(
+                transform.position + transform.up,
+                MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 
+                1, 
+                Entorn.capaEntorn).Hitted() ? Color.green : Color.red);
         }
 
         internal override void EnSortir()

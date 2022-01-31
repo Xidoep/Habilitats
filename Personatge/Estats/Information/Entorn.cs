@@ -272,7 +272,11 @@ namespace Moviment3D
                                                     else
                                                     {
                                                         if (DavantDelsPeus(transform).Hitted()) return DavantDelsPeus(transform);
-                                                        else return nul;
+                                                        else
+                                                        {
+                                                            if (CantonadaSuperior(transform).Hitted()) return CantonadaSuperior(transform);
+                                                            else return nul;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -283,6 +287,47 @@ namespace Moviment3D
                         }
                     }
                 }
+                public static RaycastHit OnComencarAEscalar_Aire(Transform transform) //no escalant
+                {
+                    if (!DavantDelCap(transform).Hitted() && CantonadaSuperior(transform).Hitted()) 
+                    {
+                        Debug.Log("Donem una senyal!!!");
+                        return CantonadaSuperior(transform);
+                    } 
+                    else
+                    {
+                        if (Endevant(transform).Hitted()) return Endevant(transform);
+                        else
+                        {
+                            if (DiagonalDreta(transform).Hitted()) return DiagonalDreta(transform);
+                            else
+                            {
+                                if (DiagonalEsquerra(transform).Hitted()) return DiagonalEsquerra(transform);
+                                else
+                                {
+                                    if (Dreta(transform).Hitted()) return Dreta(transform);
+                                    else
+                                    {
+                                        if (Esquerra(transform).Hitted()) return Esquerra(transform);
+                                        else
+                                        {
+                                            if (DiagonalAmunt(transform).Hitted()) return DiagonalAmunt(transform);
+                                            else
+                                            {
+                                                if (Amunt(transform).Hitted()) return Amunt(transform);
+                                                else return nul;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+
+
+
                 public static RaycastHit Endevant(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.forward, 1, capaEntorn);
                 //internal static RaycastHit TerraDevant(Transform transform) => Fisiques.Raig(Alçada(transform) + transform.forward, -transform.up, 2f, capaEntorn);
                 public static RaycastHit CantonadaForat(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.forward - transform.up * 1.5f, -transform.forward, 1, capaEntorn);
@@ -295,7 +340,10 @@ namespace Moviment3D
                 static RaycastHit DiagonalAmunt(Transform transform) => XS_Physics.RayDebug(Alçada(transform), (transform.forward + transform.up).normalized, 1.45f, capaEntorn);
                 static RaycastHit Amunt(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.up, 1.45f, capaEntorn);
                 static RaycastHit DavantDelsPeus(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.forward, -transform.up, 1.5f, capaEntorn);
+                static RaycastHit DavantDelCap(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.up * 1.1f, transform.forward * 1f, 1, capaEntorn);
+                static RaycastHit CantonadaSuperior(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.up * 1.1f + transform.forward * 1f, -transform.up, 1f, capaEntorn);
                 static Vector3 Alçada(Transform transform) => transform.position + transform.up * 0.75f;
+
 
             }
 

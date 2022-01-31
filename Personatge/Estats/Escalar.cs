@@ -41,16 +41,19 @@ namespace Moviment3D
         bool reenganxarCantondaSuperior = false;
 
         bool Pla => helper.forward.Pla();
-        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f)) * (reenganxarCantondaSuperior ? 0.5f : velocitatEntrada ? 2 : 1);
+        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f) * 0.5f) * (reenganxarCantondaSuperior ? 0.5f : velocitatEntrada ? 2 : 1);
 
-
+        RaycastHit puntInicial;
 
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             PrepararRigidBody(true);
-            if (!reenganxat) CrearHelper(Entorn.Buscar.Dret.OnComencarAEscalar(transform));
+
+            //if (!reenganxat) CrearHelper(Entorn.Buscar.Dret.OnComencarAEscalar(transform));
+            CrearHelper(puntInicial);            
+
             //else 
             Inputs.SaltEscalantPreparat = false;
             Inputs.SaltEscalantReenganxarse = false;
@@ -102,6 +105,8 @@ namespace Moviment3D
             if (!enPosicio) Desplacar();
             else Quiet();
 
+
+
             Animacio.Pla(pla);
             IKs.Debug();
         }
@@ -146,7 +151,7 @@ namespace Moviment3D
             {
                 if (plaSmooth < 1) plaSmooth = temps;
                 //transform.rotation = Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps);
-                Resistencia.Actual -= 1 * Time.deltaTime;
+                Resistencia.Gastar();
                 IKs.Actualitzar(temps);
             }
             else 
@@ -187,21 +192,25 @@ namespace Moviment3D
         {
             ComprovarPla();
 
-            if (Inputs.Saltar) Quiet_PrepararSalt();
+            /*if (Inputs.Saltar) Quiet_PrepararSalt();
 
-            if (inputSaltarFlanc) 
+            if (inputSaltarFlanc)
+            {
+                Resistencia.GastarLentament();
                 return;
+            }
 
             if (reenganxarCantondaSuperior) reenganxarCantondaSuperior = false;
 
             if (!Inputs.Saltar)
             {
-                /*if (!pla)
-                    OrientacioVertical();*/
+                //if (!pla)
+                //    OrientacioVertical();
                 //else OrientacioPla();
-            }
+            }*/
 
-            if (!pla) Resistencia.Actual -= 0.1f * Time.deltaTime;
+            if (!pla) Resistencia.GastarLentament();
+            else Resistencia.RescuperarLentament(); 
 
             Quiet_ComençarMoviment();
 
@@ -344,7 +353,37 @@ namespace Moviment3D
             });
         }
 
-        
+        public void C_Esc(Estat.Condicio condicio)
+        {
+            if (Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
+                Preparacio.Preparat)
+            {
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform);
+                Estat.Sortida(condicio);
+            }
+        }
+        public void C_EscAire(Estat.Condicio condicio)
+        {
+            if (Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
+                Preparacio.Preparat)
+            {
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform);
+                Estat.Sortida(condicio);
+            }
+        }
+
+        public void C_SaltarEscalantReencangarse(Estat.Condicio condicio)
+        {
+            if (Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted())
+            {
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform);
+                Estat.Sortida(condicio);
+            }
+
+        }
     }
 
 }

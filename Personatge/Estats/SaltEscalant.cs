@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using XS_Utils;
 
@@ -14,12 +16,12 @@ namespace Moviment3D
 
         bool direccioParet;
 
-        [SerializeField] float seguintParet = 1.2f;
+        [SerializeField] float seguintParet = 0.9f;
         [SerializeField] float contraParet = 0.8f;
         [SerializeField] float ajupit = 0.7f;
 
 
-        Vector3 DireccioSeguintParet => ((Inputs.GetHelperUp * Inputs.Moviment.y + Inputs.GetHelperRight * -Inputs.Moviment.x) * seguintParet + (Dinamic.VelocitatSalt)) * 70;
+        Vector3 DireccioSeguintParet => ((Inputs.GetHelperUp * (Inputs.Moviment.y + 0.1f) + Inputs.GetHelperRight * -Inputs.Moviment.x).normalized * seguintParet + (Dinamic.VelocitatSalt)) * 50;
         Vector3 DireccioContraParet => ((Vector3.up - transform.forward) * contraParet + (Dinamic.VelocitatSalt)) * 50;
         Vector3 DireccioSaltAjupit => (((Vector3.up / 2f) + transform.forward) * ajupit + (Dinamic.VelocitatSalt)) * 50;
 
@@ -29,12 +31,12 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
+            
             currentConstraints = rb.constraints;
-            Preparacio.Preparar = 0.25f;
 
             if (Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
             {
-                if (Inputs.Moviment.y > 0.1f || Mathf.Abs(Inputs.Moviment.x) > 0.45f) SaltSeguintLaParet();
+                if (Inputs.Moviment.y > -0.1f || Mathf.Abs(Inputs.Moviment.x) > 0.45f) SaltSeguintLaParet();
                 else SaltContraLaParet();
             }
             else
@@ -42,12 +44,15 @@ namespace Moviment3D
                 SaltAjupit();
             }
 
-            Resistencia.Saltar();
-            
+            Resistencia.SaltarFort();
         }
+
+
 
         private void SaltSeguintLaParet()
         {
+            Preparacio.Preparar = 0.1f;
+
             direccioParet = true;
             rb.useGravity = false;
 
@@ -55,7 +60,6 @@ namespace Moviment3D
 
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
-            Preparacio.Preparar = 0.5f;
             Inputs.SaltEscalantReenganxarse = true;
 
             Animacio.Moviment(Inputs.Moviment);
@@ -64,6 +68,8 @@ namespace Moviment3D
 
         private void SaltContraLaParet()
         {
+            Preparacio.Preparar = 0.25f;
+
             direccioParet = false;
 
             Debugar.Log("Salt contra pret");
@@ -76,11 +82,13 @@ namespace Moviment3D
 
         private void SaltAjupit()
         {
+            Preparacio.Preparar = 0.25f;
+
             direccioParet = false;
 
             transform.SetParent(null);
             rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
-            //Preparacio.Preparar = 0.25f;
+
             Animacio.SaltAjupid();
         }
 

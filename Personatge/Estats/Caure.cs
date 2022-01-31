@@ -20,6 +20,7 @@ namespace Moviment3D
             
             Animacio.Caure();
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         internal override void EnSortir()
@@ -36,8 +37,6 @@ namespace Moviment3D
             moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
             rb.AddForce(moviment * 4000);
 
-            Resistencia.RescuperarLentament();
-
             if (!Inputs.Saltar)
             {
                 rb.Gravetat();
@@ -45,7 +44,7 @@ namespace Moviment3D
 
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, new Vector3(0, transform.localEulerAngles.z, 0).ToQuaternion(), 10);
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
-            transform.Orientar(4);
+            transform.Orientar(1);
             
 
             Animacio.VelocitatVertical();

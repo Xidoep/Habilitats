@@ -93,8 +93,8 @@ namespace Moviment3D
             //ikMaDreta = _ikMaDreta;
             if (maD == null) maD = new IK(_ikMaDreta, 0.05f, true, true);
             if (maE == null) maE = new IK(_ikMaEsquerra, 0.05f, true, false);
-            if (peuD == null) peuD = new IK(_ikPeuDret, 0.17f, false, true);
-            if (peuE == null) peuE = new IK(_ikPeuEsquerra, 0.17f, false, false);
+            if (peuD == null) peuD = new IK(_ikPeuDret, 0.07f, false, true);
+            if (peuE == null) peuE = new IK(_ikPeuEsquerra, 0.07f, false, false);
         }
         static Transform transform;
         static LayerMask capaEntorn;

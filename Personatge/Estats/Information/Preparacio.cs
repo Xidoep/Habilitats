@@ -7,14 +7,17 @@ namespace Moviment3D
 {
     public static class Preparacio
     {
+        static Coroutine coroutine;
         static bool preparat = false;
         public static bool Preparat => preparat;
+
         public static float Preparar
         {
             set
             {
                 preparat = false;
-                XS_Coroutine.StartCoroutine(value, PreparatTrue);
+                coroutine.StopCoroutine();
+                coroutine = XS_Coroutine.StartCoroutine(value, PreparatTrue);
             }
         }
         static void PreparatTrue() => preparat = true;

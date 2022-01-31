@@ -8,6 +8,7 @@ using XS_Utils;
 namespace Moviment3D
 {
     [SelectionBase]
+    [DefaultExecutionOrder(-1)]
     public class Informacio : MonoBehaviour
     {
         [SerializeField] LayerMask capaEntorn;
@@ -23,15 +24,20 @@ namespace Moviment3D
         [SerializeField] Transform ikPeuDreta;
         [SerializeField] Transform ikMPeuEsquerra;
 
+        [Header("Canals")]
+        [SerializeField] Canal_FloatFloat resistencia;
+
         [SerializeField] bool testing;
         public float debug;
 
         private void OnEnable()
         {
+            Animacio.Iniciar(transform);
             Inputs.Iniciar(moviment, saltar, agafar, deixar);
             Entorn.Iniciar(capaEntorn);
-            Animacio.Iniciar(transform);
             Resistencia.testing = testing;
+            Resistencia.Canal = resistencia;
+            gameObject.AddComponent<Environment.Effector>().LayerMask = capaEntorn;
             //IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             //IKs.Iniciar(transform, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
         }
@@ -59,6 +65,17 @@ namespace Moviment3D
         {
             if (Inputs.Escalar &&
                 Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
+                Preparacio.Preparat)
+            {
+
+                //Animator.SetBool("Dret", true);
+                Estat.Sortida(condicio);
+            }
+        }
+        public void C_EscAire(Estat.Condicio condicio)
+        {
+            if (Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
                 Preparacio.Preparat)
             {
 
@@ -110,10 +127,19 @@ namespace Moviment3D
             }
                 
         }
+        public void C_NoParetDevant(Estat.Condicio condicio)
+        {
+            if (!Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
+                Preparacio.Preparat)
+            {
+                Estat.Sortida(condicio);
+            }
+        }
+
         public void C_Salt(Estat.Condicio condicio) 
         { 
             if (Inputs.Saltar && 
-                Resistencia.Actual > 0.1f &&
+                Resistencia.UnaMica &&
                 Preparacio.Preparat)
             {
                 //Animacio.Saltar();
@@ -123,10 +149,15 @@ namespace Moviment3D
         }
         public void C_SaltarEscalant(Estat.Condicio condicio) 
         { 
-            if (!Inputs.Saltar && 
+            /*if (!Inputs.Saltar && 
                 Inputs.SaltEscalantPreparat) 
                 
                 Estat.Sortida(condicio);
+            */
+            if (Inputs.Saltar)
+            {
+                Estat.Sortida(condicio);
+            }
         }
         public void C_SaltarEscalantReencangarse(Estat.Condicio condicio) 
         {
@@ -138,7 +169,7 @@ namespace Moviment3D
         public void C_SaltarEscalantCaure(Estat.Condicio condicio) 
         {
             if (Preparacio.Preparat && 
-                CoyoteTime.Temps(Preparacio.Preparat, 0.5f))
+                CoyoteTime.Temps(Preparacio.Preparat, 0.4f))
             {
                 CoyoteTime.Stop();
                 Estat.Sortida(condicio); 
@@ -209,7 +240,10 @@ namespace Moviment3D
         }
 
 
-
+        private void OnDisable()
+        {
+            
+        }
     }
 }
 

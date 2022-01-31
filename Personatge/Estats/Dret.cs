@@ -171,8 +171,8 @@ namespace Moviment3D
         void Animar()
         {
             Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
-            if (!Inputs.Saltar)
-                Animacio.NoTerra(transform);
+            //if (!Inputs.Saltar)
+            //    Animacio.NoTerra(transform);
         }
 
         void MantenirAcceleracioSiInput()
@@ -180,7 +180,9 @@ namespace Moviment3D
             if (Inputs.AreActived)
             {
                 if (!Inputs.MovimentZero)
+                {
                     acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
+                }
             }
         }
         void Acceleracio()
@@ -189,12 +191,12 @@ namespace Moviment3D
             {
                 input = Inputs.Moviment;
 
-                acceleracio += Time.deltaTime * 2;
+                acceleracio += Time.deltaTime * 4;
                 acceleracio = Mathf.Clamp01(acceleracio);
             }
             else
             {
-                acceleracio -= Time.deltaTime * 1;
+                acceleracio -= Time.deltaTime * 6;
                 acceleracio = Mathf.Clamp01(acceleracio);
             }
         }

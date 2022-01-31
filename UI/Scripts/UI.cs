@@ -22,6 +22,9 @@ namespace Moviment3D
 
             public void Mostrar(Vector3 posicio, float temps)
             {
+                if (mostrat)
+                    return;
+
                 if (!this.posicio.Equals(posicio)) this.posicio = posicio;
 
                 if (esperant)
@@ -58,6 +61,9 @@ namespace Moviment3D
 
         public Emergent forat;
         public Emergent paret;
+
+
+
     }
    
    
