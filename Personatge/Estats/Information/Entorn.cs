@@ -329,6 +329,8 @@ namespace Moviment3D
 
 
                 public static RaycastHit Endevant(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.forward, 1, capaEntorn);
+                public static RaycastHit EndevantAprop(Transform transform) => XS_Physics.RayDebug(Alçada(transform), transform.forward, 0.5f, capaEntorn);
+
                 //internal static RaycastHit TerraDevant(Transform transform) => Fisiques.Raig(Alçada(transform) + transform.forward, -transform.up, 2f, capaEntorn);
                 public static RaycastHit CantonadaForat(Transform transform) => XS_Physics.RayDebug(Alçada(transform) + transform.forward - transform.up * 1.5f, -transform.forward, 1, capaEntorn);
                 

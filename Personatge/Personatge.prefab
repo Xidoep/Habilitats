@@ -228,9 +228,12 @@ MonoBehaviour:
   ikMaEsquerra: {fileID: 6634390949144547199}
   ikPeuDreta: {fileID: 3694570108013275416}
   ikMPeuEsquerra: {fileID: 7653996181031798618}
-  resistencia: {fileID: 11400000, guid: fa2134bea1f1e514db4212ebcde33b00, type: 2}
+  canalResistencia: {fileID: 0}
+  canalMort: {fileID: 0}
+  canalTrencat: {fileID: 0}
   testing: 0
   debug: 0
+  damaged: 0
 --- !u!114 &5229338690214211449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,11 +399,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  temps: 0
-  pla: 0
-  plaSmooth: 1
   velocitat: 3
-  reenganxat: 0
   velocitatMovimentAjupit:
     serializedVersion: 2
     m_Curve:
@@ -443,9 +442,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  capaEntorn:
-    serializedVersion: 2
-    m_Bits: 256
   rig: {fileID: 2905793973121774084}
   ikMaDreta: {fileID: 4087864338423620187}
   ikMaEsquerra: {fileID: 6634390949144547199}
@@ -1101,6 +1097,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98802d21e734de643b68d1a49cdda495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
   foods:
   - {fileID: 3270780039593467845}
   - {fileID: 477046133054001969}

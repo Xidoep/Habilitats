@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Salt : EstatPlayer
+    public class Salt : Estat
     {
         const string SALT = "Salt";
         const string MOVIMENY_Y = "MovimentY";
@@ -17,8 +17,8 @@ namespace Moviment3D
         Vector3 moviment;
 
         [SerializeField] float forca;
-        Vector3 ForcaLateral => ObjecteDevant ? Vector3.zero : (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f);
-        bool ObjecteDevant => XS_Physics.Ray(transform.position + transform.up, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 1, Entorn.capaEntorn).Hitted();
+        Vector3 ForcaLateral => Entorn.Buscar.Dret.EndevantAprop(transform).Hitted() ? Vector3.zero : (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f);
+        //bool ObjecteDevant => XS_Physics.Ray(transform.position + transform.up, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 1, Entorn.capaEntorn).Hitted();
 
         internal override void EnEntrar()
         {
@@ -42,7 +42,10 @@ namespace Moviment3D
             Animacio.VelocitatVertical();
 
             moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime * 2;
-            rb.AddForce(moviment * 4000);
+            if (!Entorn.Buscar.Dret.EndevantAprop(transform).Hitted())
+            {
+                rb.AddForce(moviment * 4000);
+            }
 
 
             if (!Inputs.Saltar)

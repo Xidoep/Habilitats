@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Dret : EstatPlayer
+    public class Dret : Estat
     {
         Rigidbody rb;
 
@@ -23,6 +23,8 @@ namespace Moviment3D
         Vector3 velocitatActual;
         float acceleracio;
         public override string ToString() => "Dret";
+
+        Dinamicable dinamicable;
 
         [SerializeField] bool apretar;
 
@@ -62,6 +64,8 @@ namespace Moviment3D
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
             MostrarUIContextual();
+
+            Apretar();
 
             Acceleracio();
             Orientacio();
@@ -194,6 +198,44 @@ namespace Moviment3D
                 acceleracio -= Time.deltaTime * 6;
                 acceleracio = Mathf.Clamp01(acceleracio);
             }
+        }
+
+        RaycastHit endevantAprop;
+        void Apretar()
+        {
+            if (Inputs.MovimentZero)
+            {
+                if (!apretar)
+                    return;
+
+                apretar = false;
+
+                ReleaseDnimaicable();
+                return;
+            }
+
+            endevantAprop = Entorn.Buscar.Dret.EndevantAprop(transform);
+            if (!endevantAprop.Hitted())
+            {
+                ReleaseDnimaicable();
+                return;
+            }
+
+            apretar = Vector3.Dot(transform.forward, endevantAprop.normal) < 0.3f;
+
+            dinamicable = endevantAprop.collider.gameObject.GetComponent<Dinamicable>();
+            if (dinamicable == null)
+                return;
+
+            dinamicable.Push(rb);
+        }
+        void ReleaseDnimaicable()
+        {
+            if (dinamicable == null)
+                return;
+
+            dinamicable.Release(rb);
+            dinamicable = null;
         }
         void Orientacio()
         {

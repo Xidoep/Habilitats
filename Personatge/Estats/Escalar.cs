@@ -6,7 +6,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Escalar : EstatPlayer
+    public class Escalar : Estat
     {
         Transform helper;
         Rigidbody rb;
@@ -16,16 +16,14 @@ namespace Moviment3D
         Quaternion rotacioInicial;
         Quaternion rotacioFinal;
 
-        public float temps;
-        public bool pla;
-        public float plaSmooth = 1;
-
+        float temps;
+        bool pla;
+        float plaSmooth = 1;
         bool enPosicio;
 
         [SerializeField] int velocitat;
-        [SerializeField] bool reenganxat = false;
+        bool reenganxat = false;
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
-        [SerializeField] LayerMask capaEntorn;
         [SerializeField] Rig rig;
         [SerializeField] Transform ikMaDreta;
         [SerializeField] Transform ikMaEsquerra;
@@ -75,7 +73,7 @@ namespace Moviment3D
             //Animacio.MovimentY(0);
             Animacio.SaltPreparat(false);
 
-            IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
+            IKs.Iniciar(helper, Entorn.capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             if (!pla) IKs.Capturar(Vector2.zero);
 
             Dinamic.Stop();

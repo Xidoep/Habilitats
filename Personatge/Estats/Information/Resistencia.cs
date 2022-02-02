@@ -24,7 +24,7 @@ namespace Moviment3D
             set 
             {
                 actual = Mathf.Clamp(value, 0, maxim);
-                canalResistencia?.Invocar(actual, maxim);
+                canalResistencia.Invocar(actual, maxim);
             } 
             get => !testing ? actual : maxim;
         }
