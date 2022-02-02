@@ -54,11 +54,6 @@ namespace Moviment3D
        
         internal override void EnUpdate()
         {
-            if (XS_Input.OnPress(UnityEngine.InputSystem.Key.A))
-            {
-                Environment.Effect_Utils.WatchStep(transform.position, XS_Layers.Everything);
-            }
-
             TornarKinematicSiTrobaEsglao();
 
             Resistencia.Recuperar();

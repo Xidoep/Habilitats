@@ -34,7 +34,7 @@ public class EntornSetup : MonoBehaviour
                 col.material = dinamic;
                 if (col is MeshCollider) (col as MeshCollider).convex = true;
             }
-            item.gameObject.AddComponent<Environment.Effector>().LayerMask = layerMask;
+            item.gameObject.AddComponent<Environment.Effector_Collision>().LayerMask = layerMask;
         }
         foreach (var item in GetComponentsInChildren<Animator>())
         {

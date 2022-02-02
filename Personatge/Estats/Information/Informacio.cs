@@ -25,19 +25,23 @@ namespace Moviment3D
         [SerializeField] Transform ikMPeuEsquerra;
 
         [Header("Canals")]
-        [SerializeField] Canal_FloatFloat resistencia;
+        [SerializeField] Canal_FloatFloat canalResistencia;
+        [SerializeField] Canal_Void canalMort;
+        [SerializeField] Canal_Bool canalTrencat;
 
         [SerializeField] bool testing;
         public float debug;
+
+        public bool damaged;
 
         private void OnEnable()
         {
             Animacio.Iniciar(transform);
             Inputs.Iniciar(moviment, saltar, agafar, deixar);
             Entorn.Iniciar(capaEntorn);
-            Resistencia.testing = testing;
-            Resistencia.Canal = resistencia;
-            gameObject.AddComponent<Environment.Effector>().LayerMask = capaEntorn;
+            Resistencia.Iniciar(canalResistencia, testing);
+            Vida.Iniciar(canalMort, canalTrencat);
+            gameObject.AddComponent<Environment.Effector_Collision>().LayerMask = capaEntorn;
             //IKs.Iniciar(helper, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             //IKs.Iniciar(transform, capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
         }
@@ -45,12 +49,18 @@ namespace Moviment3D
         private void OnCollisionEnter(Collision collision)
         {
             Debugar.Log($"Colisio a {collision.relativeVelocity.magnitude}");
+            if(collision.relativeVelocity.magnitude > 15)
+            {
+                Vida.Damage();
+            }
         }
 
         private void Update()
         {
             debug = Dinamic.Velocitat.magnitude;
             //IKs.Debug();
+
+            if (Key.V.OnPress()) Vida.Restore();
         }
 
 

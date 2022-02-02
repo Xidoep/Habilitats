@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0872b79d0815045af40912c6b9af31, type: 3}
+  m_Name: Mort
+  m_EditorClassIdentifier: 
+  escoltadors: Registraren la funcio que tenen tant aviat com poden i esperen. No
+    saben els valors.
+  emisors: Criden les funcions registrades quan volen, aportant els valors.
+  funcions: 
+  registrar: Afageix les funcions amb els (VALORS) que es vulguin cridar mes endevant.
+  invocar: Crida les funcions registrades amb els (VALORS) que es passin
+  aquest: 

@@ -6,20 +6,25 @@ namespace Moviment3D
 {
     public static class Resistencia
     {
-        static Canal_FloatFloat canal;
-        public static Canal_FloatFloat Canal { set { canal = value; } }
+        public static void Iniciar(Canal_FloatFloat _canalResistencia, bool _testing)
+        {
+            canalResistencia = _canalResistencia;
+            testing = _testing;
+        }
+
+        static Canal_FloatFloat canalResistencia;
 
         static float maxim = 10;
         static float actual = 10;
 
-        public static bool testing;
+        static bool testing;
 
         static float Actual
         {
             set 
             {
                 actual = Mathf.Clamp(value, 0, maxim);
-                canal?.Invocar(actual, maxim);
+                canalResistencia?.Invocar(actual, maxim);
             } 
             get => !testing ? actual : maxim;
         }
