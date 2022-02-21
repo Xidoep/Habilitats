@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class SaltEscalant : EstatPlayer
+    public class SaltEscalant : Estat
     {
         Rigidbody rb;
         //Informacio info;

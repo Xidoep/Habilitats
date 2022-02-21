@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Caure : EstatPlayer
+    public class Caure : Estat
     {
         Rigidbody rb;
         Vector3 moviment;
