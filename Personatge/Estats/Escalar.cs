@@ -8,8 +8,18 @@ namespace Moviment3D
 {
     public class Escalar : Estat
     {
+        [SerializeField] int velocitat;
+        [SerializeField] AnimationCurve velocitatMovimentAjupit;
+        [SerializeField] Rig rig;
+        [SerializeField] Transform ikMaDreta;
+        [SerializeField] Transform ikMaEsquerra;
+        [SerializeField] Transform ikPeuDreta;
+        [SerializeField] Transform ikMPeuEsquerra;
+
         Transform helper;
         Rigidbody rb;
+        Rigidbody otherRigidbody;
+        ConfigurableJoint joint;
 
         Vector3 posicioInicial;
         Vector3 forwardInicial;
@@ -21,17 +31,8 @@ namespace Moviment3D
         float plaSmooth = 1;
         bool enPosicio;
 
-        [SerializeField] int velocitat;
-        bool reenganxat = false;
-        [SerializeField] AnimationCurve velocitatMovimentAjupit;
-        [SerializeField] Rig rig;
-        [SerializeField] Transform ikMaDreta;
-        [SerializeField] Transform ikMaEsquerra;
-        [SerializeField] Transform ikPeuDreta;
-        [SerializeField] Transform ikMPeuEsquerra;
+        //bool reenganxat = false;
 
-        Rigidbody otherRigidbody;
-        ConfigurableJoint joint;
 
         bool inputSaltarFlanc;
 
@@ -60,9 +61,8 @@ namespace Moviment3D
             inputSaltarFlanc = false;
             enPosicio = false;
             Preparacio.Preparar = 0.25f;
-            reenganxat = false;
+            //reenganxat = false;
             pla = false;
-
 
             //pla = Pla;
             Animacio.Pla(pla);
@@ -107,6 +107,8 @@ namespace Moviment3D
 
             Animacio.Pla(pla);
             IKs.Debug();
+
+
         }
 
 
@@ -343,7 +345,7 @@ namespace Moviment3D
 
             if (Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
             {
-                reenganxat = true;
+                //reenganxat = true;
                 reenganxarCantondaSuperior = hit.normal.PropDe1();
                 Resistencia.NoBuidarDelTot();
                 CrearHelper(hit);
@@ -381,6 +383,14 @@ namespace Moviment3D
                 Estat.Sortida(condicio);
             }
 
+        }
+
+        public void C_DeixarInputEscalarQuanPla(Estat.Condicio condicio)
+        {
+            if(!Inputs.Escalar && Pla && enPosicio)
+            {
+                Estat.Sortida(condicio);
+            }
         }
     }
 

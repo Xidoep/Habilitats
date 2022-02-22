@@ -82,8 +82,9 @@ namespace Moviment3D
 
         private void SaltAjupit()
         {
+            Inputs.DisableEscalar();
             Preparacio.Preparar = 0.25f;
-
+            
             direccioParet = false;
 
             transform.SetParent(null);

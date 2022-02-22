@@ -82,7 +82,7 @@ namespace Moviment3D
 
         void Moviment()
         {
-            Debug.DrawRay(transform.position, Entorn.Buscar.Terra.InclinacioForward(transform));
+            Debug.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment));
 
             velocitatActual = ((Entorn.Buscar.Terra.InclinacioForward(transform) + PujarSiEsglao) *
                 velocitat *

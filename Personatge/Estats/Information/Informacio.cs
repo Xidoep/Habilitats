@@ -57,7 +57,7 @@ namespace Moviment3D
 
         private void Update()
         {
-            debug = Dinamic.Velocitat.magnitude;
+            debug = Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment));
             //IKs.Debug();
 
             if (Key.V.OnPress()) Vida.Restore();

@@ -7,9 +7,6 @@ namespace Moviment3D
 {
     public class Salt : Estat
     {
-        const string SALT = "Salt";
-        const string MOVIMENY_Y = "MovimentY";
-        const string VELOCITAT_VERTICAL = "VelocitatVertical";
         public override string ToString() => "Salt";
 
         Rigidbody rb;
@@ -44,7 +41,7 @@ namespace Moviment3D
             moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime * 2;
             if (!Entorn.Buscar.Dret.EndevantAprop(transform).Hitted())
             {
-                rb.AddForce(moviment * 4000);
+                rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)));
             }
 
 

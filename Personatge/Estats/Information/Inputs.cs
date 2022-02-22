@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using XS_Utils;
+using System;
 
 namespace Moviment3D
 {
@@ -19,7 +20,11 @@ namespace Moviment3D
             saltar = _saltar;
             agafar = _agafar;
             deixar = _deixar;
+
+            agafar.OnPerformedAdd(AgafarPerformed);
         }
+
+        
 
 
 
@@ -38,7 +43,7 @@ namespace Moviment3D
         static bool saltEscalantPreparat;
         static bool saltEscalantReenganxarse;
 
-
+        static bool agafarPerformed = false;
         //PROPIETATS
 
         public static bool SaltEscalantPreparat
@@ -52,7 +57,9 @@ namespace Moviment3D
             set => saltEscalantReenganxarse = value;
         }
 
-        public static bool Escalar => agafar.GetBool();
+        //public static bool Escalar => agafar.GetBool();
+        public static bool Escalar => agafarPerformed;
+        public static void DisableEscalar() => agafarPerformed = false;
         public static Vector2 Moviment => moviment.GetVector2();
 
         public static bool MovimentZero => moviment.GetVector2() == Vector2.zero;
@@ -76,6 +83,11 @@ namespace Moviment3D
 
 
         public static bool AreActived => moviment != null;
+
+        private static void AgafarPerformed(InputAction.CallbackContext obj)
+        {
+            agafarPerformed = agafar.GetBool();
+        }
     }
 
 }

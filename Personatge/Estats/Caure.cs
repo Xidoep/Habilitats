@@ -7,10 +7,12 @@ namespace Moviment3D
 {
     public class Caure : Estat
     {
+        public override string ToString() => "Caure";
+
         Rigidbody rb;
         Vector3 moviment;
 
-        public override string ToString() => "Caure";
+        public float debug;
 
         internal override void EnEntrar()
         {
@@ -35,7 +37,8 @@ namespace Moviment3D
         internal override void EnUpdate()
         {
             moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
-            rb.AddForce(moviment * 4000);
+
+            rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)));
 
             if (!Inputs.Saltar)
             {
