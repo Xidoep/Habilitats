@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Personatge
-  m_Shader: {fileID: -6465566751694194690, guid: b26c29e26c171f446b26391379153b27, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c8936170f93db534db3b62a05cd333f7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -67,6 +67,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _N:
+        m_Texture: {fileID: 2800000, guid: a6899ec826ed6bc42a21154493a15e34, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalVectorNormalMap_0a1166bc73f34d9e91464786d9479a72_Normals_1778056523:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -87,8 +91,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 63c28d3d8397ec14c8d9f51e251a1007, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OIF:
+        m_Texture: {fileID: 2800000, guid: 544ffb5fe8f9f0d4fb439dd480043da1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RGBA:
+        m_Texture: {fileID: 2800000, guid: a6cb5cf2a2439b24a8813442e108c4af, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SP_Textura:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cd13b8dcbda3f7f4895aadcfe0de5513, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_59e6ab3a28ba450c874c709cac2154a3_Texture_1:
@@ -127,6 +139,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _XSObjecte_32599d99511443edad7f2de860d23f12_OIF_2567837874:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _XSObjecte_32599d99511443edad7f2de860d23f12_RGBA_31274983:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -150,7 +170,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SP_Multiplicador: 0
-    - _Tamany: 0.491
+    - _Tamany: 0.141
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
