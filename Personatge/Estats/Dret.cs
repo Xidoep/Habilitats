@@ -7,8 +7,8 @@ namespace Moviment3D
 {
     public class Dret : Estat
     {
+        [SerializeField] Info info;
         Rigidbody rb;
-
         [SerializeField] UI ui;
         [SerializeField] int velocitat;
         //public bool esglao;
@@ -31,13 +31,13 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             if (rb == null) rb = GetComponent<Rigidbody>();
-
+            
             //Emparentar();
             MantenirAcceleracioSiInput();
 
             Preparacio.Preparar = 0.15f;
-            Animacio.Dret();
-
+            //Animacio.Dret();
+            info.Anim.Trigger(AnimPlayer.dret);
         }
 
         
@@ -58,8 +58,8 @@ namespace Moviment3D
         {
             TornarKinematicSiTrobaEsglao();
 
-            Resistencia.Recuperar();
-
+            //Resistencia.Recuperar();
+            info.Resist.Recuperar();
             //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
@@ -169,7 +169,8 @@ namespace Moviment3D
 
         void Animar()
         {
-            Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            //Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            info.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             //if (!Inputs.Saltar)
             //    Animacio.NoTerra(transform);
         }
@@ -254,6 +255,43 @@ namespace Moviment3D
             Gizmos.color = new Color(1, 0, 0, 0.5f);
             Gizmos.DrawSphere(transform.position + transform.up * (0.9f + 0.35f - 0.1f) - (transform.up * 0.9f), 0.3f);
             //Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.4f);
+        }
+
+
+
+
+        public void C_Terra(Estat.Condicio condicio)
+        {
+            if (Entorn.Buscar.Terra.Hit(transform).Hitted() &&
+                Preparacio.Preparat &&
+                !Entorn.Buscar.Terra.EsRelliscant(transform))
+
+                Estat.Sortida(condicio);
+        }
+        public void C_Esglao(Estat.Condicio condicio)
+        {
+            if (Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                !Inputs.Saltar)
+
+                Estat.Sortida(condicio);
+        }
+        public void C_NoEsc(Estat.Condicio condicio)
+        {
+            if (Inputs.Deixar &&
+                Preparacio.Preparat &&
+                Entorn.Buscar.Terra.Hit(transform).Hitted())
+
+                Estat.Sortida(condicio);
+        }
+        public void C_NoRelliscar(Estat.Condicio condicio)
+        {
+            if (!Entorn.Buscar.Terra.EsRelliscant(transform) &&
+                CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f))
+            {
+                CoyoteTime.Stop();
+                Estat.Sortida(condicio);
+            }
+
         }
     }
 

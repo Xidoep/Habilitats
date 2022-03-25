@@ -234,6 +234,7 @@ MonoBehaviour:
   testing: 0
   debug: 0
   damaged: 0
+  resist: {fileID: 11400000, guid: b9fa284d523ffe94b82678e4bc009c98, type: 2}
 --- !u!114 &5229338690214211449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,9 +268,9 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
-          m_MethodName: C_Salt
+        - m_Target: {fileID: 5229338690214211444}
+          m_TargetAssemblyTypeName: Moviment3D.Salt, Assembly-CSharp
+          m_MethodName: C_Saltar
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -283,8 +284,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_NoTerra
           m_Mode: 0
           m_Arguments:
@@ -299,8 +300,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 1999131223}
+          m_TargetAssemblyTypeName: Moviment3D.Relliscar, Assembly-CSharp
           m_MethodName: C_RelliscarCoyoteTime
           m_Mode: 0
           m_Arguments:
@@ -311,6 +312,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
   ui: {fileID: 11400000, guid: 4ea86373593cf3d4f95410e0b2e8fcae, type: 2}
   velocitat: 5
   apretar: 0
@@ -331,9 +333,21 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Prota, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211449}
+          m_TargetAssemblyTypeName: Moviment3D.Dret, Assembly-CSharp
           m_MethodName: C_NoEsc
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 5229338690214211454}
+          m_TargetAssemblyTypeName: Moviment3D.Escalar, Assembly-CSharp
+          m_MethodName: C_DeixarInputEscalarQuanPla
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -347,8 +361,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211445}
+          m_TargetAssemblyTypeName: Moviment3D.SaltEscalant, Assembly-CSharp
           m_MethodName: C_SaltarEscalant
           m_Mode: 0
           m_Arguments:
@@ -363,8 +377,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211454}
+          m_TargetAssemblyTypeName: Moviment3D.Escalar, Assembly-CSharp
           m_MethodName: C_CaurePerMassaInclinacio
           m_Mode: 0
           m_Arguments:
@@ -375,8 +389,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211454}
+          m_TargetAssemblyTypeName: Moviment3D.Escalar, Assembly-CSharp
           m_MethodName: C_SenseResistencia
           m_Mode: 0
           m_Arguments:
@@ -387,8 +401,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_NoEscAire
           m_Mode: 0
           m_Arguments:
@@ -399,11 +413,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  temps: 0
-  pla: 0
-  plaSmooth: 1
+  info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
   velocitat: 3
-  reenganxat: 0
   velocitatMovimentAjupit:
     serializedVersion: 2
     m_Curve:
@@ -446,9 +457,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  capaEntorn:
-    serializedVersion: 2
-    m_Bits: 256
   rig: {fileID: 2905793973121774084}
   ikMaDreta: {fileID: 4087864338423620187}
   ikMaEsquerra: {fileID: 6634390949144547199}
@@ -487,8 +495,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_VelocitatVerticalNegativa
           m_Mode: 0
           m_Arguments:
@@ -499,8 +507,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_SaltarEscalantCaure
           m_Mode: 0
           m_Arguments:
@@ -511,8 +519,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_NoParetDevant
           m_Mode: 0
           m_Arguments:
@@ -523,6 +531,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 0}
   seguintParet: 9
   contraParet: 4
   ajupit: 9
@@ -543,8 +552,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211449}
+          m_TargetAssemblyTypeName: Moviment3D.Dret, Assembly-CSharp
           m_MethodName: C_Terra
           m_Mode: 0
           m_Arguments:
@@ -555,8 +564,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211449}
+          m_TargetAssemblyTypeName: Moviment3D.Dret, Assembly-CSharp
           m_MethodName: C_Esglao
           m_Mode: 0
           m_Arguments:
@@ -587,8 +596,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 1999131223}
+          m_TargetAssemblyTypeName: Moviment3D.Relliscar, Assembly-CSharp
           m_MethodName: C_Relliscar
           m_Mode: 0
           m_Arguments:
@@ -599,6 +608,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  debug: 0
 --- !u!114 &5229338690214211444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,8 +626,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_VelocitatVerticalNegativa
           m_Mode: 0
           m_Arguments:
@@ -648,8 +658,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211449}
+          m_TargetAssemblyTypeName: Moviment3D.Dret, Assembly-CSharp
           m_MethodName: C_Esglao
           m_Mode: 0
           m_Arguments:
@@ -660,6 +670,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 0}
   forca: 6
 --- !u!114 &1999131223
 MonoBehaviour:
@@ -678,8 +689,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211449}
+          m_TargetAssemblyTypeName: Moviment3D.Dret, Assembly-CSharp
           m_MethodName: C_NoRelliscar
           m_Mode: 0
           m_Arguments:
@@ -694,8 +705,8 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
+        - m_Target: {fileID: 5229338690214211450}
+          m_TargetAssemblyTypeName: Moviment3D.Caure, Assembly-CSharp
           m_MethodName: C_NoTerra
           m_Mode: 0
           m_Arguments:
@@ -710,9 +721,9 @@ MonoBehaviour:
     condicions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5229338690214211448}
-          m_TargetAssemblyTypeName: Moviment3D.Informacio, Assembly-CSharp
-          m_MethodName: C_Salt
+        - m_Target: {fileID: 5229338690214211444}
+          m_TargetAssemblyTypeName: Moviment3D.Salt, Assembly-CSharp
+          m_MethodName: C_Saltar
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -756,8 +767,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5229338690320075246}
-  - component: {fileID: 5229338690320075243}
-  - component: {fileID: 5229338690320075240}
   - component: {fileID: 5229338690320075241}
   m_Layer: 9
   m_Name: Capsule
@@ -781,56 +790,6 @@ Transform:
   m_Father: {fileID: 5229338690214211447}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5229338690320075243
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5229338690320075247}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5229338690320075240
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5229338690320075247}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &5229338690320075241
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1026,7 +985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4698286137885282728, guid: 9e487e1f97bcebe458335fbbd5fa2e20, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6714555773613085991, guid: 9e487e1f97bcebe458335fbbd5fa2e20, type: 3}
       propertyPath: m_Icon

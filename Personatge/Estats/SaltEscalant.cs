@@ -7,6 +7,7 @@ namespace Moviment3D
 {
     public class SaltEscalant : Estat
     {
+        [SerializeField] Info info;
         Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;
@@ -126,6 +127,33 @@ namespace Moviment3D
             {
                 transform.forward = -paretHit.normal;
             }
+        }
+
+
+        public void C_SaltarEscalant(Estat.Condicio condicio)
+        {
+            /*if (!Inputs.Saltar && 
+                Inputs.SaltEscalantPreparat) 
+                
+                Estat.Sortida(condicio);
+            */
+            if (Inputs.Saltar)
+            {
+                Estat.Sortida(condicio);
+                //Aquí decidir quin tipus de salt es fa segons la condicio.
+                //Animacio de salt consequent
+            }
+        }
+
+        //Aixo es podria utilitzar igual que quan arribes al top.
+        //Si deixes apretat el salt, continua saltant. si no, "s'enganxa" a la cantonada.
+        public void C_TrobarCantonadaSuperior(Estat.Condicio condicio)
+        {
+            if (Preparacio.Preparat &&
+                Entorn.Escalant.Buscar.CantonadaSuperior(transform).Hitted() &&
+                Inputs.SaltEscalantReenganxarse)
+
+                Estat.Sortida(condicio);
         }
     }
 

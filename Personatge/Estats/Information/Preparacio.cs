@@ -17,7 +17,7 @@ namespace Moviment3D
             {
                 preparat = false;
                 coroutine.StopCoroutine();
-                coroutine = XS_Coroutine.StartCoroutine(value, PreparatTrue);
+                coroutine = XS_Coroutine.StartCoroutine_Ending(value, PreparatTrue);
             }
         }
         static void PreparatTrue() => preparat = true;

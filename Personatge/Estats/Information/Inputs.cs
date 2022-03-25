@@ -30,7 +30,7 @@ namespace Moviment3D
 
         //PUBLIQUES
         static InputActionReference moviment;
-        static InputActionReference saltar;
+        public static InputActionReference saltar;
         static InputActionReference agafar;
         static InputActionReference deixar;
 

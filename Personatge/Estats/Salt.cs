@@ -7,8 +7,7 @@ namespace Moviment3D
 {
     public class Salt : Estat
     {
-        public override string ToString() => "Salt";
-
+        [SerializeField] Info info;
         Rigidbody rb;
 
         Vector3 moviment;
@@ -66,6 +65,21 @@ namespace Moviment3D
         internal override void EnSortir()
         {
             //info.SetVelocitat = rb.velocity;
+        }
+
+
+
+        public void C_Saltar(Estat.Condicio condicio)
+        {
+            if (Inputs.Saltar &&
+                Resistencia.UnaMica &&
+                Preparacio.Preparat)
+            {
+                Estat.Sortida(condicio);
+                //Aqui s'ha de comprovar si està en moviment o no. per posar una anim o una altre.
+                //Animacio Saltar simple
+            }
+
         }
     }
 

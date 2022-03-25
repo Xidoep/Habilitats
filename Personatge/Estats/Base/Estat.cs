@@ -4,7 +4,6 @@ using UnityEngine.Events;
 public abstract class Estat : MonoBehaviour
 {
     [SerializeField] private Condicio[] sortides;
-    //internal Informacio info;
 
     internal abstract void EnEntrar();
     internal abstract void EnSortir();
@@ -38,14 +37,12 @@ public abstract class Estat : MonoBehaviour
     }
 
 
-
     [System.Serializable]
     public class Condicio
     {
-        //PUBLIQUES
-        private Estat my;
-        [SerializeField] private Estat objectiu;
-        [SerializeField] private UnityEvent<Condicio> condicions;
+        Estat my;
+        [SerializeField] Estat objectiu;
+        [SerializeField] UnityEvent<Condicio> condicions;
         public Estat My { get => my; set => my = value; }
 
         public Estat Objectiu => objectiu;

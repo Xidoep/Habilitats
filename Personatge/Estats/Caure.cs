@@ -52,6 +52,53 @@ namespace Moviment3D
 
             Animacio.VelocitatVertical();
         }
+
+
+
+        public void C_VelocitatVerticalNegativa(Estat.Condicio condicio)
+        {
+            if (Dinamic.VelocitatVerticalNegativa) Estat.Sortida(condicio);
+        }
+        public void C_NoEscAire(Estat.Condicio condicio)
+        {
+            if (Inputs.Deixar &&
+                Preparacio.Preparat &&
+                !Entorn.Buscar.Terra.Hit(transform).Hitted())
+            {
+                Estat.Sortida(condicio);
+                //Simple animcio de escalar a aire.
+            }
+        }
+        public void C_NoTerra(Estat.Condicio condicio)
+        {
+            if (!Entorn.Buscar.Terra.Hit(transform).Hitted() &&
+                !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
+                Preparacio.Preparat)
+            {
+                CoyoteTime.Stop();
+                Estat.Sortida(condicio);
+            }
+
+        }
+        public void C_SaltarEscalantCaure(Estat.Condicio condicio)
+        {
+            if (Preparacio.Preparat &&
+                CoyoteTime.Temps(Preparacio.Preparat, 0.4f))
+            {
+                CoyoteTime.Stop();
+                Estat.Sortida(condicio);
+            }
+
+        }
+        public void C_NoParetDevant(Estat.Condicio condicio)
+        {
+            if (!Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
+                Preparacio.Preparat)
+            {
+                Estat.Sortida(condicio);
+            }
+        }
     }
 
 }

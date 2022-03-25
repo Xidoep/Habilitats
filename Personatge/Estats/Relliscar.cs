@@ -62,6 +62,31 @@ namespace Moviment3D
         {
             helper.forward = normal;
         }
+
+
+
+        public void C_Relliscar(Estat.Condicio condicio)
+        {
+            if (Entorn.Buscar.Terra.EsRelliscant(transform) &&
+                !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
+            {
+                CoyoteTime.Stop();
+                Estat.Sortida(condicio);
+            }
+
+        }
+        public void C_RelliscarCoyoteTime(Estat.Condicio condicio)
+        {
+            if (Entorn.Buscar.Terra.EsRelliscant(transform) &&
+                !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f))
+            {
+                CoyoteTime.Stop();
+                Estat.Sortida(condicio);
+            }
+
+        }
     }
 }
 

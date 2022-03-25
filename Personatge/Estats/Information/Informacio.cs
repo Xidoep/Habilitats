@@ -11,6 +11,7 @@ namespace Moviment3D
     [DefaultExecutionOrder(-1)]
     public class Informacio : MonoBehaviour
     {
+        [SerializeField] Info info;
         [SerializeField] LayerMask capaEntorn;
 
         [SerializeField] InputActionReference moviment;
@@ -36,6 +37,9 @@ namespace Moviment3D
 
         private void OnEnable()
         {
+            info = info.Iniciar(transform);
+            GetComponent<PlayerInput>().enabled = false;
+            GetComponent<PlayerInput>().enabled = true;
             Animacio.Iniciar(transform);
             Inputs.Iniciar(moviment, saltar, agafar, deixar);
             Entorn.Iniciar(capaEntorn);
@@ -61,6 +65,7 @@ namespace Moviment3D
             //IKs.Debug();
 
             if (Key.V.OnPress()) Vida.Restore();
+            //if (Key.V.OnPress()) resist.Testing = !resist.Testing;
         }
 
 
@@ -69,185 +74,6 @@ namespace Moviment3D
             Dinamic.ActualitzarSmooth(transform);
         }
         //internal Animator Animator => animator;
-
-        //CONDICIONS
-        public void C_Esc(Estat.Condicio condicio) 
-        {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
-                Preparacio.Preparat)
-            {
-
-                //Animator.SetBool("Dret", true);
-                Estat.Sortida(condicio);
-            }
-        }
-        public void C_EscAire(Estat.Condicio condicio)
-        {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
-                Preparacio.Preparat)
-            {
-
-                //Animator.SetBool("Dret", true);
-                Estat.Sortida(condicio);
-            }
-        }
-        public void C_NoEsc(Estat.Condicio condicio) 
-        { 
-            if (Inputs.Deixar && 
-                Preparacio.Preparat &&
-                Entorn.Buscar.Terra.Hit(transform).Hitted()) 
-                
-                Estat.Sortida(condicio); 
-        }
-        public void C_NoEscAire(Estat.Condicio condicio)
-        {
-            if (Inputs.Deixar &&
-                Preparacio.Preparat &&
-                !Entorn.Buscar.Terra.Hit(transform).Hitted()) 
-                
-                Estat.Sortida(condicio);
-        }
-        public void C_Mov(Estat.Condicio condicio) 
-        { 
-            if (Inputs.Moviment != Vector2.zero) Estat.Sortida(condicio); 
-        }
-        public void C_VelocitatVerticalNegativa(Estat.Condicio condicio) 
-        { 
-            if (Dinamic.VelocitatVerticalNegativa) Estat.Sortida(condicio); 
-        }
-        public void C_Terra(Estat.Condicio condicio) 
-        { 
-            if (Entorn.Buscar.Terra.Hit(transform).Hitted() && 
-                Preparacio.Preparat && 
-                !Entorn.Buscar.Terra.EsRelliscant(transform)) 
-                
-                Estat.Sortida(condicio); 
-        }
-        public void C_NoTerra(Estat.Condicio condicio) 
-        { 
-            if (!Entorn.Buscar.Terra.Hit(transform).Hitted() && 
-                !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) && 
-                Preparacio.Preparat)
-            {
-                CoyoteTime.Stop();
-                Estat.Sortida(condicio);
-            }
-                
-        }
-        public void C_NoParetDevant(Estat.Condicio condicio)
-        {
-            if (!Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
-                Preparacio.Preparat)
-            {
-                Estat.Sortida(condicio);
-            }
-        }
-
-        public void C_Salt(Estat.Condicio condicio) 
-        { 
-            if (Inputs.Saltar && 
-                Resistencia.UnaMica &&
-                Preparacio.Preparat)
-            {
-                //Animacio.Saltar();
-                Estat.Sortida(condicio); 
-            }
-                
-        }
-        public void C_SaltarEscalant(Estat.Condicio condicio) 
-        { 
-            /*if (!Inputs.Saltar && 
-                Inputs.SaltEscalantPreparat) 
-                
-                Estat.Sortida(condicio);
-            */
-            if (Inputs.Saltar)
-            {
-                Estat.Sortida(condicio);
-            }
-        }
-        public void C_SaltarEscalantReencangarse(Estat.Condicio condicio) 
-        {
-            if (Inputs.Escalar && 
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted()) 
-                
-                Estat.Sortida(condicio); 
-        }
-        public void C_SaltarEscalantCaure(Estat.Condicio condicio) 
-        {
-            if (Preparacio.Preparat && 
-                CoyoteTime.Temps(Preparacio.Preparat, 0.4f))
-            {
-                CoyoteTime.Stop();
-                Estat.Sortida(condicio); 
-            }
-                
-        }
-        public void C_TornarAAgafarSiPot(Estat.Condicio condicio) 
-        { 
-            if (Preparacio.Preparat && 
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted()) 
-                
-                Estat.Sortida(condicio); 
-        }
-        public void C_TrobarCantonadaSuperior(Estat.Condicio condicio) 
-        { 
-            if (Preparacio.Preparat && 
-                Entorn.Escalant.Buscar.CantonadaSuperior(transform).Hitted() &&
-                Inputs.SaltEscalantReenganxarse)
-                
-                Estat.Sortida(condicio); 
-        }
-        public void C_CaurePerMassaInclinacio(Estat.Condicio condicio) 
-        {
-            if(Inputs.GetHelperForward.CasiMenys1()) Estat.Sortida(condicio); 
-        }
-        public void C_SenseResistencia(Estat.Condicio condicio) 
-        { 
-            if (Resistencia.Zero) Estat.Sortida(condicio); 
-        }
-        public void C_Relliscar(Estat.Condicio condicio) 
-        { 
-            if (Entorn.Buscar.Terra.EsRelliscant(transform) && 
-                !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
-            {
-                CoyoteTime.Stop();
-                Estat.Sortida(condicio); 
-            }
-                
-        }
-        public void C_RelliscarCoyoteTime(Estat.Condicio condicio) 
-        { 
-            if (Entorn.Buscar.Terra.EsRelliscant(transform) && 
-                !Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f))
-            {
-                CoyoteTime.Stop();
-                Estat.Sortida(condicio); 
-            }
-                
-        }
-        public void C_NoRelliscar(Estat.Condicio condicio)
-        { 
-            if (!Entorn.Buscar.Terra.EsRelliscant(transform) && 
-                CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f))
-            {
-                CoyoteTime.Stop();
-                Estat.Sortida(condicio); 
-            }
-                
-        }
-        public void C_Esglao(Estat.Condicio condicio) 
-        { 
-            if (Entorn.Buscar.Terra.HiHaEsglao(transform) && 
-                !Inputs.Saltar) 
-                
-                Estat.Sortida(condicio); 
-        }
 
 
         private void OnDisable()
