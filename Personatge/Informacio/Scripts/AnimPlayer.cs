@@ -26,47 +26,51 @@ public class AnimPlayer : Anim
     const string saltEscalantNom = "SaltEscalant";
     const string reenganxarCantondaSuperiorNom = "ReenganxarCantondaSuperior";
 
-    static public int dret;
-    static public int dreta;
-    static public int pla;
-    static public int saltar;
-    static public int aire;
-    static public int caure;
-    static public int escalar;
-    static public int escalant;
-    static public int relliscar;
-    static public int velocitatVertical;
-    static public int moviment;
-    static public int movimentX;
-    static public int movimentY;
-    static public int saltPreparat;
-    static public int saltAjupit;
-    static public int saltEscalant;
-    static public int reenganxarCantondaSuperior;
+    int dret;
+    int dreta;
+    int pla;
+    int saltar;
+    int aire;
+    int caure;
+    int escalar;
+    int escalant;
+    int relliscar;
+    int velocitatVertical;
+    int moviment;
+    int movimentX;
+    int movimentY;
+    int saltPreparat;
+    int saltAjupit;
+    int saltEscalant;
+    int reenganxarCantondaSuperior;
 
-    //static bool aireFlanc;
+    bool aireFlanc;
+
     public object Iniciar(Transform transform)
     {
         AnimPlayer anim = CreateInstance<AnimPlayer>();
         anim.animator = transform.GetComponentInChildren<Animator>();
 
-        AnimPlayer.dret = dretNom.ToHash();
-        AnimPlayer.dreta = dretaNom.ToHash();
-        AnimPlayer.pla = plaNom.ToHash();
-        AnimPlayer.saltar = saltarNom.ToHash();
-        AnimPlayer.aire = aireNom.ToHash();
-        AnimPlayer.caure = caureNom.ToHash();
-        AnimPlayer.escalar = escalarNom.ToHash();
-        AnimPlayer.escalant = escalantNom.ToHash();
-        AnimPlayer.relliscar = relliscarNom.ToHash();
-        AnimPlayer.velocitatVertical = velocitatVerticalNom.ToHash();
-        AnimPlayer.moviment = movimentNom.ToHash();
-        AnimPlayer.movimentX = movimentXNom.ToHash();
-        AnimPlayer.movimentY = movimentYNom.ToHash();
-        AnimPlayer.saltPreparat = saltPreparatNom.ToHash();
-        AnimPlayer.saltAjupit = saltAjupitNom.ToHash();
-        AnimPlayer.saltEscalant = saltEscalantNom.ToHash();
-        AnimPlayer.reenganxarCantondaSuperior = reenganxarCantondaSuperiorNom.ToHash();
+        dret = dretNom.ToHash();
+        dreta = dretaNom.ToHash();
+        pla = plaNom.ToHash();
+        saltar = saltarNom.ToHash();
+        aire = aireNom.ToHash();
+        caure = caureNom.ToHash();
+        escalar = escalarNom.ToHash();
+        escalant = escalantNom.ToHash();
+        relliscar = relliscarNom.ToHash();
+        velocitatVertical = velocitatVerticalNom.ToHash();
+        moviment = movimentNom.ToHash();
+        movimentX = movimentXNom.ToHash();
+        movimentY = movimentYNom.ToHash();
+        saltPreparat = saltPreparatNom.ToHash();
+        saltAjupit = saltAjupitNom.ToHash();
+        saltEscalant = saltEscalantNom.ToHash();
+        reenganxarCantondaSuperior = reenganxarCantondaSuperiorNom.ToHash();
+
+        aireFlanc = false;
+
         return anim;
     }
     //REFERENCIES
@@ -105,23 +109,25 @@ public class AnimPlayer : Anim
         Bool(aire, false);
         Bool(escalant, false);
     }
-    public void NoTerra(Transform transform)
+    public void NoTerra(Transform transform, float velocitatGravetat, bool preparat)
     {
-        /*if (Aire(transform) && !aireFlanc)
+        //velocitatGravetat = i.Dinamic.VelocitatGravetat.y
+        if (Aire(transform, preparat) && !aireFlanc)
         {
             Caure();
-            Float(velocitatVertical, Dinamic.VelocitatGravetat.y);
+            Float(velocitatVertical, velocitatGravetat);
             aireFlanc = true;
         }
-        else if (!Aire(transform) && aireFlanc)
+        else if (!Aire(transform, preparat) && aireFlanc)
         {
             Dret();
             aireFlanc = false;
-        }*/
+        }
     }
-    public void VelocitatVertical()
+    public void VelocitatVertical(float velocitatGravetat)
     {
-        Float(velocitatVertical, Dinamic.VelocitatGravetat.y);
+        //velocitatGravetat = Dinamic.VelocitatGravetat.y
+        Float(velocitatVertical, velocitatGravetat);
     }
     public void Moviment(Vector2 valor)
     {
@@ -169,11 +175,11 @@ public class AnimPlayer : Anim
 
 
 
-    bool Aire(Transform transform)
+    bool Aire(Transform transform, bool preparat)
     {
         return !Entorn.Buscar.Terra.Hit(transform).Hitted() &&
          !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-           Preparacio.Preparat;
+         preparat;
     }
 
 

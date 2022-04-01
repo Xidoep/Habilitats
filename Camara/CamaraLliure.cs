@@ -10,6 +10,7 @@ namespace Moviment3D
 {
     public class CamaraLliure : MonoBehaviour
     {
+        [SerializeField] Informacio player;
         public Camera camaraPrincipal;
 
         public CinemachineFreeLook freeLook;
@@ -32,9 +33,9 @@ namespace Moviment3D
             if (!freeLook)
                 return;
 
-            if (Dinamic.Velocitat.magnitude > 0)
+            if (player.Dinamic.Velocitat.magnitude > 0)
             {
-                distanciaVelocitat += Time.deltaTime * Dinamic.Velocitat.magnitude * 2;
+                distanciaVelocitat += Time.deltaTime * player.Dinamic.Velocitat.magnitude * 2;
                 distanciaVelocitat = Mathf.Clamp01(distanciaVelocitat);
                 iniciTornada = 0;
             }

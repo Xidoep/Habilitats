@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using XS_Utils;
 
 namespace Moviment3D
 {
     public class Dret : Estat
     {
-        [SerializeField] Info info;
-        Rigidbody rb;
         [SerializeField] UI ui;
+        [SerializeField] UI_Contextual contextual;
+        [SerializeField] InputActionReference climbInputAction;
         [SerializeField] int velocitat;
         //public bool esglao;
 
@@ -28,16 +29,17 @@ namespace Moviment3D
 
         [SerializeField] bool apretar;
 
+        bool climbContextualUiShowm;
+
         internal override void EnEntrar()
         {
-            if (rb == null) rb = GetComponent<Rigidbody>();
-            
             //Emparentar();
             MantenirAcceleracioSiInput();
 
-            Preparacio.Preparar = 0.15f;
+            i.Preparacio.Preparar = 0.15f;
             //Animacio.Dret();
-            info.Anim.Trigger(AnimPlayer.dret);
+            i.Animacio.Dret();
+            climbContextualUiShowm = false;
         }
 
         
@@ -45,8 +47,12 @@ namespace Moviment3D
         internal override void EnSortir()
         {
             //Desemparentar();
-
-            UIContextual_Amagar();
+            if (climbContextualUiShowm)
+            {
+                climbContextualUiShowm = false;
+                contextual.Hide(climbInputAction);
+            }
+            
 
             acceleracio = 0;
             velocitatActual = Vector3.zero;
@@ -59,9 +65,9 @@ namespace Moviment3D
             TornarKinematicSiTrobaEsglao();
 
             //Resistencia.Recuperar();
-            info.Resist.Recuperar();
+            i.Resistencia.Recuperar();
             //Emparentar();
-            Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
+            Debugar.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
             MostrarUIContextual();
 
@@ -71,7 +77,11 @@ namespace Moviment3D
             Orientacio();
 
             Animar();
+            i.Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, i.Dinamic.Velocitat.magnitude * 30));
         }
+
+        
+
         internal override void EnFixedUpdate()
         {
             if (acceleracio > 0)
@@ -82,7 +92,7 @@ namespace Moviment3D
 
         void Moviment()
         {
-            Debug.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment));
+            Debugar.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment));
 
             velocitatActual = ((Entorn.Buscar.Terra.InclinacioForward(transform) + PujarSiEsglao) *
                 velocitat *
@@ -138,58 +148,62 @@ namespace Moviment3D
             if (joint != null) Destroy(joint);
         }
 
-        void TornarKinematicSiTrobaEsglao() => rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
+        void TornarKinematicSiTrobaEsglao() => i.Dinamic.Rigidbody.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !i.Inputs.MovimentZero;
 
         void MostrarUIContextual()
         {
-            if (Inputs.MovimentZero)
+            //contextual.Show(climbInputAction);
+            if (i.Inputs.MovimentZero)
             {
-                //Animacio.MovimentY(0);
-                if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted())
+                if ((Entorn.Buscar.Dret.CantonadaForat(transform).Hitted() || Entorn.Buscar.Dret.Endevant(transform).Hitted()) && !climbContextualUiShowm)
+                {
+                    climbContextualUiShowm = true;
+                    contextual.Show(climbInputAction);
+                }
+
+                /*if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted())
                     ui.forat.Mostrar(Entorn.Buscar.Dret.CantonadaForat(transform).point, 0.5f);
                 if (Entorn.Buscar.Dret.Endevant(transform).Hitted())
-                    ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);
-                //Animacio.MovimentY(0);
+                    ui.paret.Mostrar(Entorn.Buscar.Dret.Endevant(transform).point, 1);*/
             }
             else
             {
-                //Animacio.MovimentY(velocitatActual.magnitude / velocitat);
+                if (climbContextualUiShowm)
+                {
+                    climbContextualUiShowm = false;
+                    contextual.Hide(climbInputAction);
+                }
+
                 apretar = Entorn.Buscar.Dret.Endevant(transform).Hitted();
 
-                ui.forat.Amagar();
-                ui.paret.Amagar();
+                //ui.forat.Amagar();
+                //ui.paret.Amagar();
             }
-        }
-
-        void UIContextual_Amagar()
-        {
-            ui.forat.Amagar();
-            ui.paret.Amagar();
         }
 
         void Animar()
         {
             //Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
-            info.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            
             //if (!Inputs.Saltar)
             //    Animacio.NoTerra(transform);
         }
 
         void MantenirAcceleracioSiInput()
         {
-            if (Inputs.AreActived)
+            if (i.Inputs.AreActived)
             {
-                if (!Inputs.MovimentZero)
+                if (!i.Inputs.MovimentZero)
                 {
-                    acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
+                    acceleracio = new Vector3(i.Dinamic.Velocitat.x, 0, i.Dinamic.Velocitat.z).magnitude * 100;
                 }
             }
         }
         void Acceleracio()
         {
-            if (!Inputs.MovimentZero)
+            if (!i.Inputs.MovimentZero)
             {
-                input = Inputs.Moviment;
+                input = i.Inputs.Moviment;
 
                 acceleracio += Time.deltaTime * 4;
                 acceleracio = Mathf.Clamp01(acceleracio);
@@ -204,7 +218,7 @@ namespace Moviment3D
         RaycastHit endevantAprop;
         void Apretar()
         {
-            if (Inputs.MovimentZero)
+            if (i.Inputs.MovimentZero)
             {
                 if (!apretar)
                     return;
@@ -228,42 +242,34 @@ namespace Moviment3D
             if (dinamicable == null)
                 return;
 
-            dinamicable.Push(rb);
+            dinamicable.Push(i.Dinamic.Rigidbody);
         }
         void ReleaseDnimaicable()
         {
             if (dinamicable == null)
                 return;
 
-            dinamicable.Release(rb);
+            dinamicable.Release(i.Dinamic.Rigidbody);
             dinamicable = null;
         }
         void Orientacio()
         {
-            if (!Inputs.MovimentZero)
+            if (!i.Inputs.MovimentZero)
             {
-                transform.Orientar(20);
+                transform.Orientar(i.Inputs.Moviment, 20);
             }
             else
             {
-                transform.Orientar(4);
+                transform.Orientar(i.Inputs.Moviment, 4);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawSphere(transform.position + transform.up * (0.9f + 0.35f - 0.1f) - (transform.up * 0.9f), 0.3f);
-            //Gizmos.DrawSphere(Entorn.Buscar.Terra.Unic(transform).point, 0.4f);
-        }
-
 
 
 
         public void C_Terra(Estat.Condicio condicio)
         {
             if (Entorn.Buscar.Terra.Hit(transform).Hitted() &&
-                Preparacio.Preparat &&
+                i.Preparacio.Preparat &&
                 !Entorn.Buscar.Terra.EsRelliscant(transform))
 
                 Estat.Sortida(condicio);
@@ -271,14 +277,14 @@ namespace Moviment3D
         public void C_Esglao(Estat.Condicio condicio)
         {
             if (Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                !Inputs.Saltar)
+                !i.Inputs.Saltar)
 
                 Estat.Sortida(condicio);
         }
         public void C_NoEsc(Estat.Condicio condicio)
         {
-            if (Inputs.Deixar &&
-                Preparacio.Preparat &&
+            if (i.Inputs.Deixar &&
+                i.Preparacio.Preparat &&
                 Entorn.Buscar.Terra.Hit(transform).Hitted())
 
                 Estat.Sortida(condicio);
@@ -286,15 +292,21 @@ namespace Moviment3D
         public void C_NoRelliscar(Estat.Condicio condicio)
         {
             if (!Entorn.Buscar.Terra.EsRelliscant(transform) &&
-                CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f))
+                i.CoyoteTime.Temps(!Entorn.Buscar.Terra.EsRelliscant(transform), 0.25f))
             {
-                CoyoteTime.Stop();
+                i.CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 
         }
+
+        private void OnValidate()
+        {
+            contextual = XS_Editor.LoadAssetAtPath<UI_Contextual>("Assets/XidoStudio/Inputs/Contextual/Basics/Contextual.asset");
+        }
+
     }
 
-   
-  
+
+
 }

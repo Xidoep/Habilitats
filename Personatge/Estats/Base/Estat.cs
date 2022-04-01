@@ -3,7 +3,9 @@ using UnityEngine.Events;
 
 public abstract class Estat : MonoBehaviour
 {
+    protected Moviment3D.Informacio i;
     [SerializeField] private Condicio[] sortides;
+    public Moviment3D.Informacio Informacio { set => i = value; }
 
     internal abstract void EnEntrar();
     internal abstract void EnSortir();

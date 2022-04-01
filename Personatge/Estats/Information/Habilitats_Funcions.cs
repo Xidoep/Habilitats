@@ -8,10 +8,10 @@ namespace Moviment3D
     //SHAREABLE
     public static class Funcions
     {
-        public static void Orientar(this Transform transform, int velocitat)
+        public static void Orientar(this Transform transform, Vector2 inputMoviment, int velocitat)
         {
-            if (Inputs.Moviment != Vector2.zero)
-                transform.RotateToQuaternionSmooth(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion(Vector3.up), velocitat);
+            if (inputMoviment != Vector2.zero)
+                transform.RotateToQuaternionSmooth(MyCamera.Transform.ACamaraRelatiu(inputMoviment).ToQuaternion(Vector3.up), velocitat);
             else transform.RotateToQuaternionSmooth(transform.forward.ToQuaternion(Vector3.up), velocitat);
         }
         public static void Gravetat(this Rigidbody rigidbody)

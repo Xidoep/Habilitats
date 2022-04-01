@@ -8,8 +8,9 @@ namespace Moviment3D
 {
     public class Escalar : Estat
     {
-        [SerializeField] Info info;
         [SerializeField] int velocitat;
+        float multiplicador = 1;
+
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
         [SerializeField] Rig rig;
         [SerializeField] Transform ikMaDreta;
@@ -18,7 +19,6 @@ namespace Moviment3D
         [SerializeField] Transform ikMPeuEsquerra;
 
         Transform helper;
-        Rigidbody rb;
         Rigidbody otherRigidbody;
         ConfigurableJoint joint;
 
@@ -34,72 +34,209 @@ namespace Moviment3D
 
         bool inputSaltarFlanc;
 
-        bool velocitatEntrada = true;
-        bool reenganxarCantondaSuperior = false;
+        //bool reenganxarCantondaSuperior = false;
 
         bool Pla => helper.forward.Pla();
-        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f) * 0.5f) * (reenganxarCantondaSuperior ? 0.5f : velocitatEntrada ? 2 : 1);
+        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f) * 0.5f) * multiplicador;
 
         RaycastHit puntInicial;
+        Collider[] colliders;
+        int overlaps;
 
         internal override void EnEntrar()
         {
-            if (rb == null) rb = GetComponent<Rigidbody>();
-
+            if (colliders == null) colliders = new Collider[10];
             PrepararRigidBody(true);
-            CrearHelper(puntInicial);            
+            CrearHelper(puntInicial);
+            PrepararVariables();
+            PerpararAnimacio();
 
-            Inputs.SaltEscalantPreparat = false;
-            Inputs.SaltEscalantReenganxarse = false;
-            temps = 0;
-            velocitatEntrada = true;
-            inputSaltarFlanc = false;
-            enPosicio = false;
-            Preparacio.Preparar = 0.25f;
-            pla = false;
-
-            Animacio.Pla(pla);
-            if (!reenganxarCantondaSuperior)
-                Animacio.Escalar();
-            else Animacio.ReenganxarCantondaSuperior();
-
-            Animacio.Moviment(Vector2.zero);
-            Animacio.SaltPreparat(false);
+            pla = true;
 
             IKs.Iniciar(helper, Entorn.capaEntorn, rig, ikMaDreta, ikMaEsquerra, ikPeuDreta, ikMPeuEsquerra);
             if (!pla) IKs.Capturar(Vector2.zero);
+            
+            ComprovarPla();
 
-            Dinamic.Stop();
-
+            i.Dinamic.Stop();
         }
+
+       
 
         internal override void EnSortir()
         {
             PrepararRigidBody(false);
             DestruirHelper();
             enPosicio = false;
-            Preparacio.Preparar = 0.25f;
+            i.Preparacio.Preparar = 0.25f;
 
             transform.SetParent(null);
 
             if (joint != null) Destroy(joint);
 
-            Animacio.Moviment(Vector2.zero);
+            i.Animacio.Moviment(Vector2.zero);
             IKs.Apagar();
         }
 
+
+
         internal override void EnUpdate()
         {
-            if (!Preparacio.Preparat && Inputs.Escalar) Preparacio.Preparar = 0.25f;
+
+
+            Entorn.Escalant.Buscar.CantonadaPlanaAmunt(helper);
+
+            if (!i.Preparacio.Preparat && i.Inputs.Escalar) i.Preparacio.Preparar = 0.25f;
 
             if (!enPosicio) Desplacar();
             else Quiet();
 
-            Animacio.Pla(pla);
+            i.Animacio.Pla(pla);
             IKs.Debug();
         }
 
 
+        
+        //*******************************//
+        //           GENERALS            //
+        //*******************************//
+        void Desplacar()
+        {
+            temps += SumarTemps;
+              
+            transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition - (pla ? Vector3.zero : helper.up * 0.75f), temps);
+
+
+            ComprovarPla();
+
+            i.Animacio.EnMoviment(true);
+            if (!pla)
+            {
+                if (plaSmooth < 1) plaSmooth = temps;
+                //Resistencia.Gastar();
+                i.Resistencia.Gastar();
+                IKs.Actualitzar(temps);
+            }
+            else 
+            {
+                if (plaSmooth > 0) plaSmooth = 1 - temps;
+                OrientacioPla();
+            }
+
+            transform.rotation = Quaternion.Slerp(
+                Quaternion.Slerp(rotacioInicial, rotacioFinal, temps),
+                Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps),
+                plaSmooth);
+
+
+            if (temps > 1)
+            {
+                enPosicio = true;
+                i.Inputs.SetHelperVectors = helper;
+
+                i.Animacio.EnMoviment(false);
+
+               if (!pla) IKs.Actualitzar(1);
+            }
+        }
+        
+       
+
+
+        void Quiet()
+        {
+
+
+            ComprovarPla();
+
+            if (!pla)
+            {
+                overlaps = XS_Physics.Capsule(ref colliders, transform.position + transform.up * 0.5f, transform.position + transform.up * 0.9f, 0.15f, Entorn.capaEntorn);
+                if (overlaps > 0)
+                {
+                    //Snaps the direction oposite of the colliders and snaps them to the Helper's vectors.
+                    Vector3 _forward = helper.up;
+                    _forward.z = 0f;
+                    _forward.Normalize();
+                    Vector3 _direction = ((transform.position + helper.up * 0.6f) - colliders[0].ClosestPoint((transform.position + transform.up * 0.6f))).normalized;
+                    Vector3 directionAsHelperUp = (_forward * _direction.y - helper.right * _direction.x).normalized;
+
+                    SeleccionarPuntDeMoviment(directionAsHelperUp * 0.1f);
+
+                    Debugar.DrawRay((transform.position + transform.up * 0.6f), _direction, Color.blue);
+                    Debugar.DrawRay((transform.position + transform.up * 0.6f), directionAsHelperUp, Color.yellow);
+
+                    //Debugar.DrawLine(transform.position, colliders[0].transform.position, Color.yellow);
+                    Debugar.DrawLine((transform.position + transform.up * 0.6f), colliders[0].ClosestPoint((transform.position + transform.up * 0.6f)), Color.yellow);
+                    Debugar.Log("hola");
+                }
+            }
+
+            if (!pla) i.Resistencia.GastarLentament();
+            else i.Resistencia.RescuperarLentament();
+
+            ComprovarMoviment();
+
+            if (!i.Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
+
+            if (!pla)
+                if (plaSmooth < 1) plaSmooth += Time.deltaTime * 0.5f;
+            else if (plaSmooth > 0) plaSmooth -= Time.deltaTime * 0.5f;
+        }
+
+
+
+        //************************//
+        //         EINES          //
+        //************************//
+
+        //HELPER
+        void CrearHelper(RaycastHit hit)
+        {
+            helper = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
+            helper.localScale = Vector3.one * 0.3f;
+
+            otherRigidbody = hit.collider.GetComponent<Rigidbody>();
+            if (otherRigidbody != null)
+            {
+                joint = gameObject.AddComponent<ConfigurableJoint>();
+                joint.connectedBody = otherRigidbody;
+            }
+
+            PosicionarHelper(hit, 0.1f);
+            rotacioFinal = transform.rotation;
+        }
+        void PosicionarHelper(RaycastHit hit, float offestVertical = 0)
+        {
+            helper.SetParent(hit.collider.transform);
+            transform.SetParent(hit.collider.transform);
+
+            posicioInicial = transform.localPosition;
+            forwardInicial = transform.forward;
+            rotacioInicial = transform.rotation;
+
+            if(!helper.forward.PropDe1()) 
+                if(helper.forward.Pla()) Entorn.HitNormal(ref hit, helper);
+            
+            helper.forward = hit.normal;
+            helper.position = hit.point + (!Pla ? (hit.normal * 0.4f + helper.up * offestVertical) : Vector3.zero);
+        }
+        void DestruirHelper()
+        {
+            i.Inputs.SetHelperVectors = helper;
+            Destroy(helper.gameObject);
+        }
+
+
+        //ORIENTACIO
+        void OrientacioVertical()
+        {
+            helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
+            transform.rotation = Quaternion.LookRotation(-helper.forward);
+        }
+        void OrientacioPla() => transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+
+        //PLA
         void ComprovarPla()
         {
             if (helper.forward.Pla())
@@ -119,166 +256,92 @@ namespace Moviment3D
                 }
             }
         }
-
-        
-
-        void Desplacar()
-        {
-            temps += SumarTemps;
-              
-            transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition, temps);
-
-            ComprovarPla();
-
-            Animacio.EnMoviment(true);
-            if (!pla)
-            {
-                if (plaSmooth < 1) plaSmooth = temps;
-                //Resistencia.Gastar();
-                info.Resist.Gastar();
-                IKs.Actualitzar(temps);
-            }
-            else 
-            {
-                if (plaSmooth > 0) plaSmooth = 1 - temps;
-                OrientacioPla();
-            }
-
-            transform.rotation = Quaternion.Slerp(
-                Quaternion.Slerp(rotacioInicial, rotacioFinal, temps),
-                Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps),
-                plaSmooth);
-
-
-            if (temps > 1)
-            {
-                enPosicio = true;
-                Inputs.SetHelperVectors = helper;
-
-                Animacio.EnMoviment(false);
-
-               if (!pla) IKs.Actualitzar(1);
-            }
-        }
-        
-       
-
-
-        void Quiet()
-        {
-            ComprovarPla();
-
-            //if (!pla) Resistencia.GastarLentament();
-            //else Resistencia.RescuperarLentament();
-
-            if (!pla) info.Resist.GastarLentament();
-            else info.Resist.RescuperarLentament();
-
-            Quiet_ComençarMoviment();
-
-            if (!Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
-
-            if (!pla)
-                if (plaSmooth < 1) plaSmooth += Time.deltaTime * 0.5f;
-            else if (plaSmooth > 0) plaSmooth -= Time.deltaTime * 0.5f;
-        }
-
-        void OrientacioVertical()
-        {
-            helper.rotation = Quaternion.Euler(helper.eulerAngles.x, helper.eulerAngles.y, 0);
-            transform.rotation = Quaternion.LookRotation(-helper.forward);
-        }
-        void OrientacioPla() => transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-
         void Quiet_PrepararSalt()
         {
             if (!inputSaltarFlanc)
             {
                 inputSaltarFlanc = true;
-                Inputs.SaltEscalantPreparat = true;
-                Animacio.SaltPreparat(true);
+                i.Inputs.SaltEscalantPreparat = true;
+                i.Animacio.SaltPreparat(true);
             }
 
-            if (pla) transform.Orientar(10);
-            else Animacio.Moviment(Inputs.Moviment.normalized);
+            if (pla) transform.Orientar(i.Inputs.Moviment,10);
+            else i.Animacio.Moviment(i.Inputs.Moviment.normalized);
 
-            if (Inputs.Deixar)
+            if (i.Inputs.Deixar)
             {
                 inputSaltarFlanc = false;
-                Inputs.SaltEscalantPreparat = false;
-                Animacio.SaltPreparat(false);
-            }
-        }
-    
-        
-        void Quiet_ComençarMoviment()
-        {
-
-            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment).Hitted())
-            {
-                PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment));
-
-                Animacio.EnMoviment(true);
-
-                if (!pla)
-                    IKs.Capturar(Inputs.Moviment * 0.5f);
-
-                rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
-
-                temps = 0;
-                velocitatEntrada = false;
-                enPosicio = false;
+                i.Inputs.SaltEscalantPreparat = false;
+                i.Animacio.SaltPreparat(false);
             }
         }
 
 
 
-        void CrearHelper(RaycastHit hit)
+        //MOVIMENT
+        void ComprovarMoviment()
         {
-            helper = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
-            helper.localScale = Vector3.one * 0.3f;
-
-            otherRigidbody = hit.collider.GetComponent<Rigidbody>();
-            if (otherRigidbody != null)
-            {
-                joint = gameObject.AddComponent<ConfigurableJoint>();
-                joint.connectedBody = otherRigidbody;
-            }
-
-            PosicionarHelper(hit, -0.4f);
-            rotacioFinal = transform.rotation;
+            if (i.Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, pla, i.Inputs.Moviment, out multiplicador).Hitted())
+                SeleccionarPuntDeMoviment(i.Inputs.Moviment);
         }
-        void PosicionarHelper(RaycastHit hit, float offestVertical = 0)
+        void SeleccionarPuntDeMoviment(Vector2 moviment)
         {
-            helper.SetParent(hit.collider.transform);
-            transform.SetParent(hit.collider.transform);
+            PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, moviment, out multiplicador));
 
-            posicioInicial = transform.localPosition;
-            forwardInicial = transform.forward;
-            rotacioInicial = transform.rotation;
+            i.Animacio.EnMoviment(true);
 
-            if(!helper.forward.PropDe1()) 
-                if(helper.forward.Pla()) Entorn.HitNormal(ref hit, helper);
-            
-            helper.forward = hit.normal;
-            helper.position = hit.point + (!Pla ? (hit.normal * 0.4f + helper.up * offestVertical) : Vector3.zero);
+            if (!pla)
+                IKs.Capturar(moviment * 0.5f);
+
+            rotacioFinal = MyCamera.Transform.ACamaraRelatiu(moviment).ToQuaternion();
+
+            temps = 0;
+            multiplicador = 1;
+            enPosicio = false;
+        }
+
+
+        //PREPARACIONS INICIALS/FINALS
+        private void PrepararVariables()
+        {
+            i.Inputs.SaltEscalantPreparat = false;
+            i.Inputs.SaltEscalantReenganxarse = false;
+            temps = 0;
+            multiplicador = 2;
+            inputSaltarFlanc = false;
+            enPosicio = false;
+            i.Preparacio.Preparar = 0.25f;
+        }
+        private void PerpararAnimacio()
+        {
+            i.Animacio.Pla(pla);
+            /*if (!reenganxarCantondaSuperior)
+                i.Animacio.Escalar();
+            else i.Animacio.ReenganxarCantondaSuperior();
+            */
+            i.Animacio.Moviment(Vector2.zero);
+            i.Animacio.SaltPreparat(false);
         }
         void PrepararRigidBody(bool esc)
         {
 
-            rb.useGravity = !esc;
-            rb.isKinematic = esc;
-            if (esc) rb.velocity = Vector3.zero;
+            i.Dinamic.Rigidbody.useGravity = !esc;
+            i.Dinamic.Rigidbody.isKinematic = esc;
+            if (esc) i.Dinamic.Rigidbody.velocity = Vector3.zero;
         }
 
-        void DestruirHelper()
+        private void OnDrawGizmos()
         {
-            Inputs.SetHelperVectors = helper;
-            Destroy(helper.gameObject);
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawSphere(transform.position + transform.up * 0.5f, 0.15f);
+            Gizmos.DrawCube(transform.position + transform.up * 0.7f, new Vector3(0.2f, 0.9f, 0.15f));
+            Gizmos.DrawSphere(transform.position + transform.up * 0.9f, 0.15f);
         }
 
 
-
+        //**************************************//
+        //             CONDICIONS               //
+        //**************************************//
         public void C_TrobarCantonadaSuperior(Estat.Condicio condicio) 
         {
             /* if (info.Preparat && entorn.BuscarCantonadaSuperior(transform).Impactat() && info.Preparat)
@@ -297,35 +360,43 @@ namespace Moviment3D
                 Estat.Sortida(condicio);
             }*/
 
-            if (Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
+            if (i.Preparacio.Preparat) Entorn.Escalant.Buscar.CantonadaSuperior(transform, (RaycastHit hit) => 
             {
-                reenganxarCantondaSuperior = hit.normal.PropDe1();
-                //Resistencia.NoBuidarDelTot();
-                info.Resist.NoBuidarDelTot();
+                //reenganxarCantondaSuperior = hit.normal.PropDe1();
+                multiplicador = 2;
+                i.Resistencia.NoBuidarDelTot();
                 CrearHelper(hit);
                 Estat.Sortida(condicio);
+
+                i.Animacio.ReenganxarCantondaSuperior();
             });
         }
 
         public void C_Esc(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
-                Preparacio.Preparat)
+            if (i.Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador).Hitted() &&
+                i.Preparacio.Preparat)
             {
-                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform);
+                multiplicador = 2;
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador);
                 Estat.Sortida(condicio);
+
+                i.Animacio.Escalar();
                 //Animacio Escalar desde terra
             }
         }
         public void C_EscAire(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
-                Preparacio.Preparat)
+            if (i.Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform, out multiplicador).Hitted() &&
+                i.Preparacio.Preparat)
             {
-                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform);
+                multiplicador = 2;
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform, out multiplicador);
                 Estat.Sortida(condicio);
+
+                i.Animacio.Escalar();
                 //Aturar durant pocs segons
                 //Animacio escalar saltant.
             }
@@ -333,12 +404,15 @@ namespace Moviment3D
 
         public void C_EscalarCaient(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
-                Preparacio.Preparat)
+            if (i.Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform, out multiplicador).Hitted() &&
+                i.Preparacio.Preparat)
             {
-                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform);
+                multiplicador = 2;
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform, out multiplicador);
                 Estat.Sortida(condicio);
+
+                i.Animacio.Escalar();
                 //Comprovar la velocitat vertical.
                 //Aturar durant un rato, si es massa alta la velocitat.
                 //Animacio escalar caient, amb esforç.
@@ -347,11 +421,14 @@ namespace Moviment3D
 
         public void C_SaltarEscalantReencangarse(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted())
+            if (i.Inputs.Escalar &&
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador).Hitted())
             {
-                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform);
+                multiplicador = 2;
+                puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador);
                 Estat.Sortida(condicio);
+
+                i.Animacio.Escalar();
                 //Animacio que es reenganxi i es vegi la inercia dependent de la direccio del salt.
             }
 
@@ -359,7 +436,7 @@ namespace Moviment3D
 
         public void C_DeixarInputEscalarQuanPla(Estat.Condicio condicio)
         {
-            if(!Inputs.Escalar && Pla && enPosicio)
+            if(!i.Inputs.Escalar && Pla && enPosicio)
             {
                 Estat.Sortida(condicio);
                 //Animacio simple de ajupuid a dret
@@ -368,11 +445,11 @@ namespace Moviment3D
 
         public void C_CaurePerMassaInclinacio(Estat.Condicio condicio)
         {
-            if (Inputs.GetHelperForward.CasiMenys1()) Estat.Sortida(condicio);
+            if (i.Inputs.GetHelperForward.CasiMenys1()) Estat.Sortida(condicio);
         }
         public void C_SenseResistencia(Estat.Condicio condicio)
         {
-            if (Resistencia.Zero) Estat.Sortida(condicio);
+            if (i.Resistencia.Zero) Estat.Sortida(condicio);
         }
     }
 

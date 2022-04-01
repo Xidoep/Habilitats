@@ -35,6 +35,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HOR:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _IluminacioToonNormal_b451cc2c69334ec9853214db3840cfdf_Normal_4122381376:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -67,6 +71,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ME:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _N:
         m_Texture: {fileID: 2800000, guid: a6899ec826ed6bc42a21154493a15e34, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -95,6 +103,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 544ffb5fe8f9f0d4fb439dd480043da1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RGB:
+        m_Texture: {fileID: 2800000, guid: cd13b8dcbda3f7f4895aadcfe0de5513, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RGBA:
         m_Texture: {fileID: 2800000, guid: a6cb5cf2a2439b24a8813442e108c4af, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -115,6 +127,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9b7161a8c9a20c44d9566c17bfbf6cd8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_be41e7fbdd5d4290857e12474cd7a922_Texture_1:
+        m_Texture: {fileID: 2800000, guid: c70272de163c6184385ce44871daed7b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Specular_c0fa6a36f1344bc98a969bebbbd7a368_Normals_2059917501:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -129,6 +145,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_90f6146f6e834589bcd3985b45f61b17_Out_0:
         m_Texture: {fileID: 2800000, guid: bb4cebfc439939c4ea06d668762999a9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_bbcd5485d41b4d96906fabf7aa83abb9_Out_0:
+        m_Texture: {fileID: 2800000, guid: 6743a11de7d53564db803dc14a283942, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonObjecte_32599d99511443edad7f2de860d23f12_Normals_55748130:
@@ -173,6 +193,7 @@ Material:
     - _Tamany: 0.141
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Emision: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2541217198634426710
 MonoBehaviour:

@@ -7,7 +7,7 @@ using XS_Utils;
 [CreateAssetMenu(menuName = "Xido Studio/Habilitats/Inputs", fileName = "Inputs")]
 public class Inpt : ScriptableObject
 {
-    public Inpt Iniciar()
+    public Inpt Iniciar(Transform transform)
     {
         Inpt input = CreateInstance<Inpt>();
         input.moviment = moviment;
@@ -18,6 +18,11 @@ public class Inpt : ScriptableObject
         input.saltEscalantReenganxarse = false;
         input.agafarPerformed = false;
         input.agafar.OnPerformedAdd(input.AgafarPerformed);
+
+        playerInput = transform.GetComponent<PlayerInput>();
+        playerInput.enabled = false;
+        playerInput.enabled = true;
+
         return input;
     }
     private void OnDisable()
@@ -29,6 +34,8 @@ public class Inpt : ScriptableObject
     [SerializeField] InputActionReference saltar;
     [SerializeField] InputActionReference agafar;
     [SerializeField] InputActionReference deixar;
+
+    PlayerInput playerInput;
 
     EscalarVectors vectors;
 
