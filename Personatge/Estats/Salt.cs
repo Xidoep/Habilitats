@@ -7,57 +7,52 @@ namespace Moviment3D
 {
     public class Salt : Estat
     {
-        [SerializeField] Info info;
-        Rigidbody rb;
-
         Vector3 moviment;
 
         [SerializeField] float forca;
-        Vector3 ForcaLateral => Entorn.Buscar.Dret.EndevantAprop(transform).Hitted() ? Vector3.zero : (MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) / 3f);
+        Vector3 ForcaLateral => Entorn.Buscar.Dret.EndevantAprop(transform).Hitted() ? Vector3.zero : (MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) / 3f);
         //bool ObjecteDevant => XS_Physics.Ray(transform.position + transform.up, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 1, Entorn.capaEntorn).Hitted();
 
         internal override void EnEntrar()
         {
-            if (rb == null) rb = GetComponent<Rigidbody>();
-
-            Preparacio.Preparar = 0.25f;
+            i.Preparacio.Preparar = 0.25f;
 
             transform.SetParent(null);
 
             //rb.velocity = Vector3.zero;
 
 
-            rb.AddForce(((Vector3.up + ForcaLateral) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
-            
-            Resistencia.Saltar();
-            Animacio.Saltar();
+            i.Dinamic.Rigidbody.AddForce(((Vector3.up + ForcaLateral) * forca + (i.Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
+
+            i.Resistencia.Saltar();
+            i.Animacio.Saltar();
         }
 
         internal override void EnUpdate()
         {
-            Animacio.VelocitatVertical();
+            i.Animacio.VelocitatVertical(i.Dinamic.VelocitatGravetat.y);
 
-            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime * 2;
+            moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime * 2;
             if (!Entorn.Buscar.Dret.EndevantAprop(transform).Hitted())
             {
-                rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)));
+                i.Dinamic.Rigidbody.AddForce((moviment * 20000) * i.Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment)));
             }
 
 
-            if (!Inputs.Saltar)
+            if (!i.Inputs.Saltar)
             {
-                rb.Gravetat();
+                i.Dinamic.Rigidbody.Gravetat();
             }
 
-            transform.Orientar(6);
+            transform.Orientar(i.Inputs.Moviment,6);
 
            
             Debugar.DrawRay(
                 transform.position + transform.up,
-                MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).normalized,
+                MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment).normalized,
             XS_Physics.Ray(
                 transform.position + transform.up,
-                MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), 
+                MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment), 
                 1, 
                 Entorn.capaEntorn).Hitted() ? Color.green : Color.red);
         }
@@ -71,9 +66,9 @@ namespace Moviment3D
 
         public void C_Saltar(Estat.Condicio condicio)
         {
-            if (Inputs.Saltar &&
-                Resistencia.UnaMica &&
-                Preparacio.Preparat)
+            if (i.Inputs.Saltar &&
+                i.Resistencia.UnaMica &&
+                i.Preparacio.Preparat)
             {
                 Estat.Sortida(condicio);
                 //Aqui s'ha de comprovar si està en moviment o no. per posar una anim o una altre.

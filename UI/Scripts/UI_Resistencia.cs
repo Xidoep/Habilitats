@@ -11,8 +11,12 @@ namespace Moviment3D
     [DefaultExecutionOrder(1)]
     public class UI_Resistencia : MonoBehaviour
     {
+        const string PLE = "_Ple";
+        const string GASTANT = "_Gastant";
+
         [SerializeField] Canal_FloatFloat resistencia;
 
+        [SerializeField] Material material;
         [SerializeField] RectTransform rect;
         [SerializeField] Image image;
         [SerializeField] Vector2 offset;
@@ -22,9 +26,11 @@ namespace Moviment3D
 
         Vector3 finalPosition;
 
+        float anterior = 0;
 
         private void OnEnable()
         {
+            material = image.material;
             resistencia.Registrar(Pintar);
         }
 
@@ -65,7 +71,10 @@ namespace Moviment3D
 
         void Pintar(float actual, float maxim)
         {
-            image.fillAmount = actual / maxim;
+            material.SetFloat(GASTANT, (anterior - (actual / maxim))* 100);
+            material.SetFloat(PLE, actual / maxim);
+            anterior = actual / maxim;
+            //image.fillAmount = actual / maxim;
         }
     }
 }

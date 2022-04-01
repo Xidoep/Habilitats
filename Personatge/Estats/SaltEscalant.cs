@@ -7,8 +7,6 @@ namespace Moviment3D
 {
     public class SaltEscalant : Estat
     {
-        [SerializeField] Info info;
-        Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;
         //Transform camara;
@@ -22,22 +20,20 @@ namespace Moviment3D
         [SerializeField] float ajupit = 0.7f;
 
 
-        Vector3 DireccioSeguintParet => ((Inputs.GetHelperUp * (Inputs.Moviment.y + 0.1f) + Inputs.GetHelperRight * -Inputs.Moviment.x).normalized * seguintParet + (Dinamic.VelocitatSalt)) * 50;
-        Vector3 DireccioContraParet => ((Vector3.up - transform.forward) * contraParet + (Dinamic.VelocitatSalt)) * 50;
-        Vector3 DireccioSaltAjupit => (((Vector3.up / 2f) + transform.forward) * ajupit + (Dinamic.VelocitatSalt)) * 50;
+        Vector3 DireccioSeguintParet => ((i.Inputs.GetHelperUp * (i.Inputs.Moviment.y + 0.1f) + i.Inputs.GetHelperRight * -i.Inputs.Moviment.x).normalized * seguintParet + (i.Dinamic.VelocitatSalt)) * 50;
+        Vector3 DireccioContraParet => ((Vector3.up - transform.forward) * contraParet + (i.Dinamic.VelocitatSalt)) * 50;
+        Vector3 DireccioSaltAjupit => (((Vector3.up / 2f) + transform.forward) * ajupit + (i.Dinamic.VelocitatSalt)) * 50;
 
         RaycastHit paretHit;
         RigidbodyConstraints currentConstraints;
 
         internal override void EnEntrar()
         {
-            if (rb == null) rb = GetComponent<Rigidbody>();
-            
-            currentConstraints = rb.constraints;
+            currentConstraints = i.Dinamic.Rigidbody.constraints;
 
-            if (Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
+            if (i.Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
             {
-                if (Inputs.Moviment.y > -0.1f || Mathf.Abs(Inputs.Moviment.x) > 0.45f) SaltSeguintLaParet();
+                if (i.Inputs.Moviment.y > -0.1f || Mathf.Abs(i.Inputs.Moviment.x) > 0.45f) SaltSeguintLaParet();
                 else SaltContraLaParet();
             }
             else
@@ -45,61 +41,61 @@ namespace Moviment3D
                 SaltAjupit();
             }
 
-            Resistencia.SaltarFort();
+            i.Resistencia.SaltarFort();
         }
 
 
 
         private void SaltSeguintLaParet()
         {
-            Preparacio.Preparar = 0.1f;
+            i.Preparacio.Preparar = 0.1f;
 
             direccioParet = true;
-            rb.useGravity = false;
+            i.Dinamic.Rigidbody.useGravity = false;
 
             Debugar.Log("Salt seguint pret");
 
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-            rb.AddForce(DireccioSeguintParet, ForceMode.Impulse);
-            Inputs.SaltEscalantReenganxarse = true;
+            i.Dinamic.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            i.Dinamic.Rigidbody.AddForce(DireccioSeguintParet, ForceMode.Impulse);
+            i.Inputs.SaltEscalantReenganxarse = true;
 
-            Animacio.Moviment(Inputs.Moviment);
-            Animacio.SaltEscalant();
+            i.Animacio.Moviment(i.Inputs.Moviment);
+            i.Animacio.SaltEscalant();
         }
 
         private void SaltContraLaParet()
         {
-            Preparacio.Preparar = 0.25f;
+            i.Preparacio.Preparar = 0.25f;
 
             direccioParet = false;
 
             Debugar.Log("Salt contra pret");
             transform.SetParent(null);
-            rb.AddForce(DireccioContraParet, ForceMode.Impulse);
+            i.Dinamic.Rigidbody.AddForce(DireccioContraParet, ForceMode.Impulse);
             transform.forward = -transform.forward;
 
-            Animacio.Saltar();
+            i.Animacio.Saltar();
         }
 
         private void SaltAjupit()
         {
-            Inputs.DisableEscalar();
-            Preparacio.Preparar = 0.25f;
+            i.Inputs.DisableEscalar();
+            i.Preparacio.Preparar = 0.25f;
             
             direccioParet = false;
 
             transform.SetParent(null);
-            rb.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
+            i.Dinamic.Rigidbody.AddForce(DireccioSaltAjupit, ForceMode.Impulse);
 
-            Animacio.SaltAjupid();
+            i.Animacio.SaltAjupid();
         }
 
 
 
         internal override void EnSortir()
         {
-            rb.useGravity = true;
-            rb.constraints = currentConstraints;
+            i.Dinamic.Rigidbody.useGravity = true;
+            i.Dinamic.Rigidbody.constraints = currentConstraints;
         }
 
         internal override void EnUpdate()
@@ -110,10 +106,10 @@ namespace Moviment3D
             }
             else
             {
-                moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
-                rb.AddForce(moviment * 30);
+                moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime;
+                i.Dinamic.Rigidbody.AddForce(moviment * 30);
 
-                transform.Orientar(6);
+                transform.Orientar(i.Inputs.Moviment, 6);
             }
 
         }
@@ -137,7 +133,7 @@ namespace Moviment3D
                 
                 Estat.Sortida(condicio);
             */
-            if (Inputs.Saltar)
+            if (i.Inputs.Saltar)
             {
                 Estat.Sortida(condicio);
                 //Aquí decidir quin tipus de salt es fa segons la condicio.
@@ -149,9 +145,9 @@ namespace Moviment3D
         //Si deixes apretat el salt, continua saltant. si no, "s'enganxa" a la cantonada.
         public void C_TrobarCantonadaSuperior(Estat.Condicio condicio)
         {
-            if (Preparacio.Preparat &&
+            if (i.Preparacio.Preparat &&
                 Entorn.Escalant.Buscar.CantonadaSuperior(transform).Hitted() &&
-                Inputs.SaltEscalantReenganxarse)
+                i.Inputs.SaltEscalantReenganxarse)
 
                 Estat.Sortida(condicio);
         }

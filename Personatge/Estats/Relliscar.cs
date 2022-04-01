@@ -7,29 +7,23 @@ namespace Moviment3D
 {
     public class Relliscar : Estat
     {
-        //Informacio info;
-        //Rigidbody rb;
-        //Transform camara;
+        [SerializeField] int velocitat;
         Transform helper;
 
         float inersia;
-        [SerializeField] int velocitat;
 
         //float Inersia { get => inersia; set => inersia = Mathf.Clamp01(value); }
         float Inersia { get => inersia; set => inersia = Mathf.Clamp(value, 0, 2); }
 
-        Vector3 Direccio => -helper.right * (Vector3.Dot(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment.ToVector3_Vertical()), -helper.right) * 1f);
+        Vector3 Direccio => -helper.right * (Vector3.Dot(MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment.ToVector3_Vertical()), -helper.right) * 1f);
 
         internal override void EnEntrar()
         {
-            //if (info == null) info = GetComponent<Informacio>();
-            //if (rb == null) rb = GetComponent<Rigidbody>();
-
             Inersia = 0;
             CrearHelper(Entorn.Buscar.Terra.Hit(transform));
 
-            Preparacio.Preparar = 0.5f;
-            Animacio.Relliscar();
+            i.Preparacio.Preparar = 0.5f;
+            i.Animacio.Relliscar();
            
         }
 
@@ -50,7 +44,7 @@ namespace Moviment3D
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;
             transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
             transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 10);
-            Dinamic.Actualitzar(transform);
+            i.Dinamic.Actualitzar(transform);
         }
 
         void CrearHelper(RaycastHit hit)
@@ -69,9 +63,9 @@ namespace Moviment3D
         {
             if (Entorn.Buscar.Terra.EsRelliscant(transform) &&
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
+                i.CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
             {
-                CoyoteTime.Stop();
+                i.CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 
@@ -80,9 +74,10 @@ namespace Moviment3D
         {
             if (Entorn.Buscar.Terra.EsRelliscant(transform) &&
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f))
+                i.CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.5f))
             {
-                CoyoteTime.Stop();
+                //FALTA ANIM PER MOSTRAR QUE S'ESTA APUNT DE CAURE
+                i.CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 
