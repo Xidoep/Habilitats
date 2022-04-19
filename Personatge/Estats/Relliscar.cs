@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Relliscar : Estat
+    public class Relliscar : EstatPlayer
     {
         //Informacio info;
         //Rigidbody rb;

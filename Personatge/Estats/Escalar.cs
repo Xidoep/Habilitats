@@ -6,9 +6,8 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Escalar : Estat
+    public class Escalar : EstatPlayer
     {
-        [SerializeField] Info info;
         [SerializeField] int velocitat;
         [SerializeField] AnimationCurve velocitatMovimentAjupit;
         [SerializeField] Rig rig;
@@ -135,7 +134,7 @@ namespace Moviment3D
             {
                 if (plaSmooth < 1) plaSmooth = temps;
                 //Resistencia.Gastar();
-                info.Resist.Gastar();
+                informacio.Resist.Gastar();
                 IKs.Actualitzar(temps);
             }
             else 
@@ -171,8 +170,8 @@ namespace Moviment3D
             //if (!pla) Resistencia.GastarLentament();
             //else Resistencia.RescuperarLentament();
 
-            if (!pla) info.Resist.GastarLentament();
-            else info.Resist.RescuperarLentament();
+            if (!pla) informacio.Resist.GastarLentament();
+            else informacio.Resist.RescuperarLentament();
 
             Quiet_ComençarMoviment();
 
@@ -301,7 +300,7 @@ namespace Moviment3D
             {
                 reenganxarCantondaSuperior = hit.normal.PropDe1();
                 //Resistencia.NoBuidarDelTot();
-                info.Resist.NoBuidarDelTot();
+                informacio.Resist.NoBuidarDelTot();
                 CrearHelper(hit);
                 Estat.Sortida(condicio);
             });

@@ -5,9 +5,8 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class SaltEscalant : Estat
+    public class SaltEscalant : EstatPlayer
     {
-        [SerializeField] Info info;
         Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;

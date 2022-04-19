@@ -38,6 +38,10 @@ namespace Moviment3D
         private void OnEnable()
         {
             info = info.Iniciar(transform);
+            foreach (var item in GetComponents<EstatPlayer>())
+            {
+                item.Informacio = info;
+            }
             GetComponent<PlayerInput>().enabled = false;
             GetComponent<PlayerInput>().enabled = true;
             Animacio.Iniciar(transform);

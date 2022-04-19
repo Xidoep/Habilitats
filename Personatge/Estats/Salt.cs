@@ -5,9 +5,8 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Salt : Estat
+    public class Salt : EstatPlayer
     {
-        [SerializeField] Info info;
         Rigidbody rb;
 
         Vector3 moviment;
@@ -71,10 +70,14 @@ namespace Moviment3D
 
         public void C_Saltar(Estat.Condicio condicio)
         {
+            if (Inputs.Saltar) Debugar.Log("Inputs.Saltar");
+            if (Resistencia.UnaMica) Debugar.Log("Resistencia.UnaMica");
+            if (Preparacio.Preparat) Debugar.Log("Preparacio.Preparat");
             if (Inputs.Saltar &&
                 Resistencia.UnaMica &&
                 Preparacio.Preparat)
             {
+                Debugar.Log("Saltar!");
                 Estat.Sortida(condicio);
                 //Aqui s'ha de comprovar si està en moviment o no. per posar una anim o una altre.
                 //Animacio Saltar simple

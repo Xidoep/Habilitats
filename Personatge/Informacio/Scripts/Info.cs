@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XS_Utils;
 
 [DefaultExecutionOrder(-10)]
 [CreateAssetMenu(menuName = "Xido Studio/Habilitats/Informacio", fileName = "Informacio")]
@@ -14,6 +15,7 @@ public class Info : ScriptableObject
 
     public Info Iniciar(Transform transform)
     {
+        Debugar.Log("Iniciar");
         Info info = CreateInstance<Info>();
         info.capaEntorn = capaEntorn;
         info.resist = resist.Iniciar();

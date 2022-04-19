@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Caure : Estat
+    public class Caure : EstatPlayer
     {
         public override string ToString() => "Caure";
 

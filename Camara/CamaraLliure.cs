@@ -65,6 +65,17 @@ namespace Moviment3D
         }
 
         public void SetExtraDistancia(float extraDistancia) => this.extraDistancia = extraDistancia;
+
+        private void OnValidate()
+        {
+            if (freeLook.Follow == null | freeLook.LookAt == null)
+                return;
+
+            Transform personatge = FindObjectOfType<Informacio>().transform;
+            freeLook.Follow = personatge;
+            freeLook.LookAt = personatge;
+        }
     }
 
+    
 }

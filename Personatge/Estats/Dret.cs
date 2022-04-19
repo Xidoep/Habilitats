@@ -5,9 +5,8 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Dret : Estat
+    public class Dret : EstatPlayer
     {
-        [SerializeField] Info info;
         Rigidbody rb;
         [SerializeField] UI ui;
         [SerializeField] int velocitat;
@@ -37,7 +36,7 @@ namespace Moviment3D
 
             Preparacio.Preparar = 0.15f;
             //Animacio.Dret();
-            info.Anim.Trigger(AnimPlayer.dret);
+            informacio.Anim.Trigger(AnimPlayer.dret);
         }
 
         
@@ -59,7 +58,7 @@ namespace Moviment3D
             TornarKinematicSiTrobaEsglao();
 
             //Resistencia.Recuperar();
-            info.Resist.Recuperar();
+            informacio.Resist.Recuperar();
             //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
@@ -170,7 +169,7 @@ namespace Moviment3D
         void Animar()
         {
             //Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
-            info.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            informacio.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             //if (!Inputs.Saltar)
             //    Animacio.NoTerra(transform);
         }

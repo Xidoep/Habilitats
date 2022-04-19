@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Personatge
-  m_Shader: {fileID: -6465566751694194690, guid: 765d6ec9f7df09546865010a71d472e9, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c8936170f93db534db3b62a05cd333f7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,10 +19,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Normal:
-        m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - Normals:
         m_Texture: {fileID: 2800000, guid: 63c28d3d8397ec14c8d9f51e251a1007, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -96,11 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OIF:
-        m_Texture: {fileID: 2800000, guid: 9a2ab4df4098afb40b8c725dc89927d3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _RGB:
-        m_Texture: {fileID: 2800000, guid: cd13b8dcbda3f7f4895aadcfe0de5513, type: 3}
+        m_Texture: {fileID: 2800000, guid: 544ffb5fe8f9f0d4fb439dd480043da1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RGBA:
@@ -174,14 +166,12 @@ Material:
     - IntensitatSombraPintada: 0
     - Specular_Intensitat: 0.22
     - Specular_Tamany: 1.76
-    - _Intensitat: 0
+    - _Intensitat: 0.24
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Roughness: 0.743
     - _SP_Multiplicador: 0
-    - _Tamany: 0.7
+    - _Tamany: 0.141
     m_Colors:
-    - UV: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2541217198634426710
