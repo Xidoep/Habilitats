@@ -26,5 +26,6 @@ public class Info : ScriptableObject
 
     public Resist Resist => resist;
     public Anim Anim => anim;
+    public Inpt Inputs => input;
 
 }

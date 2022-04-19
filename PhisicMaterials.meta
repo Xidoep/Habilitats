@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:PhisicMaterials.meta
 guid: 100e7b676b418aa4483df63780ed57c6
+=======
+guid: 99c6554eb7cb61b47ae2a4203f089ce8
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Animations/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

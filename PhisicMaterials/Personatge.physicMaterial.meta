@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 92d96eedb7acc0c48849c5ef22956bce
+=======
+guid: 76ee2d8a602760a4eb2e2f720fd0995b
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 13400000

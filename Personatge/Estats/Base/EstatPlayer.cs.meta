@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Personatge/Estats/Base/EstatPlayer.cs.meta
 guid: b76c28a74c99fa3479140b5bf045a2f1
+=======
+guid: f0dc4baf358c23f48a66aef476b53a79
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Estats/Information/Animacio.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

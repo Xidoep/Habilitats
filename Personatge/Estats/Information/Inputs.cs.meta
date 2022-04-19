@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: bd0d9b48668e08d49a479e000c67b3e0
+=======
+<<<<<<< HEAD:Personatge/Estats/Information/Dinamic.cs.meta
+guid: 0eccd65f8c5fc8e45ae6f8601ebe4a2b
+=======
+guid: bd0d9b48668e08d49a479e000c67b3e0
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Estats/Information/Inputs.cs.meta
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

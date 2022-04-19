@@ -7,6 +7,10 @@ namespace Moviment3D
 {
     public class SaltEscalant : EstatPlayer
     {
+<<<<<<< HEAD
+=======
+        [SerializeField] Info info;
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
         Rigidbody rb;
         //Informacio info;
         //Rigidbody rb;

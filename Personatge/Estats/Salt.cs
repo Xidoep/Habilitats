@@ -28,7 +28,7 @@ namespace Moviment3D
 
             rb.AddForce(((Vector3.up + ForcaLateral) * forca + (Dinamic.VelocitatSalt)) * 50, ForceMode.Impulse);
             
-            Resistencia.Saltar();
+            info.Resist.Saltar();
             Animacio.Saltar();
         }
 
@@ -71,10 +71,10 @@ namespace Moviment3D
         public void C_Saltar(Estat.Condicio condicio)
         {
             if (Inputs.Saltar) Debugar.Log("Inputs.Saltar");
-            if (Resistencia.UnaMica) Debugar.Log("Resistencia.UnaMica");
+            if (info.Resist.UnaMica) Debugar.Log("Resistencia.UnaMica");
             if (Preparacio.Preparat) Debugar.Log("Preparacio.Preparat");
             if (Inputs.Saltar &&
-                Resistencia.UnaMica &&
+                info.Resist.UnaMica &&
                 Preparacio.Preparat)
             {
                 Debugar.Log("Saltar!");

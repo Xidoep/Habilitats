@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:PhisicMaterials/DinamicsBouncy.physicMaterial.meta
 guid: 90ab0d12944ee7a40881469157ecc700
+=======
+guid: 4ef7e016494f4ec4bae7089515c11295
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Informacio/Preparacio.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 13400000

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:PhisicMaterials/Entorn.physicMaterial.meta
 guid: ba8b752c71e23574186f41e12e999897
+=======
+guid: 2fa48a84926f37342b5c756b6c859fee
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Informacio/CoyoteTime.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 13400000

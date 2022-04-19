@@ -235,6 +235,10 @@ MonoBehaviour:
   testing: 0
   debug: 0
   damaged: 0
+<<<<<<< HEAD
+=======
+  resist: {fileID: 11400000, guid: b9fa284d523ffe94b82678e4bc009c98, type: 2}
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
 --- !u!114 &5229338690214211449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +535,11 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+<<<<<<< HEAD
   info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
+=======
+  info: {fileID: 0}
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
   seguintParet: 9
   contraParet: 4
   ajupit: 9
@@ -670,7 +678,11 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+<<<<<<< HEAD
   info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
+=======
+  info: {fileID: 0}
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes)
   forca: 6
 --- !u!114 &1999131223
 MonoBehaviour:

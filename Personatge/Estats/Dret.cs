@@ -36,7 +36,7 @@ namespace Moviment3D
 
             Preparacio.Preparar = 0.15f;
             //Animacio.Dret();
-            informacio.Anim.Trigger(AnimPlayer.dret);
+            i.Anim.Trigger(AnimPlayer.dret);
         }
 
         
@@ -58,7 +58,7 @@ namespace Moviment3D
             TornarKinematicSiTrobaEsglao();
 
             //Resistencia.Recuperar();
-            informacio.Resist.Recuperar();
+            i.Resist.Recuperar();
             //Emparentar();
             Debug.DrawRay(transform.position + transform.up, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue);
 
@@ -81,7 +81,7 @@ namespace Moviment3D
 
         void Moviment()
         {
-            Debug.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment));
+            Debug.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment));
 
             velocitatActual = ((Entorn.Buscar.Terra.InclinacioForward(transform) + PujarSiEsglao) *
                 velocitat *
@@ -137,11 +137,11 @@ namespace Moviment3D
             if (joint != null) Destroy(joint);
         }
 
-        void TornarKinematicSiTrobaEsglao() => rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !Inputs.MovimentZero;
+        void TornarKinematicSiTrobaEsglao() => rb.isKinematic = Entorn.Buscar.Terra.HiHaEsglao(transform) && !i.Inputs.MovimentZero;
 
         void MostrarUIContextual()
         {
-            if (Inputs.MovimentZero)
+            if (i.Inputs.MovimentZero)
             {
                 //Animacio.MovimentY(0);
                 if (Entorn.Buscar.Dret.CantonadaForat(transform).Hitted())
@@ -169,16 +169,16 @@ namespace Moviment3D
         void Animar()
         {
             //Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
-            informacio.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
+            i.Anim.Float(AnimPlayer.movimentY, Mathf.Max(velocitatActual.magnitude / velocitat, Dinamic.Velocitat.magnitude * 30));
             //if (!Inputs.Saltar)
             //    Animacio.NoTerra(transform);
         }
 
         void MantenirAcceleracioSiInput()
         {
-            if (Inputs.AreActived)
+            if (i.Inputs.AreActived)
             {
-                if (!Inputs.MovimentZero)
+                if (!i.Inputs.MovimentZero)
                 {
                     acceleracio = new Vector3(Dinamic.Velocitat.x, 0, Dinamic.Velocitat.z).magnitude * 100;
                 }
@@ -186,9 +186,9 @@ namespace Moviment3D
         }
         void Acceleracio()
         {
-            if (!Inputs.MovimentZero)
+            if (!i.Inputs.MovimentZero)
             {
-                input = Inputs.Moviment;
+                input = i.Inputs.Moviment;
 
                 acceleracio += Time.deltaTime * 4;
                 acceleracio = Mathf.Clamp01(acceleracio);
@@ -203,7 +203,7 @@ namespace Moviment3D
         RaycastHit endevantAprop;
         void Apretar()
         {
-            if (Inputs.MovimentZero)
+            if (i.Inputs.MovimentZero)
             {
                 if (!apretar)
                     return;
@@ -239,7 +239,7 @@ namespace Moviment3D
         }
         void Orientacio()
         {
-            if (!Inputs.MovimentZero)
+            if (!i.Inputs.MovimentZero)
             {
                 transform.Orientar(20);
             }
@@ -270,13 +270,13 @@ namespace Moviment3D
         public void C_Esglao(Estat.Condicio condicio)
         {
             if (Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                !Inputs.Saltar)
+                !i.Inputs.Saltar)
 
                 Estat.Sortida(condicio);
         }
         public void C_NoEsc(Estat.Condicio condicio)
         {
-            if (Inputs.Deixar &&
+            if (i.Inputs.Deixar &&
                 Preparacio.Preparat &&
                 Entorn.Buscar.Terra.Hit(transform).Hitted())
 

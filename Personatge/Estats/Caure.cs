@@ -36,11 +36,11 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime;
 
-            rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)));
+            rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment)));
 
-            if (!Inputs.Saltar)
+            if (!i.Inputs.Saltar)
             {
                 rb.Gravetat();
             }
@@ -61,7 +61,7 @@ namespace Moviment3D
         }
         public void C_NoEscAire(Estat.Condicio condicio)
         {
-            if (Inputs.Deixar &&
+            if (i.Inputs.Deixar &&
                 Preparacio.Preparat &&
                 !Entorn.Buscar.Terra.Hit(transform).Hitted())
             {

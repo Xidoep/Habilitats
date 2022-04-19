@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:PhisicMaterials/Dinamics.physicMaterial.meta
 guid: aba0ebfa2c3edb343b514e72483f3d94
+=======
+guid: 4a52a981e9fcf4d43922ed4a5298e4ea
+>>>>>>> parent of 5a24bc2 (Varis arreglos mes):Personatge/Informacio/Dinamic.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 13400000

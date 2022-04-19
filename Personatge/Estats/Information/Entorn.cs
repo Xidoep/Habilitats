@@ -390,16 +390,16 @@ namespace Moviment3D
                         return Vector3.Cross(transform.right, raycastHit.normal).normalized;
                     else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
-                public static Vector3 InclinacioRightFromHelper(Transform helper)
+                public static Vector3 InclinacioRightFromHelper(Transform helper, Vector2 moviment)
                 {
                     //MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
-                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), helper.forward).normalized;
+                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(moviment), helper.forward).normalized;
                     return Vector3.Cross(inputRight, helper.forward).normalized;
                     //return Vector3.Cross(transform.right, helper.forward).normalized;
                 }
-                public static Vector3 InclinacioForwardFromHelper(Transform helper)
+                public static Vector3 InclinacioForwardFromHelper(Transform helper, Vector2 moviment)
                 {
-                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), helper.forward).normalized;
+                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(moviment), helper.forward).normalized;
                     return Vector3.Cross(inputRight, helper.forward).normalized;
                 }
                 public static Vector3 InclinacioRightFromHelper(Transform transform, Transform helper) 

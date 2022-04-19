@@ -46,10 +46,10 @@ namespace Moviment3D
             if (rb == null) rb = GetComponent<Rigidbody>();
 
             PrepararRigidBody(true);
-            CrearHelper(puntInicial);            
+            CrearHelper(puntInicial);
 
-            Inputs.SaltEscalantPreparat = false;
-            Inputs.SaltEscalantReenganxarse = false;
+            i.Inputs.SaltEscalantPreparat = false;
+            i.Inputs.SaltEscalantReenganxarse = false;
             temps = 0;
             velocitatEntrada = true;
             inputSaltarFlanc = false;
@@ -89,7 +89,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            if (!Preparacio.Preparat && Inputs.Escalar) Preparacio.Preparar = 0.25f;
+            if (!Preparacio.Preparat && i.Inputs.Escalar) Preparacio.Preparar = 0.25f;
 
             if (!enPosicio) Desplacar();
             else Quiet();
@@ -134,7 +134,7 @@ namespace Moviment3D
             {
                 if (plaSmooth < 1) plaSmooth = temps;
                 //Resistencia.Gastar();
-                informacio.Resist.Gastar();
+                i.Resist.Gastar();
                 IKs.Actualitzar(temps);
             }
             else 
@@ -152,7 +152,7 @@ namespace Moviment3D
             if (temps > 1)
             {
                 enPosicio = true;
-                Inputs.SetHelperVectors = helper;
+                i.Inputs.SetHelperVectors = helper;
 
                 Animacio.EnMoviment(false);
 
@@ -170,12 +170,12 @@ namespace Moviment3D
             //if (!pla) Resistencia.GastarLentament();
             //else Resistencia.RescuperarLentament();
 
-            if (!pla) informacio.Resist.GastarLentament();
-            else informacio.Resist.RescuperarLentament();
+            if (!pla) i.Resist.GastarLentament();
+            else i.Resist.RescuperarLentament();
 
             Quiet_ComençarMoviment();
 
-            if (!Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
+            if (!i.Inputs.Saltar && inputSaltarFlanc) inputSaltarFlanc = false;
 
             if (!pla)
                 if (plaSmooth < 1) plaSmooth += Time.deltaTime * 0.5f;
@@ -194,17 +194,17 @@ namespace Moviment3D
             if (!inputSaltarFlanc)
             {
                 inputSaltarFlanc = true;
-                Inputs.SaltEscalantPreparat = true;
+                i.Inputs.SaltEscalantPreparat = true;
                 Animacio.SaltPreparat(true);
             }
 
             if (pla) transform.Orientar(10);
-            else Animacio.Moviment(Inputs.Moviment.normalized);
+            else Animacio.Moviment(i.Inputs.Moviment.normalized);
 
-            if (Inputs.Deixar)
+            if (i.Inputs.Deixar)
             {
                 inputSaltarFlanc = false;
-                Inputs.SaltEscalantPreparat = false;
+                i.Inputs.SaltEscalantPreparat = false;
                 Animacio.SaltPreparat(false);
             }
         }
@@ -213,16 +213,16 @@ namespace Moviment3D
         void Quiet_ComençarMoviment()
         {
 
-            if (Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment).Hitted())
+            if (i.Inputs.Moviment != Vector2.zero && Entorn.Escalant.Moviment(helper, pla, i.Inputs.Moviment).Hitted())
             {
-                PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, Inputs.Moviment));
+                PosicionarHelper(Entorn.Escalant.Moviment(helper, pla, i.Inputs.Moviment));
 
                 Animacio.EnMoviment(true);
 
                 if (!pla)
-                    IKs.Capturar(Inputs.Moviment * 0.5f);
+                    IKs.Capturar(i.Inputs.Moviment * 0.5f);
 
-                rotacioFinal = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment).ToQuaternion();
+                rotacioFinal = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment).ToQuaternion();
 
                 temps = 0;
                 velocitatEntrada = false;
@@ -272,7 +272,7 @@ namespace Moviment3D
 
         void DestruirHelper()
         {
-            Inputs.SetHelperVectors = helper;
+            i.Inputs.SetHelperVectors = helper;
             Destroy(helper.gameObject);
         }
 
@@ -300,7 +300,7 @@ namespace Moviment3D
             {
                 reenganxarCantondaSuperior = hit.normal.PropDe1();
                 //Resistencia.NoBuidarDelTot();
-                informacio.Resist.NoBuidarDelTot();
+                i.Resist.NoBuidarDelTot();
                 CrearHelper(hit);
                 Estat.Sortida(condicio);
             });
@@ -308,7 +308,7 @@ namespace Moviment3D
 
         public void C_Esc(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
+            if (i.Inputs.Escalar &&
                 Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted() &&
                 Preparacio.Preparat)
             {
@@ -319,7 +319,7 @@ namespace Moviment3D
         }
         public void C_EscAire(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
+            if (i.Inputs.Escalar &&
                 Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
                 Preparacio.Preparat)
             {
@@ -332,7 +332,7 @@ namespace Moviment3D
 
         public void C_EscalarCaient(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
+            if (i.Inputs.Escalar &&
                 Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
                 Preparacio.Preparat)
             {
@@ -346,7 +346,7 @@ namespace Moviment3D
 
         public void C_SaltarEscalantReencangarse(Estat.Condicio condicio)
         {
-            if (Inputs.Escalar &&
+            if (i.Inputs.Escalar &&
                 Entorn.Buscar.Dret.OnComencarAEscalar(transform).Hitted())
             {
                 puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform);
@@ -358,7 +358,7 @@ namespace Moviment3D
 
         public void C_DeixarInputEscalarQuanPla(Estat.Condicio condicio)
         {
-            if(!Inputs.Escalar && Pla && enPosicio)
+            if(!i.Inputs.Escalar && Pla && enPosicio)
             {
                 Estat.Sortida(condicio);
                 //Animacio simple de ajupuid a dret
@@ -367,7 +367,7 @@ namespace Moviment3D
 
         public void C_CaurePerMassaInclinacio(Estat.Condicio condicio)
         {
-            if (Inputs.GetHelperForward.CasiMenys1()) Estat.Sortida(condicio);
+            if (i.Inputs.GetHelperForward.CasiMenys1()) Estat.Sortida(condicio);
         }
         public void C_SenseResistencia(Estat.Condicio condicio)
         {
