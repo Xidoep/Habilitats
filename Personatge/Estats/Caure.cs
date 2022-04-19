@@ -9,15 +9,20 @@ namespace Moviment3D
     {
         public override string ToString() => "Caure";
 
+        Rigidbody rb;
         Vector3 moviment;
+
+        public float debug;
 
         internal override void EnEntrar()
         {
-            transform.SetParent(null);
+            if (rb == null) rb = GetComponent<Rigidbody>();
 
-            i.Animacio.Caure();
+            transform.SetParent(null);
+            
+            Animacio.Caure();
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
-            i.Dinamic.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         internal override void EnSortir()
@@ -31,33 +36,33 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment) * Time.deltaTime;
 
-            i.Dinamic.Rigidbody.AddForce((moviment * 20000) * i.Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment)));
+            rb.AddForce((moviment * 20000) * Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)));
 
-            if (!i.Inputs.Saltar)
+            if (!Inputs.Saltar)
             {
-                i.Dinamic.Rigidbody.Gravetat();
+                rb.Gravetat();
             }
 
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, new Vector3(0, transform.localEulerAngles.z, 0).ToQuaternion(), 10);
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
-            transform.Orientar(i.Inputs.Moviment,1);
+            transform.Orientar(1);
+            
 
-
-            i.Animacio.VelocitatVertical(i.Dinamic.VelocitatGravetat.y);
+            Animacio.VelocitatVertical();
         }
 
 
 
         public void C_VelocitatVerticalNegativa(Estat.Condicio condicio)
         {
-            if (i.Dinamic.VelocitatVerticalNegativa) Estat.Sortida(condicio);
+            if (Dinamic.VelocitatVerticalNegativa) Estat.Sortida(condicio);
         }
         public void C_NoEscAire(Estat.Condicio condicio)
         {
-            if (i.Inputs.Deixar &&
-                i.Preparacio.Preparat &&
+            if (Inputs.Deixar &&
+                Preparacio.Preparat &&
                 !Entorn.Buscar.Terra.Hit(transform).Hitted())
             {
                 Estat.Sortida(condicio);
@@ -68,28 +73,28 @@ namespace Moviment3D
         {
             if (!Entorn.Buscar.Terra.Hit(transform).Hitted() &&
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                i.CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
-                i.Preparacio.Preparat)
+                CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
+                Preparacio.Preparat)
             {
-                i.CoyoteTime.Stop();
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 
         }
         public void C_SaltarEscalantCaure(Estat.Condicio condicio)
         {
-            if (i.Preparacio.Preparat &&
-                i.CoyoteTime.Temps(i.Preparacio.Preparat, 0.4f))
+            if (Preparacio.Preparat &&
+                CoyoteTime.Temps(Preparacio.Preparat, 0.4f))
             {
-                i.CoyoteTime.Stop();
+                CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 
         }
         public void C_NoParetDevant(Estat.Condicio condicio)
         {
-            if (!Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform, out float innecessari).Hitted() &&
-                i.Preparacio.Preparat)
+            if (!Entorn.Buscar.Dret.OnComencarAEscalar_Aire(transform).Hitted() &&
+                Preparacio.Preparat)
             {
                 Estat.Sortida(condicio);
             }

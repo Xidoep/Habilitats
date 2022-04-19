@@ -43,7 +43,7 @@ namespace Moviment3D
             if (XS_Physics.RayDebug(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).Hitted())
                 normals.Add(XS_Physics.RayDebug(helper.position + helper.up * 1 - helper.right * 0.45f + helper.forward, -helper.forward, 2, capaEntorn, 3).normal);
 
-            Debugar.Log($"{normals.Count} normals");
+            Debug.Log($"{normals.Count} normals");
             for (int i = 0; i < normals.Count; i++)
             {
                 //Debug.Log($"{normals[i]}");
@@ -60,82 +60,62 @@ namespace Moviment3D
         public static class Escalant
         {
             //MOVIMENT
-            public static RaycastHit Moviment(Transform helper, bool pla, Vector2 moviment, out float velocitat)
+            public static RaycastHit Moviment(Transform helper, bool pla, Vector2 moviment)
             {
-                
                 RaycastHit hit = nul;
-                float _velocitat = 1;
-                if(Buscar.Terra(helper,pla, moviment).Hitted())
+                if (Buscar.Bloquejat(helper, pla, moviment).Hitted()) 
                 {
-                    Debugar.Log("Terra");
-                    hit = Buscar.Terra(helper, pla, moviment); //Terra sota els peus
-                    _velocitat = 0.75f;
-                }
+                    Debugar.Log("BLoquejat");
+                    hit = Buscar.Bloquejat(helper, pla, moviment); //Mur davant d'on vol anar
+                } 
                 else
                 {
-                    if (Buscar.Bloquejat(helper, pla, moviment).Hitted())
+                    if (Buscar.Recta(helper, pla, moviment).Hitted()) //Si hi ha paret per continuar
                     {
-                        Debugar.Log("Bloquejat");
-                        hit = Buscar.Bloquejat(helper, pla, moviment); //Mur davant d'on vol anar
-                        _velocitat = 0.75f;
-                    }
-                    else
-                    {
-                        if (Buscar.Recta(helper, pla, moviment).Hitted()) //Si hi ha paret per continuar
+                        if (!pla)
                         {
-                            if (!pla)
+                            if (moviment.normalized.y > 0) //Si vas cap amunt
                             {
-                                if (moviment.normalized.y > 0) //Si vas cap amunt
+                                if (Buscar.Sostre(helper, pla, moviment).Hitted()) 
                                 {
-                                    if (Buscar.Sostre(helper, pla, moviment).Hitted())
-                                    {
-                                        Debugar.Log("Sostre");
-                                        hit = Buscar.Sostre(helper, pla, moviment); //Si mes amunt hi torves un sostre
-                                        _velocitat = 0.4f;
-                                    }
-                                    else
-                                    {
-                                        if (Buscar.CantonadaPlanaAmunt(helper).Hitted())
-                                        {
-                                            Debugar.Log("Cantonada plana mes amunt");
-                                            hit = Buscar.CantonadaPlanaAmunt(helper); //Si torves una cantonada plana
-                                            _velocitat = 0.5f;
-                                        }
-                                        else
-                                        {
-                                            Debugar.Log("Recta, no pla i amunt");
-                                            hit = Buscar.Recta(helper, pla, moviment);
-                                            _velocitat = 0.5f;
-                                        }
-                                    }
+                                    Debugar.Log("Sostre");
+                                    hit = Buscar.Sostre(helper, pla, moviment); //Si mes amunt hi torves un sostre
                                 }
                                 else
                                 {
-                                    Debugar.Log("Recta no amunt");
-                                    hit = Buscar.Recta(helper, pla, moviment);
-                                    _velocitat = 1;
+                                    if (Buscar.CantonadaPlanaAmunt(helper).Hitted())
+                                    {
+                                        Debugar.Log("Cantonada plana mes amunt");
+                                        hit = Buscar.CantonadaPlanaAmunt(helper); //Si torves una cantonada plana
+                                    }
+                                    else 
+                                    {
+                                        Debugar.Log("Recta, no pla i amunt");
+                                        hit = Buscar.Recta(helper, pla, moviment);
+                                    } 
                                 }
                             }
                             else
                             {
-                                Debugar.Log("Recta i pla");
+                                Debugar.Log("Recta no amunt");
                                 hit = Buscar.Recta(helper, pla, moviment);
-                                _velocitat = 1;
                             }
                         }
                         else
                         {
-                            if (Buscar.Cantonada(helper, pla, moviment).Hitted())
-                            {
-                                Debugar.Log("Cantonada");
-                                hit = Buscar.Cantonada(helper, pla, moviment); //Busca cantonada
-                                _velocitat = 0.5f;
-                            }
+                            Debugar.Log("Recta i pla");
+                            hit = Buscar.Recta(helper, pla, moviment);
                         }
                     }
+                    else
+                    {
+                        if (Buscar.Cantonada(helper, pla, moviment).Hitted()) 
+                        {
+                            Debugar.Log("Cantonada");
+                            hit = Buscar.Cantonada(helper, pla, moviment); //Busca cantonada
+                        } 
+                    }
                 }
-                
-                velocitat = _velocitat;
                 return hit;
             }
             static Vector3 Direccio(Transform helper, bool pla, Vector2 moviment) => !pla ? Direccio_Vertical(helper, moviment) : Direccio_Pla(moviment);
@@ -163,12 +143,12 @@ namespace Moviment3D
                         {
                             if (XS_Physics.RayDebug(
                                 Separacio(helper) + Amunt(helper) - Endevant(helper), 
-                                -helper.up * 2, 
-                                distMovEscalar * 1.2f, capaEntorn, 1).Hitted())
+                                -helper.up, 
+                                distMovEscalar * 4, capaEntorn, 1).Hitted())
                                 return XS_Physics.RayDebug(
                                     Separacio(helper) + Amunt(helper) - Endevant(helper), 
-                                    -helper.up * 2, 
-                                    distMovEscalar * 1.2f, capaEntorn, 1);
+                                    -helper.up, 
+                                    distMovEscalar * 4, capaEntorn, 1);
                             else return nul;
                         }
                         else return nul;
@@ -211,14 +191,6 @@ namespace Moviment3D
                     
                     if (cantonadaSuperior.Hitted()) action.Invoke(cantonadaSuperior);
                 }
-                internal static RaycastHit Terra(Transform helper, bool pla, Vector2 moviment) 
-                {
-                    if (moviment.y >= 0) return nul;
-                    else return XS_Physics.RayDebug(
-                        Separacio(helper),
-                        Direccio(helper, pla, moviment),
-                        distMovEscalar * 1.75f, capaEntorn, 1);
-                }
                 internal static RaycastHit Bloquejat(Transform helper, bool pla, Vector2 moviment) => 
                     XS_Physics.RayDebug(
                         Separacio(helper), 
@@ -251,7 +223,7 @@ namespace Moviment3D
                         1, capaEntorn, 1);
 
                
-                static Vector3 Amunt(Transform helper) => helper.up * (distMovEscalar * 3.6f);
+                static Vector3 Amunt(Transform helper) => helper.up * (distMovEscalar * 2.2f);
                 static Vector3 Endevant(Transform helper) => helper.forward * (1 + distMovEscalar);
                 static Vector3 Separacio(Transform helper) => helper.position + helper.forward * 0.5f;
                 static Vector3 SeparacioMenor(Transform helper) => helper.position + helper.forward * 0.0f;
@@ -270,67 +242,40 @@ namespace Moviment3D
             /// </summary>
             public static class Dret
             {
-                public static RaycastHit OnComencarAEscalar(Transform transform, out float velocitat) //no escalant
+                public static RaycastHit OnComencarAEscalar(Transform transform) //no escalant
                 {
-                    if (Endevant(transform).Hitted()) {
-                        velocitat = 2;
-                        return Endevant(transform);
-                    } 
-                    else{
-                        if (!DavantDelsPeus(transform).Hitted() && CantonadaForat(transform).Hitted()) {
-                            velocitat = 0.5f;
-                            return CantonadaForat(transform);
-                        } 
-                        else{
-                            if (AlsPeus(transform).Hitted()) {
-                                velocitat = 1;
-                                return AlsPeus(transform);
-                            }
-                            else{
-                                if (DiagonalDreta(transform).Hitted()) {
-                                    velocitat = 2;
-                                    return DiagonalDreta(transform);
-                                } 
-                                else{
-                                    if (DiagonalEsquerra(transform).Hitted()) {
-                                        velocitat = 2;
-                                        return DiagonalEsquerra(transform);
-                                    } 
-                                    else{
-                                        if (Dreta(transform).Hitted()) {
-                                            velocitat = 1.5f;
-                                            return Dreta(transform);
-                                        }
-                                        else{
-                                            if (Esquerra(transform).Hitted()) {
-                                                velocitat = 1.5f;
-                                                return Esquerra(transform);
-                                            }
-                                            else{
-                                                if (DiagonalAmunt(transform).Hitted()) {
-                                                    velocitat = 1;
-                                                    return DiagonalAmunt(transform);
-                                                }
-                                                else{
-                                                    if (Amunt(transform).Hitted()) {
-                                                        velocitat = 1;
-                                                        return Amunt(transform);
-                                                    }
-                                                    else{
-                                                        if (DavantDelsPeus(transform).Hitted()) {
-                                                            velocitat = 2;
-                                                            return DavantDelsPeus(transform);
-                                                        }
-                                                        else{
-                                                            if (CantonadaSuperior(transform).Hitted())
-                                                            {
-                                                                velocitat = 0.5f;
-                                                                return CantonadaSuperior(transform);
-                                                            }
-                                                            else{
-                                                                velocitat = 1;
-                                                                return nul;
-                                                            } 
+                    if (Endevant(transform).Hitted()) return Endevant(transform);
+                    else
+                    {
+                        if (!DavantDelsPeus(transform).Hitted() && CantonadaForat(transform).Hitted()) return CantonadaForat(transform);
+                        else
+                        {
+                            if (AlsPeus(transform).Hitted()) return AlsPeus(transform);
+                            else
+                            {
+                                if (DiagonalDreta(transform).Hitted()) return DiagonalDreta(transform);
+                                else
+                                {
+                                    if (DiagonalEsquerra(transform).Hitted()) return DiagonalEsquerra(transform);
+                                    else
+                                    {
+                                        if (Dreta(transform).Hitted()) return Dreta(transform);
+                                        else
+                                        {
+                                            if (Esquerra(transform).Hitted()) return Esquerra(transform);
+                                            else
+                                            {
+                                                if (DiagonalAmunt(transform).Hitted()) return DiagonalAmunt(transform);
+                                                else
+                                                {
+                                                    if (Amunt(transform).Hitted()) return Amunt(transform);
+                                                    else
+                                                    {
+                                                        if (DavantDelsPeus(transform).Hitted()) return DavantDelsPeus(transform);
+                                                        else
+                                                        {
+                                                            if (CantonadaSuperior(transform).Hitted()) return CantonadaSuperior(transform);
+                                                            else return nul;
                                                         }
                                                     }
                                                 }
@@ -342,55 +287,35 @@ namespace Moviment3D
                         }
                     }
                 }
-                public static RaycastHit OnComencarAEscalar_Aire(Transform transform, out float velocitat) //no escalant
+                public static RaycastHit OnComencarAEscalar_Aire(Transform transform) //no escalant
                 {
                     if (!DavantDelCap(transform).Hitted() && CantonadaSuperior(transform).Hitted()) 
                     {
-                        Debugar.Log("Donem una senyal!!!");
-                        velocitat = 0.5f;
+                        Debug.Log("Donem una senyal!!!");
                         return CantonadaSuperior(transform);
                     } 
                     else
                     {
-                        if (Endevant(transform).Hitted()) {
-                            velocitat = 2;
-                            return Endevant(transform);
-                        } 
-                        else{
-                            if (DiagonalDreta(transform).Hitted()) {
-                                velocitat = 2;
-                                return DiagonalDreta(transform);
-                            } 
-                            else{
-                                if (DiagonalEsquerra(transform).Hitted()) {
-                                    velocitat = 2;
-                                    return DiagonalEsquerra(transform);
-                                } 
-                                else{
-                                    if (Dreta(transform).Hitted()) {
-                                        velocitat = 2;
-                                        return Dreta(transform);
-                                    } 
-                                    else{
-                                        if (Esquerra(transform).Hitted()) {
-                                            velocitat = 2;
-                                            return Esquerra(transform);
-                                        } 
-                                        else{
-                                            if (DiagonalAmunt(transform).Hitted()) {
-                                                velocitat = 2;
-                                                return DiagonalAmunt(transform);
-                                            } 
-                                            else{
-                                                if (Amunt(transform).Hitted())
-                                                {
-                                                    velocitat = 2;
-                                                    return Amunt(transform);
-                                                }
-                                                else {
-                                                    velocitat = 2;
-                                                    return nul;
-                                                } 
+                        if (Endevant(transform).Hitted()) return Endevant(transform);
+                        else
+                        {
+                            if (DiagonalDreta(transform).Hitted()) return DiagonalDreta(transform);
+                            else
+                            {
+                                if (DiagonalEsquerra(transform).Hitted()) return DiagonalEsquerra(transform);
+                                else
+                                {
+                                    if (Dreta(transform).Hitted()) return Dreta(transform);
+                                    else
+                                    {
+                                        if (Esquerra(transform).Hitted()) return Esquerra(transform);
+                                        else
+                                        {
+                                            if (DiagonalAmunt(transform).Hitted()) return DiagonalAmunt(transform);
+                                            else
+                                            {
+                                                if (Amunt(transform).Hitted()) return Amunt(transform);
+                                                else return nul;
                                             }
                                         }
                                     }
@@ -398,6 +323,7 @@ namespace Moviment3D
                             }
                         }
                     }
+                    
                 }
 
 
@@ -464,17 +390,16 @@ namespace Moviment3D
                         return Vector3.Cross(transform.right, raycastHit.normal).normalized;
                     else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
-                public static Vector3 InclinacioRightFromHelper(Transform helper, Vector3 MovimentRelatiuACamera)
+                public static Vector3 InclinacioRightFromHelper(Transform helper)
                 {
-                    //MovimentRelatiuACamera = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)
-                    Vector3 inputRight = -Vector3.Cross(MovimentRelatiuACamera, helper.forward).normalized;
+                    //MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment);
+                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), helper.forward).normalized;
                     return Vector3.Cross(inputRight, helper.forward).normalized;
                     //return Vector3.Cross(transform.right, helper.forward).normalized;
                 }
-                public static Vector3 InclinacioForwardFromHelper(Transform helper, Vector3 MovimentRelatiuACamera)
+                public static Vector3 InclinacioForwardFromHelper(Transform helper)
                 {
-                    //MovimentRelatiuACamera = MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment)
-                    Vector3 inputRight = -Vector3.Cross(MovimentRelatiuACamera, helper.forward).normalized;
+                    Vector3 inputRight = -Vector3.Cross(MyCamera.Transform.ACamaraRelatiu(Inputs.Moviment), helper.forward).normalized;
                     return Vector3.Cross(inputRight, helper.forward).normalized;
                 }
                 public static Vector3 InclinacioRightFromHelper(Transform transform, Transform helper) 
@@ -513,11 +438,11 @@ namespace Moviment3D
                     //    && !Fisiques.Raig(transform.position + transform.up * (0.1f + altura), transform.forward, 1.5f, capaEntorn).Impactat();
                 }
 
-                public static bool NoTerra(Transform transform, bool preparat)
+                public static bool NoTerra(Transform transform)
                 {
                     return !Entorn.Buscar.Terra.Hit(transform).Hitted() &&
                         !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                        preparat;
+                        Preparacio.Preparat;
                 }
 
                 static RaycastHit Devant(Transform transform) => XS_Physics.RaySphereDebug(transform.position + transform.up * (distBuscarTerra - 0.1f), -transform.up + transform.forward * (distBuscarTerra * 0.3f), distBuscarTerra, capaEntorn, 0.1f);

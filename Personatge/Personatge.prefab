@@ -219,14 +219,22 @@ MonoBehaviour:
   capaEntorn:
     serializedVersion: 2
     m_Bits: 256
-  resistencia: {fileID: 0}
-  animacio: {fileID: 0}
-  inputs: {fileID: 0}
-  vida: {fileID: 0}
-  preparacio: {fileID: 0}
-  dinamic: {fileID: 0}
-  coyoteTime: {fileID: 0}
+  moviment: {fileID: -4184115557672159984, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
+  saltar: {fileID: -7620387423433335294, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
+  agafar: {fileID: -6437315812536265154, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
+  deixar: {fileID: -357130075554192267, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
+  rig: {fileID: 2905793973121774084}
+  ikMaDreta: {fileID: 4087864338423620187}
+  ikMaEsquerra: {fileID: 6634390949144547199}
+  ikPeuDreta: {fileID: 3694570108013275416}
+  ikMPeuEsquerra: {fileID: 7653996181031798618}
+  canalResistencia: {fileID: 11400000, guid: fa2134bea1f1e514db4212ebcde33b00, type: 2}
+  canalMort: {fileID: 11400000, guid: fc79a4206ba3df24ab64722f8bc50be7, type: 2}
+  canalTrencat: {fileID: 11400000, guid: 00a00a863abc9104cb2e5ec0d0bbb037, type: 2}
+  testing: 0
   debug: 0
+  damaged: 0
+  resist: {fileID: 11400000, guid: b9fa284d523ffe94b82678e4bc009c98, type: 2}
 --- !u!114 &5229338690214211449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,9 +312,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
   ui: {fileID: 11400000, guid: 4ea86373593cf3d4f95410e0b2e8fcae, type: 2}
-  contextual: {fileID: 11400000, guid: 60c7457077256c14ba642cf91e97af5a, type: 2}
-  climbInputAction: {fileID: -6437315812536265154, guid: b3fbba656f112284da3a0a039abd6344, type: 3}
   velocitat: 5
   apretar: 0
 --- !u!114 &5229338690214211454
@@ -406,6 +413,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 11400000, guid: 970c79aa4a8c8d043a63d036189961e3, type: 2}
   velocitat: 3
   velocitatMovimentAjupit:
     serializedVersion: 2
@@ -523,6 +531,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 0}
   seguintParet: 9
   contraParet: 4
   ajupit: 9
@@ -599,6 +608,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  debug: 0
 --- !u!114 &5229338690214211444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +670,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  info: {fileID: 0}
   forca: 6
 --- !u!114 &1999131223
 MonoBehaviour:
