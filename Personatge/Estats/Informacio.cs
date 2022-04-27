@@ -12,6 +12,7 @@ namespace Moviment3D
     public class Informacio : MonoBehaviour
     {
         [SerializeField] LayerMask capaEntorn;
+        [SerializeField] LayerMask capaRelliscar;
 
         [SerializeField] Resist resistencia;
         [SerializeField] AnimPlayer animacio;
@@ -53,12 +54,12 @@ namespace Moviment3D
 
         private void OnEnable()
         {
-            foreach (var item in GetComponents<Estat>())
+            foreach (var item in GetComponents<EstatPersonatge>())
             {
                 item.Informacio = this;
             }
 
-            Entorn.Iniciar(capaEntorn);
+            Entorn.Iniciar(capaEntorn, capaRelliscar);
             resistencia = resistencia.Iniciar();
             animacio = (AnimPlayer)animacio.Iniciar(transform);
             inputs = inputs.Iniciar(transform);
@@ -105,7 +106,11 @@ namespace Moviment3D
         }
         //internal Animator Animator => animator;
 
-
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            //Gizmos.DrawSphere(transform.position + transform.up * .3f, .4f);
+        }
     }
 }
 

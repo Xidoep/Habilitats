@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Salt : Estat
+    public class Salt : EstatPersonatge
     {
         Vector3 moviment;
 

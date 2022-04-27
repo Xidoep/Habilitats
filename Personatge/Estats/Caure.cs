@@ -5,11 +5,13 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Caure : Estat
+    public class Caure : EstatPersonatge
     {
         public override string ToString() => "Caure";
 
         Vector3 moviment;
+
+        float timer = 0;
 
         internal override void EnEntrar()
         {
@@ -18,6 +20,8 @@ namespace Moviment3D
             i.Animacio.Caure();
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
             i.Dinamic.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+
+            timer = 1;
         }
 
         internal override void EnSortir()
@@ -31,7 +35,7 @@ namespace Moviment3D
 
         internal override void EnUpdate()
         {
-            moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime;
+            moviment = MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment) * Time.deltaTime * Mathf.Clamp01(timer);
 
             i.Dinamic.Rigidbody.AddForce((moviment * 20000) * i.Dinamic.MultiplicadorMovimentAeri(MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment)));
 
@@ -42,10 +46,12 @@ namespace Moviment3D
 
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, new Vector3(0, transform.localEulerAngles.z, 0).ToQuaternion(), 10);
             transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
-            transform.Orientar(i.Inputs.Moviment,1);
+            transform.Orientar(i.Inputs.Moviment,6);
 
 
             i.Animacio.VelocitatVertical(i.Dinamic.VelocitatGravetat.y);
+
+            timer -= Time.deltaTime;
         }
 
 
@@ -66,14 +72,34 @@ namespace Moviment3D
         }
         public void C_NoTerra(Estat.Condicio condicio)
         {
-            if (!Entorn.Buscar.Terra.Hit(transform).Hitted() &&
+            if (Entorn.Buscar.Terra.Hit(transform).Hitted())
+            {
+                if (!Entorn.Buscar.Terra.Hit(transform).normal.Pla() &&
+                i.CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
+                i.Preparacio.Preparat)
+                {
+                    i.CoyoteTime.Stop();
+                    Estat.Sortida(condicio);
+                }
+            }
+            else
+            {
+                if (!Entorn.Buscar.Terra.HiHaEsglao(transform) &&
+                i.CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
+                i.Preparacio.Preparat)
+                {
+                    i.CoyoteTime.Stop();
+                    Estat.Sortida(condicio);
+                }
+            }
+            /*if ((!Entorn.Buscar.Terra.Hit(transform).Hitted() || !Entorn.Buscar.Terra.Hit(transform).normal.Pla()) &&
                 !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
                 i.CoyoteTime.Temps(!Entorn.Buscar.Terra.Hit(transform).Hitted(), 0.02f) &&
                 i.Preparacio.Preparat)
             {
                 i.CoyoteTime.Stop();
                 Estat.Sortida(condicio);
-            }
+            }*/
 
         }
         public void C_SaltarEscalantCaure(Estat.Condicio condicio)

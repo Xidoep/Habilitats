@@ -14,7 +14,7 @@ namespace Moviment3D
         const string PLE = "_Ple";
         const string GASTANT = "_Gastant";
 
-        [SerializeField] Canal_FloatFloat resistencia;
+        [SerializeField] Canal_FloatFloatFloat resistencia;
 
         [SerializeField] Material material;
         [SerializeField] RectTransform rect;
@@ -69,9 +69,9 @@ namespace Moviment3D
 
         }
 
-        void Pintar(float actual, float maxim)
+        void Pintar(float actual, float maxim, float gastant)
         {
-            material.SetFloat(GASTANT, (anterior - (actual / maxim))* 100);
+            material.SetFloat(GASTANT, gastant);
             material.SetFloat(PLE, actual / maxim);
             anterior = actual / maxim;
             //image.fillAmount = actual / maxim;

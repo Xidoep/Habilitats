@@ -6,7 +6,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Dret : Estat
+    public class Dret : EstatPersonatge
     {
         [SerializeField] UI ui;
         [SerializeField] UI_Contextual contextual;
@@ -78,6 +78,8 @@ namespace Moviment3D
 
             Animar();
             i.Animacio.MovimentY(Mathf.Max(velocitatActual.magnitude / velocitat, i.Dinamic.Velocitat.magnitude * 30));
+
+           
         }
 
         
@@ -93,6 +95,7 @@ namespace Moviment3D
         void Moviment()
         {
             Debugar.DrawRay(transform.position, MyCamera.Transform.ACamaraRelatiu(i.Inputs.Moviment));
+            Debugar.DrawRay(transform.position, Entorn.Buscar.Terra.InclinacioForward(transform), Color.red);
 
             velocitatActual = ((Entorn.Buscar.Terra.InclinacioForward(transform) + PujarSiEsglao) *
                 velocitat *
@@ -269,6 +272,7 @@ namespace Moviment3D
         public void C_Terra(Estat.Condicio condicio)
         {
             if (Entorn.Buscar.Terra.Hit(transform).Hitted() &&
+                Entorn.Buscar.Terra.Hit(transform).normal.Pla() &&
                 i.Preparacio.Preparat &&
                 !Entorn.Buscar.Terra.EsRelliscant(transform))
 

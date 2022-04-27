@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Relliscar : Estat
+    public class Relliscar : EstatPersonatge
     {
         [SerializeField] int velocitat;
         Transform helper;
@@ -42,9 +42,16 @@ namespace Moviment3D
 
             //rb.MovePosition(rb.transform.position + -helper.up * velocitat * Inersia * Time.deltaTime);
             //transform.position += (-helper.up + Direccio) * Time.deltaTime * velocitat * Inersia;
-            transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
-            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 10);
+
+            //transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
+            transform.RotateToQuaternionSmooth((-helper.up).ToQuaternion(Vector3.up), 5);
             i.Dinamic.Actualitzar(transform);
+        }
+
+        private void FixedUpdate()
+        {
+            transform.position += (Entorn.Buscar.Terra.InclinacioForward(transform) + Direccio) * Time.deltaTime * velocitat * Inersia;
+            Debug.DrawRay(transform.position, Entorn.Buscar.Terra.InclinacioForward(transform), Color.blue, 5);
         }
 
         void CrearHelper(RaycastHit hit)
@@ -62,10 +69,8 @@ namespace Moviment3D
         public void C_Relliscar(Estat.Condicio condicio)
         {
             if (Entorn.Buscar.Terra.EsRelliscant(transform) &&
-                !Entorn.Buscar.Terra.HiHaEsglao(transform) &&
-                i.CoyoteTime.Temps(Entorn.Buscar.Terra.EsRelliscant(transform), 0.05f))
+                !Entorn.Buscar.Terra.HiHaEsglao(transform))
             {
-                i.CoyoteTime.Stop();
                 Estat.Sortida(condicio);
             }
 

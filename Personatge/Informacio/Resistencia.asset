@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22cf2dd7101f07c40a86ca3e42d53ac4, type: 3}
   m_Name: Resistencia
   m_EditorClassIdentifier: 
-  canalResistencia: {fileID: 11400000, guid: fa2134bea1f1e514db4212ebcde33b00, type: 2}
-  maxim: 12
+  ui: {fileID: 481803446970440099, guid: 069adb146762aa34eac120e5debadd02, type: 3}
+  canalResistencia: {fileID: 11400000, guid: 57ca181631361154bb37a04c40b1b6d1, type: 2}
+  maxim: 8
   actual: 5
+  gastant: 0
   testing: 1

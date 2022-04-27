@@ -5,7 +5,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class SaltEscalant : Estat
+    public class SaltEscalant : EstatPersonatge
     {
         //Informacio info;
         //Rigidbody rb;
@@ -30,6 +30,7 @@ namespace Moviment3D
         internal override void EnEntrar()
         {
             currentConstraints = i.Dinamic.Rigidbody.constraints;
+            i.Preparacio.Preparar = 0.25f;
 
             if (i.Inputs.GetHelperUp.Pla())  //En aquest cas .Pla() es fa servir per confirmar que la direcio de salt es cap AMUNT. (osigui, si estas escalant o ajupit)
             {

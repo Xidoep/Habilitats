@@ -39,11 +39,11 @@ Material:
     m_Floats:
     - _Float: 0
     - _Gastant: 0
-    - _Gruix: 0
+    - _Gruix: 0.19
     - _Ple: 1
     - _QueueControl: 1
     - _QueueOffset: -48
-    - _Radi: 0.147
+    - _Radi: 0.64
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1964705203970380703

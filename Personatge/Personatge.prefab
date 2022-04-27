@@ -219,13 +219,13 @@ MonoBehaviour:
   capaEntorn:
     serializedVersion: 2
     m_Bits: 256
-  resistencia: {fileID: 0}
-  animacio: {fileID: 0}
-  inputs: {fileID: 0}
-  vida: {fileID: 0}
-  preparacio: {fileID: 0}
-  dinamic: {fileID: 0}
-  coyoteTime: {fileID: 0}
+  resistencia: {fileID: 11400000, guid: b9fa284d523ffe94b82678e4bc009c98, type: 2}
+  animacio: {fileID: 11400000, guid: a330fd3951d8a444c982973d5791a03a, type: 2}
+  inputs: {fileID: 11400000, guid: 21af30aead8e5cf468eae1f3e20d1139, type: 2}
+  vida: {fileID: 11400000, guid: d50a49bc8679b3646ae43c06fad3cc4f, type: 2}
+  preparacio: {fileID: 11400000, guid: 241ff2ce39a8b464da788eecbcf9825f, type: 2}
+  dinamic: {fileID: 11400000, guid: 62fcd59815f868045a7100b0bdfd97d2, type: 2}
+  coyoteTime: {fileID: 11400000, guid: a3d337ca1f4176f43bce5f61548677cb, type: 2}
   debug: 0
 --- !u!114 &5229338690214211449
 MonoBehaviour:

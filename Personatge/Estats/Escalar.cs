@@ -6,7 +6,7 @@ using XS_Utils;
 
 namespace Moviment3D
 {
-    public class Escalar : Estat
+    public class Escalar : EstatPersonatge
     {
         [SerializeField] int velocitat;
         float multiplicador = 1;
@@ -37,7 +37,9 @@ namespace Moviment3D
         //bool reenganxarCantondaSuperior = false;
 
         bool Pla => helper.forward.Pla();
-        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Vector3.Dot(helper.forward, Vector3.down), 0, .5f) * 0.5f) * multiplicador;
+        float SumarTemps => Time.deltaTime * velocitat * (1 - Mathf.Clamp(Inclinacio, 0, .5f) * 0.5f) * multiplicador;
+
+        float Inclinacio => Vector3.Dot(helper.forward, Vector3.down);
 
         RaycastHit puntInicial;
         Collider[] colliders;
@@ -102,9 +104,12 @@ namespace Moviment3D
         //*******************************//
         void Desplacar()
         {
+            Debugar.Log(Inclinacio);
             temps += SumarTemps;
-              
-            transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition - (pla ? Vector3.zero : helper.up * 0.75f), temps);
+            
+            
+            transform.position = Vector3.Lerp(posicioInicial, helper.position - (pla ? Vector3.zero : helper.up * 0.75f), temps);
+            //transform.localPosition = Vector3.Lerp(posicioInicial, helper.localPosition - (pla ? Vector3.zero : helper.up * 0.25f), temps);
 
 
             ComprovarPla();
@@ -114,7 +119,7 @@ namespace Moviment3D
             {
                 if (plaSmooth < 1) plaSmooth = temps;
                 //Resistencia.Gastar();
-                i.Resistencia.Gastar();
+                i.Resistencia.Gastar(Inclinacio);
                 IKs.Actualitzar(temps);
             }
             else 
@@ -128,6 +133,7 @@ namespace Moviment3D
                 Quaternion.Slerp(rotacioInicial, Quaternion.LookRotation(-helper.forward), temps),
                 plaSmooth);
 
+            //Correct position
 
             if (temps > 1)
             {
@@ -149,7 +155,8 @@ namespace Moviment3D
 
             ComprovarPla();
 
-            if (!pla)
+            //moviment per evitar overlapings
+            /*if (!pla)
             {
                 overlaps = XS_Physics.Capsule(ref colliders, transform.position + transform.up * 0.5f, transform.position + transform.up * 0.9f, 0.15f, Entorn.capaEntorn);
                 if (overlaps > 0)
@@ -170,7 +177,7 @@ namespace Moviment3D
                     Debugar.DrawLine((transform.position + transform.up * 0.6f), colliders[0].ClosestPoint((transform.position + transform.up * 0.6f)), Color.yellow);
                     Debugar.Log("hola");
                 }
-            }
+            }*/
 
             if (!pla) i.Resistencia.GastarLentament();
             else i.Resistencia.RescuperarLentament();
@@ -203,15 +210,16 @@ namespace Moviment3D
                 joint.connectedBody = otherRigidbody;
             }
 
-            PosicionarHelper(hit, 0.1f);
+            PosicionarHelper(hit);
             rotacioFinal = transform.rotation;
         }
-        void PosicionarHelper(RaycastHit hit, float offestVertical = 0)
+        void PosicionarHelper(RaycastHit hit, float offestVertical = -.0f)
         {
             helper.SetParent(hit.collider.transform);
             transform.SetParent(hit.collider.transform);
 
-            posicioInicial = transform.localPosition;
+            //posicioInicial = transform.localPosition;
+            posicioInicial = transform.position;
             forwardInicial = transform.forward;
             rotacioInicial = transform.rotation;
 
@@ -336,6 +344,8 @@ namespace Moviment3D
             Gizmos.DrawSphere(transform.position + transform.up * 0.5f, 0.15f);
             Gizmos.DrawCube(transform.position + transform.up * 0.7f, new Vector3(0.2f, 0.9f, 0.15f));
             Gizmos.DrawSphere(transform.position + transform.up * 0.9f, 0.15f);
+            Gizmos.color = new Color(1, 1, 0, 0.5f);
+            Gizmos.DrawCube(helper.localPosition + helper.up, Vector3.one * 0.1f);
         }
 
 
@@ -422,7 +432,8 @@ namespace Moviment3D
         public void C_SaltarEscalantReencangarse(Estat.Condicio condicio)
         {
             if (i.Inputs.Escalar &&
-                Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador).Hitted())
+                Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador).Hitted() &&
+                i.Preparacio.Preparat)
             {
                 multiplicador = 2;
                 puntInicial = Entorn.Buscar.Dret.OnComencarAEscalar(transform, out multiplicador);

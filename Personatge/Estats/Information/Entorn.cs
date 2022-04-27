@@ -9,14 +9,17 @@ namespace Moviment3D
     //SHAREABLE!
     public static class Entorn
     {
-        public static void Iniciar(LayerMask _capaEntorn)
+        public static void Iniciar(LayerMask _capaEntorn, LayerMask _capaRelliscant)
         {
             capaEntorn = _capaEntorn;
+            capaRelliscant = _capaRelliscant;
         }
 
         
 
         public static LayerMask capaEntorn;
+        public static LayerMask capaRelliscant;
+        
         static RaycastHit nul;
 
 
@@ -139,7 +142,7 @@ namespace Moviment3D
                 return hit;
             }
             static Vector3 Direccio(Transform helper, bool pla, Vector2 moviment) => !pla ? Direccio_Vertical(helper, moviment) : Direccio_Pla(moviment);
-            static Vector3 Direccio_Vertical(Transform helper, Vector2 moviment) => helper.up * moviment.normalized.y - helper.right * moviment.normalized.x;
+            static Vector3 Direccio_Vertical(Transform helper, Vector2 moviment) => (helper.up * moviment.normalized.y/* + helper.up * 1.75f*/) - (helper.right * moviment.normalized.x);
             static Vector3 Direccio_Pla(Vector2 moviment) => MyCamera.Transform.ACamaraRelatiu(moviment).normalized;
 
             /// <summary>
@@ -278,7 +281,7 @@ namespace Moviment3D
                     } 
                     else{
                         if (!DavantDelsPeus(transform).Hitted() && CantonadaForat(transform).Hitted()) {
-                            velocitat = 0.5f;
+                            velocitat = 2f;
                             return CantonadaForat(transform);
                         } 
                         else{
@@ -438,6 +441,7 @@ namespace Moviment3D
                     else if (Esquerra(transform).Hitted()) return Esquerra(transform);
                     else return Centre(transform);
                 }
+              
                 /*public static RaycastHit Hit(Transform transform)
                 {
                     return Unic(transform);
@@ -460,9 +464,9 @@ namespace Moviment3D
                 public static Vector3 InclinacioForward(Transform transform)
                 {
                     raycastHit = Hit(transform);
-                    if (raycastHit.Hitted() && raycastHit.normal.Pla())
+                    //if (raycastHit.Hitted() && raycastHit.normal.Pla())
                         return Vector3.Cross(transform.right, raycastHit.normal).normalized;
-                    else return Vector3.Cross(transform.right, Vector3.up).normalized;
+                   // else return Vector3.Cross(transform.right, Vector3.up).normalized;
                 }
                 public static Vector3 InclinacioRightFromHelper(Transform helper, Vector3 MovimentRelatiuACamera)
                 {
@@ -485,19 +489,20 @@ namespace Moviment3D
                 {
                     return Vector3.Cross(-transform.right, -helper.forward).normalized;
                 }
+                static Collider[] colliders;
                 public static bool EsRelliscant(Transform transform)
                 {
+                    if (colliders == null) colliders = new Collider[1];
+
                     relliscar = false;
-                    //Debugar.DrawRay(Unic(transform).point, Unic(transform).normal, Color.red);
-                    //if (Unic(transform).Hitted() && Unic(transform).normal.Relliscar()) relliscar = true;
-                    
-                        
-                        relliscar = true;
-                    if (Centre(transform).Hitted() && !Centre(transform).normal.Relliscar()) relliscar = false;
-                    else if (Devant(transform).Hitted() && !Devant(transform).normal.Relliscar()) relliscar = false;
-                    else if (Derrera(transform).Hitted() && !Derrera(transform).normal.Relliscar()) relliscar = false;
-                    else if (Dreta(transform).Hitted() && !Dreta(transform).normal.Relliscar()) relliscar = false;
-                    else if (Esquerra(transform).Hitted() && !Esquerra(transform).normal.Relliscar()) relliscar = false;
+
+                    relliscar = true;
+
+                    if (Centre(transform).Hitted() && !Centre(transform).Relliscar()) relliscar = false;
+                    else if (Devant(transform).Hitted() && !Devant(transform).Relliscar()) relliscar = false;
+                    else if (Derrera(transform).Hitted() && !Derrera(transform).Relliscar()) relliscar = false;
+                    else if (Dreta(transform).Hitted() && !Dreta(transform).Relliscar()) relliscar = false;
+                    else if (Esquerra(transform).Hitted() && !Esquerra(transform).Relliscar()) relliscar = false;
                     else if (!Hit(transform).Hitted()) relliscar = false;
                         
                     return relliscar;
