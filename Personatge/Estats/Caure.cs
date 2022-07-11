@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XS_Utils;
 
+
 namespace Moviment3D
 {
     public class Caure : EstatPersonatge

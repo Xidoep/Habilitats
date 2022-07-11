@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+namespace Moviment3D
+{
 public abstract class Estat : MonoBehaviour
 {
     [SerializeField] private Condicio[] sortides;
@@ -52,6 +54,8 @@ public abstract class Estat : MonoBehaviour
             condicions.Invoke(condicio);
         }
     }
+
+}
 
 }
 
